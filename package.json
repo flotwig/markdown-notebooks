@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/icons": "^3.4.0",
+    "@types/react": "^16.7.18",
+    "@types/react-dom": "^16.0.11",
     "marked": "^0.5.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",

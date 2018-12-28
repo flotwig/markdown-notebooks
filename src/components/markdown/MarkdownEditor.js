@@ -1,4 +1,5 @@
 import React from 'react';
+import { TextArea } from '@blueprintjs/core';
 
 export default class MarkdownEditor extends React.Component {
     constructor(props) {
@@ -10,9 +11,12 @@ export default class MarkdownEditor extends React.Component {
     }
 
     render() {
-        return <div>
-            <textarea value={this.state.markdown} onChange={this.handleChange}/>
-        </div>
+        return <TextArea 
+                style={{height: '100%', width: '100%'}}
+                placeholder="Begin typing here..."
+                value={this.state.markdown} 
+                onChange={this.handleChange}
+                fill={true}/>
     }
 
     handleChange(e) {
