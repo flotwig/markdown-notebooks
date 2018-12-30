@@ -1,15 +1,13 @@
 import React from 'react';
 import PageEditor from './components/notebook/PageEditor';
 import GitHub, { GitHubApi } from './GitHub';
-import GitHubLogin from './components/GitHubLogin'
+import GitHubAuth from './components/auth/GitHubAuth'
 
 class App extends React.Component {
   render() {
     return (<React.Fragment>
       <GitHub.Provider value={new GitHubApi()}>
-        <GitHub.Consumer>
-          {api => api.auth.valid || <GitHubLogin/>}
-        </GitHub.Consumer>
+        <GitHubAuth/>
         <PageEditor/>
       </GitHub.Provider>
     </React.Fragment>);
