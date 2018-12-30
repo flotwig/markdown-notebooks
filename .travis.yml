@@ -1,0 +1,22 @@
+language: node_js
+
+node_js:
+- 8
+
+script:
+- yarn
+- yarn build
+
+after_success:
+- chmod +x _scripts/deploy.sh
+- _scripts/deploy.sh
+
+sudo: false
+
+addons:
+  ssh_known_hosts: overflod.chary.us
+
+before_install:
+- openssl aes-256-cbc -K $encrypted_22978b7c4ce8_key -iv $encrypted_22978b7c4ce8_iv -in travis_rsa.enc -out travis_rsa -d
+- chmod 600 travis_rsa
+- mv travis_rsa ~/.ssh/id_rsa
