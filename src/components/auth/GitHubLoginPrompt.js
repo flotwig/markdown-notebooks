@@ -17,7 +17,8 @@ export default class GitHubLoginPrompt extends React.Component {
                     <AnchorButton 
                             onClick={()=>GitHubApi.redirectLogin()}
                             icon={<img src="/assets/github.svg" 
-                            style={{width: '16px', height: '16px'}}/>}>
+                                       style={{width: '16px', height: '16px'}}
+                                       alt=""/>}>
                         Log in with GitHub</AnchorButton>
                     </div>
                 </div>
