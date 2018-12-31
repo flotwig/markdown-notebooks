@@ -1,8 +1,10 @@
 import { configureStore } from 'redux-starter-kit';
 import authReducer from './authReducer';
+import notebookReducer from './notebookReducer';
 
 const reducer = {
-    auth: authReducer
+    auth: authReducer,
+    notebook: notebookReducer
 }
 
 export const store = configureStore({
