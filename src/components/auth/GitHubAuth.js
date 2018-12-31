@@ -23,7 +23,7 @@ export default class GitHubAuth extends React.Component {
                     <div className="bp3-dialog-header">
                         <h4 className="bp3-heading">Welcome to Markdown Notebooks!</h4>
                     </div>
-                    {!this.state.code ? <GitHubLoginPrompt/> : <GitHubLoginLoader code={this.state.code} stateId={this.state.stateId}/>}
+                    {!this.state.code ? <GitHubLoginPrompt/> : <GitHubLoginLoader code={this.state.code} stateId={this.state.stateId} github={gh}/>}
                 </Dialog>}
             </GitHub.Consumer>
         )
