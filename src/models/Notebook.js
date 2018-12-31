@@ -26,4 +26,24 @@ export default class Notebook {
             })
         })
     }
+
+    toGist() {
+        let files = {}
+        this.pages.forEach(page => {
+            let key = page.gistFilename || (page.name + '.md')
+            if (page.deleted) {
+                files[key] = null
+            } else {
+                files[key] = {
+                    content: page.content,
+                    filename: page.name + '.md'
+                }
+            }
+        })
+        return {
+            description: this.name || 'Untitled Notebook',
+            public: this.public,
+            files
+        }
+    }
 }

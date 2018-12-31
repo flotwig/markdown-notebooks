@@ -1,13 +1,12 @@
 import React from 'react';
 import GitHubAuth from './components/auth/GitHubAuth'
-import NotebookEditor from './components/notebook/NotebookEditor';
-import Notebook from './models/Notebook';
+import ActiveNotebookEditor from './components/notebook/ActiveNotebookEditor';
 
 class App extends React.Component {
   render() {
     return (<React.Fragment>
       <GitHubAuth/>
-      <NotebookEditor notebook={new Notebook()}/>
+      <ActiveNotebookEditor/>
     </React.Fragment>);
   }
 }

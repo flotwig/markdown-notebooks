@@ -1,7 +1,7 @@
 # MDNB: Markdown Notebooks
 
 Features:
-* Create and share notebooks using markdown
+* Create and shagre notebooks using markdown
 * Notebooks can consist of multiple pages, each page is a file in a Gist
 * There can be a hierarchy which will match the folder structure of the Gist
 

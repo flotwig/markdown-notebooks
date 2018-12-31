@@ -1,7 +1,8 @@
 import { createContext } from 'react';
-import { githubClientId } from './env';
+import { authEndpoint, githubClientId } from './env';
 
 const GH_BASEURL = 'https://github.com/';
+const API_BASEURL = 'https://api.github.com/';
 
 export class GitHubApi {
     static storeAuth(valid, token) {
@@ -46,7 +47,7 @@ export class GitHubApi {
     }
 
     static getAccessToken(code, stateId, cb) {
-        const tokenUrl = "https://za.chary.us/projects/mdnb-auth.php" +
+        const tokenUrl = authEndpoint +
             "?client_id=" + githubClientId +
             "&code=" + code +
             "&redirect_uri=" + window.location.origin +
@@ -60,6 +61,27 @@ export class GitHubApi {
                 })
             }
         })
+    }
+
+    static updateGist(gistId, gist) {
+        return GitHubApi._fetch('gists/' + gistId, 'PATCH', gist)
+    }
+
+    static createGist(gist) {
+        return GitHubApi._fetch('gists', 'POST', gist)
+    }
+
+    static _fetch(endpoint, method='GET', body=undefined) {
+        let { token } = GitHubApi.getStoredAuth()
+        return fetch(API_BASEURL + endpoint, {
+            method,
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": "token " + token
+            },
+            body: JSON.stringify(body)
+        }).then(res => res.json())
     }
 }
 
