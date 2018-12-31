@@ -1,8 +1,10 @@
 import React from 'react';
 import { NonIdealState, Spinner } from '@blueprintjs/core';
 import { GitHubApi } from '../../GitHub';
+import { connect } from 'react-redux';
+import { createAction } from 'redux-starter-kit';
 
-export default class GitHubLoginLoader extends React.Component {
+class GitHubLoginLoader extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -12,10 +14,11 @@ export default class GitHubLoginLoader extends React.Component {
     componentDidMount() {
         GitHubApi.getAccessToken(this.props.code, this.props.stateId, token => {
             window.history.pushState(undefined, undefined, '/')
+            this.props.setValid(!!token)
+            this.props.setToken(token)
+            GitHubApi.storeAuth(!!token, token)
             if (!token) {
                 this.setState({ error: true })
-            } else {
-                this.props.github.saveAccessToken(token)
             }
         })
     }
@@ -32,3 +35,14 @@ export default class GitHubLoginLoader extends React.Component {
         )
     }
 } 
+
+GitHubLoginLoader = connect((state) => {
+    return {}
+}, (dispatch) => {
+    return {
+        setValid: (valid) => dispatch(createAction('SET_VALID')(valid)),
+        setToken: (token) => dispatch(createAction('SET_TOKEN')(token))
+    }
+})(GitHubLoginLoader)
+
+export default GitHubLoginLoader

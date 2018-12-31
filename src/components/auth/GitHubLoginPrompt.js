@@ -9,11 +9,11 @@ export default class GitHubLoginPrompt extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <div class="bp3-dialog-body">
+                <div className="bp3-dialog-body">
                     MDNB saves your notebooks to GitHub Gists. Please log in with GitHub to continue.
                 </div>
-                <div class="bp3-dialog-footer">
-                    <div class="bp3-dialog-footer-actions">
+                <div className="bp3-dialog-footer">
+                    <div className="bp3-dialog-footer-actions">
                     <AnchorButton 
                             onClick={()=>GitHubApi.redirectLogin()}
                             icon={<img src="/assets/github.svg" 

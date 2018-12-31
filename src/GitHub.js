@@ -4,29 +4,22 @@ import { githubClientId } from './env';
 const GH_BASEURL = 'https://github.com/';
 
 export class GitHubApi {
-    constructor() {
-        this.auth = GitHubApi.getStoredAuth()
-    }
-
-    saveAccessToken(token) {
-        this.auth = {
-            valid: true,
-            token
-        };
-        this.storeAuth();
-    }
-
-    storeAuth() {
-        localStorage.setItem('githubAuth', JSON.stringify(this.auth))
+    static storeAuth(valid, token) {
+        localStorage.setItem('githubAuth', JSON.stringify({
+            valid, token
+        }))
     }
 
     static getStoredAuth() {
-        let storedAuth = localStorage.getItem('githubAuth');
-        if (!storedAuth) return {
-            valid: false,
-            token: undefined
-        };
-        return JSON.parse(storedAuth);
+        let storedAuth = localStorage.getItem('githubAuth') || 'undefined';
+        try {
+            return JSON.parse(storedAuth);
+        } catch {
+            return {
+                valid: false,
+                token: undefined
+            }
+        }
     }
 
     static redirectLogin() {
