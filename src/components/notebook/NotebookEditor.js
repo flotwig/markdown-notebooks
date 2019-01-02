@@ -1,7 +1,7 @@
 import React from 'react';
 import PageEditor from './PageEditor';
 import ConnectedOpenMenu from './OpenMenu';
-import { Tree, Icon, Button, ButtonGroup, Divider, Dialog } from '@blueprintjs/core';
+import { Tree, Icon, Button, ButtonGroup, Divider, Dialog, NonIdealState, Spinner } from '@blueprintjs/core';
 
 export default class NotebookEditor extends React.Component {
     constructor(props) {
@@ -18,7 +18,7 @@ export default class NotebookEditor extends React.Component {
         return (
             <React.Fragment>
                 <Dialog isOpen={this.state.isOpenMenuOpen}>
-                    <ConnectedOpenMenu/>
+                    <ConnectedOpenMenu closeMenu={()=>{this.setState({ isOpenMenuOpen: false })}}/>
                 </Dialog>
                 <div style={{display: 'flex', width: '100%', height: '100%', margin: 0, padding: '1em'}}>
                     <div style={{display: 'flex', flexDirection: 'column', marginRight: '1em'}}>
@@ -34,14 +34,28 @@ export default class NotebookEditor extends React.Component {
                             <Button text="New Page"/>
                             <Button text="Delete Page"/>
                         </ButtonGroup>
-                        <Tree style={{flex: 'auto'}} contents={this.props.notebook.pages.map((page, id) => {
+                        {this.props.notebook && <Tree style={{flex: 'auto'}} contents={this.props.notebook.pages.map((page, id) => {
                             return { id, label: page.name, isSelected: id === this.state.activePage }
-                        })}/>
+                        })}/>}
                     </div>
-                    <PageEditor page={this.props.notebook.pages[this.state.activePage]}
-                                handleEdit={this.handleEdit}/> 
+                    {this.props.isLoadingNotebook ? this.renderLoading() : (!this.props.notebook ? this.renderNoNotebook() : this.renderEditor())}
                 </div>
             </React.Fragment>
+        )
+    }
+
+    renderLoading() {
+        return <NonIdealState icon={<Spinner/>} description="Loading notebook..."/>
+    }
+
+    renderNoNotebook() {
+        return <NonIdealState icon="clean" description="Open a notebook to start editing."/>
+    }
+
+    renderEditor() {
+        return (
+                <PageEditor page={this.props.notebook.pages[this.state.activePage]}
+                            handleEdit={this.handleEdit}/> 
         )
     }
 

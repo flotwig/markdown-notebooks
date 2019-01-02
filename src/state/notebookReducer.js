@@ -1,5 +1,10 @@
 import { createReducer } from 'redux-starter-kit';
-import { HANDLE_EDIT, RECEIVE_SAVE, REQUEST_SAVE, RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS } from './notebookActions';
+import { 
+    HANDLE_EDIT, 
+    RECEIVE_SAVE, REQUEST_SAVE, 
+    RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS, 
+    RECEIVE_NOTEBOOK, REQUEST_NOTEBOOK 
+} from './notebookActions';
 import Notebook from '../models/Notebook';
 import NotebookPage from '../models/NotebookPage';
 import moment from 'moment';
@@ -8,8 +13,9 @@ const notebookReducer = createReducer({
     isSaving: false,
     saveError: false,
     isLoadingNotebookList: false,
+    isLoadingNotebook: false,
     notebookList: [],
-    notebook: new Notebook()
+    notebook: new Notebook(),
 }, {
     [REQUEST_SAVE]: (state) => {
         state.isSaving = false
@@ -31,6 +37,14 @@ const notebookReducer = createReducer({
     [RECEIVE_NOTEBOOKS]: (state, { payload }) => {
         state.isLoadingNotebookList = false;
         state.notebookList = Notebook.fromGistList(payload);
+    },
+    [REQUEST_NOTEBOOK]: (state) => {
+        state.isLoadingNotebook = true;
+        state.notebook = undefined;
+    },
+    [RECEIVE_NOTEBOOK]: (state, { payload }) => {
+        state.isLoadingNotebook = false;
+        state.notebook = Notebook.fromGist(payload);
     },
     [HANDLE_EDIT]: (state, { payload }) => {
         let pages = state.notebook.pages.slice()
