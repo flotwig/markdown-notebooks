@@ -1,13 +1,14 @@
 import React from 'react';
 import PageEditor from './PageEditor';
 import ConnectedOpenMenu from './OpenMenu';
-import { Tree, Icon, Button, ButtonGroup, Divider, Dialog, NonIdealState, Spinner } from '@blueprintjs/core';
+import PageList from './PageList';
+import { Icon, Button, ButtonGroup, Divider, Dialog, NonIdealState, Spinner } from '@blueprintjs/core';
 
 export default class NotebookEditor extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            activePage: 0
+            isOpenMenuOpen: false
         }
         this.onClickSave = this.onClickSave.bind(this)
         this.onClickOpen = this.onClickOpen.bind(this)
@@ -31,12 +32,14 @@ export default class NotebookEditor extends React.Component {
                             <Button text="Save" icon="cloud-upload" onClick={this.onClickSave}/>
                             <Button text="Open" icon="cloud-download" onClick={this.onClickOpen}/>
                             <Divider/>
-                            <Button text="New Page"/>
-                            <Button text="Delete Page"/>
+                            <Button text="New Page" onClick={()=>this.props.addPage()}/>
+                            <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
+                            <Divider/>
                         </ButtonGroup>
-                        {this.props.notebook && <Tree style={{flex: 'auto'}} contents={this.props.notebook.pages.map((page, id) => {
-                            return { id, label: page.name, isSelected: id === this.state.activePage }
-                        })}/>}
+                        {this.props.notebook && <PageList pages={this.props.notebook.pages} 
+                                                          activePage={this.props.notebook.pages.find(p => p._id ===this.props.activePageId)} 
+                                                          onClickPage={this.props.setActivePage}/>
+                        }
                     </div>
                     {this.props.isLoadingNotebook ? this.renderLoading() : (!this.props.notebook ? this.renderNoNotebook() : this.renderEditor())}
                 </div>
@@ -54,7 +57,7 @@ export default class NotebookEditor extends React.Component {
 
     renderEditor() {
         return (
-                <PageEditor page={this.props.notebook.pages[this.state.activePage]}
+                <PageEditor page={this.props.notebook.pages.find(p => p._id === this.props.activePageId)}
                             handleEdit={this.handleEdit}/> 
         )
     }
@@ -64,7 +67,7 @@ export default class NotebookEditor extends React.Component {
     }
 
     handleEdit(page) {
-        this.props.handleEdit && this.props.handleEdit(this.state.activePage, page)
+        this.props.handleEdit && this.props.handleEdit(page)
     }
 
     onClickOpen() {

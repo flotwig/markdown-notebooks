@@ -27,7 +27,9 @@ export default class PageEditor extends React.Component {
     render() {
         return <React.Fragment>
             <div style={{flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
-                <H2><EditableText value={this.state.name} placeholder="Untitled Page" onChange={this.handleNameChange}/></H2>
+                <H2><EditableText defaultValue={this.state.name} 
+                                  placeholder="Untitled Page" 
+                                  onConfirm={this.handleNameChange}/></H2>
                 <MarkdownEditor markdown={this.state.content} onChange={this.handleEdit}/>
             </div>
             <Card style={{width: '50%'}}>

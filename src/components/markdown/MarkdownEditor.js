@@ -4,9 +4,6 @@ import { TextArea } from '@blueprintjs/core';
 export default class MarkdownEditor extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            markdown: this.props.markdown || ''
-        }
         this.handleChange = this.handleChange.bind(this)
     }
 
@@ -14,7 +11,7 @@ export default class MarkdownEditor extends React.Component {
         return <TextArea 
                 style={{height: '100%', width: '100%', resize: 'none'}}
                 placeholder="Begin typing here..."
-                value={this.state.markdown} 
+                value={this.props.markdown} 
                 onChange={this.handleChange}
                 fill={true}/>
     }
@@ -22,6 +19,5 @@ export default class MarkdownEditor extends React.Component {
     handleChange(e) {
         let markdown = e.target.value;
         if (this.props.onChange) this.props.onChange(markdown)
-        this.setState({ markdown })
     }
 }

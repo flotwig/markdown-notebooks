@@ -10,7 +10,7 @@ export default class Notebook {
     gistId = ''; // if empty, has never been saved to Gist
     gistOwnerLogin = ''; // GitHub username
     name = 'Untitled Notebook'; // description on Gist
-    pages = [new NotebookPage()]; // array of pages
+    pages = [new NotebookPage('Untitled Page')]; // array of pages
 
     static fromGist(gist) {
         return Object.assign(new Notebook(), {
@@ -50,5 +50,17 @@ export default class Notebook {
             public: this.public,
             files
         }
+    }
+
+    getUnusedName(stub) {
+        stub = stub || 'Untitled Page'
+        let name = stub
+        let i = 0
+        const predicate = page => page.name === name
+        while (this.pages.find(predicate)) {
+            i++
+            name = stub + " (" + i + ")"
+        }
+        return name
     }
 }
