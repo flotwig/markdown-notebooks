@@ -1,9 +1,10 @@
 import NotebookPage from "./NotebookPage";
+import moment from 'moment';
 
 export default class Notebook {
     modified = false; // has it been modified since being loaded/created?
     public = false;
-    created_at = new Date();
+    created_at = moment();
     updated_at = undefined;
     saved_at = undefined;
     gistId = ''; // if empty, has never been saved to Gist
@@ -14,9 +15,9 @@ export default class Notebook {
     static fromGist(gist) {
         return Object.assign(new Notebook(), {
             public: gist.public,
-            created_at: new Date(gist.created_at),
-            updated_at: new Date(gist.updated_at),
-            saved_at: new Date(gist.updated_at),
+            created_at: moment(gist.created_at),
+            updated_at: moment(gist.updated_at),
+            saved_at: moment(gist.updated_at),
             gistId: gist.id,
             gistOwnerLogin: gist.owner.login,
             name: gist.description,
@@ -25,6 +26,10 @@ export default class Notebook {
                 return NotebookPage.fromGistFile(file);
             })
         })
+    }
+
+    static fromGistList(gistList) {
+        return gistList.map(gist => Notebook.fromGist(gist))
     }
 
     toGist() {

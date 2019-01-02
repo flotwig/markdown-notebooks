@@ -12,7 +12,7 @@ export default class MarkdownEditor extends React.Component {
 
     render() {
         return <TextArea 
-                style={{height: '100%', width: '100%'}}
+                style={{height: '100%', width: '100%', resize: 'none'}}
                 placeholder="Begin typing here..."
                 value={this.state.markdown} 
                 onChange={this.handleChange}

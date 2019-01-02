@@ -71,6 +71,10 @@ export class GitHubApi {
         return GitHubApi._fetch('gists', 'POST', gist)
     }
 
+    static listOwnedGists() {
+        return GitHubApi._fetch('gists')
+    }
+
     static _fetch(endpoint, method='GET', body=undefined) {
         let { token } = GitHubApi.getStoredAuth()
         return fetch(API_BASEURL + endpoint, {
