@@ -82,11 +82,12 @@ const notebookReducer = createReducer({
     [DELETE_PAGE]: (state, { payload }) => {
         if (!payload) payload = state.notebook.pages.find(p => p._id === state.activePageId)
         let pages = state.notebook.pages.filter(page => payload._id !== page._id)
+        state.notebook = Object.assign(new Notebook(), state.notebook, { pages })
         if (pages.length === 0) {
-            pages = [new NotebookPage()]
+            pages = [new NotebookPage(state.notebook.getUnusedName())]
         }
         state.notebook = Object.assign(new Notebook(), state.notebook, { pages })
-        if (payload._id === state.activePageId) {
+        if (payload._id === state.activePageId || pages.length === 1) {
             state.activePageId = pages[0]._id
         }
     }

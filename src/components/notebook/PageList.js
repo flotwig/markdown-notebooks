@@ -12,9 +12,12 @@ export default class PageList extends React.Component {
                   onChange={(id) => this.props.onClickPage(this.props.pages.find(p => p._id === id))}>
                 {this.props.pages.map(page => {
                     return (
-                        <Tab key={page._id} id={page._id} title={<Text ellipsize={true}>{page.name}</Text>}/>
+                        <Tab key={page._id} 
+                             id={page._id} 
+                             title={page.name}/>
                     )
-                })}
+                })
+                }
             </Tabs>
         )
     }

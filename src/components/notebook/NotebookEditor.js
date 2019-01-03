@@ -22,7 +22,7 @@ export default class NotebookEditor extends React.Component {
                     <ConnectedOpenMenu closeMenu={()=>{this.setState({ isOpenMenuOpen: false })}}/>
                 </Dialog>
                 <div style={{display: 'flex', width: '100%', height: '100%', margin: 0, padding: '1em'}}>
-                    <div style={{display: 'flex', flexDirection: 'column', marginRight: '1em'}}>
+                    <div style={{display: 'flex', width: '10%', flexDirection: 'column', marginRight: '1em'}}>
                         <div style={{fontWeight: '600', fontSize: '1.1em', paddingBottom: '1em', textAlign: 'center'}}>
                             <Icon icon="book" iconSize="60" style={{marginBottom: '.2em'}}></Icon><br/>
                             Markdown<br/>

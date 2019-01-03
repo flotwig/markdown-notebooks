@@ -12,27 +12,38 @@ export default class PageEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ...props.page
+            name: props.page.name,
+            content: props.page.content
         }
         this.handleEdit = this.handleEdit.bind(this)
         this.handleNameChange = this.handleNameChange.bind(this)
+        this.nameField = React.createRef();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.page !== this.props.page) {
-            this.setState({...this.props.page})
+        if (prevProps.page.name !== this.props.page.name 
+                || prevProps.page.content !== this.props.page.content) {
+            this.setState({
+                name: this.props.page.name,
+                content: this.props.page.content
+            })
         }
     }
 
     render() {
         return <React.Fragment>
-            <div style={{flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
-                <H2><EditableText defaultValue={this.state.name} 
-                                  placeholder="Untitled Page" 
-                                  onConfirm={this.handleNameChange}/></H2>
+            <div style={{width: '50%', flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
+                <div style={{maxWidth: '100%', overflow: 'clip'}}>
+                    <H2>
+                        <EditableText value={this.state.name} 
+                                    placeholder="Untitled Page" 
+                                    onChange={(name)=>this.setState({ name })}
+                                    onConfirm={this.handleNameChange}/>
+                    </H2>
+                </div>
                 <MarkdownEditor markdown={this.state.content} onChange={this.handleEdit}/>
             </div>
-            <Card style={{width: '50%', height: '100%', overflow: 'auto'}}>
+            <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
                 <MarkdownRenderer markdown={this.state.content}/>
             </Card>
         </React.Fragment>
