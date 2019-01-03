@@ -32,7 +32,7 @@ export default class PageEditor extends React.Component {
                                   onConfirm={this.handleNameChange}/></H2>
                 <MarkdownEditor markdown={this.state.content} onChange={this.handleEdit}/>
             </div>
-            <Card style={{width: '50%'}}>
+            <Card style={{width: '50%', height: '100%', overflow: 'auto'}}>
                 <MarkdownRenderer markdown={this.state.content}/>
             </Card>
         </React.Fragment>
