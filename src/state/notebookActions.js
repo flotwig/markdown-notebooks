@@ -16,7 +16,9 @@ export const HANDLE_EDIT = createAction('HANDLE_EDIT');
 export const ADD_PAGE = createAction('ADD_PAGE');
 export const DELETE_PAGE = createAction('DELETE_PAGE');
 
+
 export function UPLOAD_IMAGE(blob, cursorLocation) {
+    // TODO: enqueue uploads, right now multiple simultaneous uploads can break due to a race condition
     return function(dispatch) {
         dispatch(REQUEST_UPLOAD_IMAGE(cursorLocation))
         ImgurApi.blobToBase64(blob, image =>

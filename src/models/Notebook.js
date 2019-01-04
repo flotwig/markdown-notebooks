@@ -34,7 +34,8 @@ export default class Notebook {
 
     toGist() {
         let files = {}
-        this.pages.forEach(page => {
+        const pages = this.pages.filter(p => p.content)
+        pages.forEach(page => {
             let key = page.gistFilename || (page.name + '.md')
             if (page.deleted) {
                 files[key] = null
