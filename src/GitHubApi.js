@@ -34,7 +34,7 @@ export class GitHubApi {
         }
     }
 
-    getAuthUrl() {
+    static getAuthUrl() {
         const scopes = ['gist']
         const stateId = Math.random().toString().split('.')[1]
         localStorage.setItem('stateId', stateId)
