@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitHubApi } from '../../GitHub'
+import { GitHubApi } from '../../GitHubApi'
 import { AnchorButton } from '@blueprintjs/core';
 
 /**
@@ -15,7 +15,7 @@ export default class GitHubLoginPrompt extends React.Component {
                 <div className="bp3-dialog-footer">
                     <div className="bp3-dialog-footer-actions">
                     <AnchorButton 
-                            onClick={()=>GitHubApi.redirectLogin()}
+                            onClick={()=>window.location.href = GitHubApi.getAuthUrl()}
                             icon={<img src="/assets/github.svg" 
                                        style={{width: '16px', height: '16px'}}
                                        alt=""/>}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NonIdealState, Spinner } from '@blueprintjs/core';
-import { GitHubApi } from '../../GitHub';
+import { GitHubApi } from '../../GitHubApi';
 import { connect } from 'react-redux';
 import { createAction } from 'redux-starter-kit';
 

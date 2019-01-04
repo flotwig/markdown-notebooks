@@ -1,5 +1,4 @@
 import React from 'react';
-import { TextArea } from '@blueprintjs/core';
 
 export default class MarkdownEditor extends React.Component {
     constructor(props) {
@@ -8,11 +7,14 @@ export default class MarkdownEditor extends React.Component {
     }
 
     render() {
-        return <TextArea 
+        return <textarea 
+                className="bp3-input"
                 style={{height: '100%', width: '100%', resize: 'none'}}
                 placeholder="Begin typing here..."
                 value={this.props.markdown} 
+                ref={this.props.textareaRef}
                 onChange={this.handleChange}
+                onPaste={this.props.onPaste}
                 fill={true}/>
     }
 

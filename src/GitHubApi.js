@@ -1,16 +1,27 @@
-import { createContext } from 'react';
 import { authEndpoint, githubClientId } from './env';
 
 const GH_BASEURL = 'https://github.com/';
 const API_BASEURL = 'https://api.github.com/';
 
+/**
+ * Facilitates interaction with the GitHub API.
+ */
 export class GitHubApi {
+    /**
+     * Stores token and validity in internal storage.
+     * 
+     * @param {boolean} valid 
+     * @param {string} token 
+     */
     static storeAuth(valid, token) {
         localStorage.setItem('githubAuth', JSON.stringify({
             valid, token
         }))
     }
 
+    /**
+     * Returns the stored auth object, or the default if none exists.
+     */
     static getStoredAuth() {
         let storedAuth = localStorage.getItem('githubAuth') || 'undefined';
         try {
@@ -23,11 +34,11 @@ export class GitHubApi {
         }
     }
 
-    static redirectLogin() {
+    getAuthUrl() {
         const scopes = ['gist']
         const stateId = Math.random().toString().split('.')[1]
         localStorage.setItem('stateId', stateId)
-        window.location.href = GH_BASEURL + "login/oauth/authorize" +
+        return GH_BASEURL + "login/oauth/authorize" +
             "?client_id=" + githubClientId +
             "&redirect_uri=" + window.location.origin +
             "&scope=" + scopes.join(' ') +
@@ -92,7 +103,3 @@ export class GitHubApi {
         }).then(res => res.json())
     }
 }
-
-const GitHub = createContext(new GitHubApi());
-
-export default GitHub;

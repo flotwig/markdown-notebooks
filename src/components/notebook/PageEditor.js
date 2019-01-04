@@ -17,7 +17,8 @@ export default class PageEditor extends React.Component {
         }
         this.handleEdit = this.handleEdit.bind(this)
         this.handleNameChange = this.handleNameChange.bind(this)
-        this.nameField = React.createRef();
+        this.handlePaste = this.handlePaste.bind(this)
+        this.textareaRef = React.createRef();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -41,7 +42,10 @@ export default class PageEditor extends React.Component {
                                     onConfirm={this.handleNameChange}/>
                     </H2>
                 </div>
-                <MarkdownEditor markdown={this.state.content} onChange={this.handleEdit}/>
+                <MarkdownEditor markdown={this.state.content} 
+                                onChange={this.handleEdit}
+                                textareaRef={this.textareaRef}
+                                onPaste={this.handlePaste}/>
             </div>
             <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
                 <MarkdownRenderer markdown={this.state.content}/>
@@ -57,5 +61,20 @@ export default class PageEditor extends React.Component {
     handleNameChange(name) {
         this.setState({ name })
         this.props.handleEdit && this.props.handleEdit({ name, content: this.state.content })
+    }
+
+    handlePaste(e) {
+        // cancel default behavior and stop bubbling
+        e.preventDefault();
+        e.stopPropagation();
+        let items = e.clipboardData.items
+        for (var i = 0; i < items.length; i++) {
+            let item = items[i]
+            if (item.type.includes('image')) {
+                const cursorLocation = this.textareaRef.current.selectionStart
+                const blob = item.getAsFile()
+                this.props.uploadImage(blob, cursorLocation)
+            }
+        }
     }
 }

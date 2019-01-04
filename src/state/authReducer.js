@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { GitHubApi } from '../GitHub';
+import { GitHubApi } from '../GitHubApi';
 
 function setToken(state, token) {
     state.token = token;

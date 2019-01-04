@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitHubApi } from '../../GitHub';
+import { GitHubApi } from '../../GitHubApi';
 import GitHubLoginPrompt from './GitHubLoginPrompt';
 import GitHubLoginLoader from './GitHubLoginLoader';
 import { Dialog } from '@blueprintjs/core';

@@ -58,7 +58,8 @@ export default class NotebookEditor extends React.Component {
     renderEditor() {
         return (
                 <PageEditor page={this.props.notebook.pages.find(p => p._id === this.props.activePageId)}
-                            handleEdit={this.handleEdit}/> 
+                            handleEdit={this.handleEdit}
+                            uploadImage={this.props.uploadImage}/> 
         )
     }
 

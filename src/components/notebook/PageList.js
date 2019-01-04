@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Tab, Tabs} from '@blueprintjs/core';
+import { Tab, Tabs } from '@blueprintjs/core';
 
 /**
  * <PageList pages={pages} onClickPage={(page) => {}} activePage={somePage}/>

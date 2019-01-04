@@ -4,6 +4,7 @@ import {
     SET_ACTIVE_PAGE,
     SET_ACTIVE_NOTEBOOK,
     ADD_PAGE, DELETE_PAGE,
+    RECEIVE_UPLOAD_IMAGE, REQUEST_UPLOAD_IMAGE,
     RECEIVE_SAVE, REQUEST_SAVE, 
     RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS, 
     RECEIVE_NOTEBOOK, REQUEST_NOTEBOOK 
@@ -52,6 +53,34 @@ const notebookReducer = createReducer({
         state.isLoadingNotebook = false;
         state.notebook = Notebook.fromGist(payload);
         state.activePageId = state.notebook.pages[0]._id
+    },
+    [REQUEST_UPLOAD_IMAGE]: (state, { payload }) => {
+        const cursorLocation = payload
+        let pages = state.notebook.pages.slice()
+        let pageIndex = pages.findIndex(page => page._id === state.activePageId)
+        let { content } = pages[pageIndex]
+        content = content.substring(0, cursorLocation)
+                 + "![Pasted image](Uploading...)" 
+                 + content.substring(cursorLocation)
+        pages[pageIndex] = Object.assign(new NotebookPage(), pages[pageIndex], { content })
+        state.notebook = Object.assign(new Notebook(), state.notebook, {
+            updated_at: moment(),
+            modified: true,
+            pages 
+        })
+    },
+    [RECEIVE_UPLOAD_IMAGE]: (state, { payload }) => {
+        let pages = state.notebook.pages.slice()
+        let pageIndex = pages.findIndex(page => page._id === state.activePageId)
+        let { content } = pages[pageIndex]
+        content = content.replace("![Pasted image](Uploading...)", 
+                                  "![Pasted image](" + payload.data.link + ")")
+        pages[pageIndex] = Object.assign(new NotebookPage(), pages[pageIndex], { content })
+        state.notebook = Object.assign(new Notebook(), state.notebook, {
+            updated_at: moment(),
+            modified: true,
+            pages 
+        })
     },
     [HANDLE_EDIT]: (state, { payload }) => {
         let pages = state.notebook.pages.slice()
