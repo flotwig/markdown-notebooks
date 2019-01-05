@@ -1,13 +1,18 @@
 import React from 'react';
-import GitHubAuth from './components/auth/GitHubAuth'
-import ActiveNotebookEditor from './components/notebook/ActiveNotebookEditor';
+import ConnectedGitHubAuth from './components/auth/GitHubAuth'
+import ConnectedNotebookEditor from './components/notebook/ActiveNotebookEditor';
 
+/**
+ * Root-level component of application.
+ */
 class App extends React.Component {
   render() {
-    return (<React.Fragment>
-      <GitHubAuth/>
-      <ActiveNotebookEditor/>
-    </React.Fragment>);
+    return (
+      <React.Fragment>
+        <ConnectedGitHubAuth/>
+        <ConnectedNotebookEditor/>
+      </React.Fragment>
+    );
   }
 }
 

@@ -8,6 +8,9 @@ import {
     NonIdealState, Spinner, H2, H4, EditableText, Card
 } from '@blueprintjs/core';
 
+/**
+ * Editor pane for a notebook. Includes all the needed controls.
+ */
 export default class NotebookEditor extends React.Component {
     constructor(props) {
         super(props)
@@ -45,7 +48,9 @@ export default class NotebookEditor extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Dialog isOpen={this.state.isOpenMenuOpen}>
+                <Dialog onClose={()=>this.setState({ isOpenMenuOpen: false })}
+                        isOpen={this.state.isOpenMenuOpen} 
+                        title="Open a notebook">
                     <ConnectedOpenMenu closeMenu={()=>{this.setState({ isOpenMenuOpen: false })}}/>
                 </Dialog>
                 <div style={{display: 'flex', width: '100%', height: '100%', margin: 0, padding: '1em'}}>
@@ -106,7 +111,7 @@ export default class NotebookEditor extends React.Component {
                                     onPaste={this.handlePaste}/>
                 </div>
                 <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
-                    <MarkdownRenderer markdown={this.state.content}/>
+                    <MarkdownRenderer markdown={this.state.activePageContent}/>
                 </Card>
             </React.Fragment>
         )
@@ -122,12 +127,12 @@ export default class NotebookEditor extends React.Component {
 
     handleEdit(content) {
         this.setState({ activePageContent: content })
-        this.props.handleEdit && this.props.handleEdit({ name: this.state.name, content })
+        this.props.handleEdit && this.props.handleEdit({ name: this.state.activePageNname, content })
     }
 
     handlePageNameChange(name) {
         this.setState({ activePageName: name })
-        this.props.handleEdit && this.props.handleEdit({ name, content: this.state.content })
+        this.props.handleEdit && this.props.handleEdit({ name, content: this.state.activePagEcontent })
     }
 
     handleNotebookNameChange(name) {
@@ -148,7 +153,7 @@ export default class NotebookEditor extends React.Component {
         let items = e.clipboardData.items
         for (var i = 0; i < items.length; i++) {
             let item = items[i]
-            if (item.type.includes('image')) {
+            if (item.type.includes('image')) { // upload any image pasted
                 const cursorLocation = this.textareaRef.current.selectionStart
                 const blob = item.getAsFile()
                 this.props.uploadImage(blob, cursorLocation)

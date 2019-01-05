@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Standalone editor for monospace text.
+ */
 export default class MarkdownEditor extends React.Component {
     constructor(props) {
         super(props);
@@ -7,6 +10,7 @@ export default class MarkdownEditor extends React.Component {
     }
 
     render() {
+        // note: do not use blueprint3 TextArea - it does not implement all needed features like selectionStart, onPaste...
         return <textarea 
                 className="bp3-input"
                 style={{height: '100%', width: '100%', resize: 'none'}}
@@ -20,6 +24,6 @@ export default class MarkdownEditor extends React.Component {
 
     handleChange(e) {
         let markdown = e.target.value;
-        if (this.props.onChange) this.props.onChange(markdown)
+        this.props.onChange(markdown)
     }
 }

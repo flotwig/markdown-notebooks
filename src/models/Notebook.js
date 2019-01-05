@@ -1,6 +1,10 @@
 import NotebookPage from "./NotebookPage";
 import moment from 'moment';
 
+/**
+ * A Notebook is the top-level document in Markdown Notebooks. It contains a set of NotebookPages 
+ * which contain the actual content.
+ */
 export default class Notebook {
     modified = false; // has it been modified since being loaded/created?
     public = false;
@@ -12,6 +16,11 @@ export default class Notebook {
     name = 'Untitled Notebook'; // description on Gist
     pages = [new NotebookPage('Untitled Page')]; // array of pages
 
+    /**
+     * From a GitHub Gist, generate a matching Notebook.
+     * 
+     * @param {object} gist gist object from GH API
+     */
     static fromGist(gist) {
         return Object.assign(new Notebook(), {
             public: gist.public,
@@ -28,23 +37,24 @@ export default class Notebook {
         })
     }
 
+    /**
+     * Generates an array of Notebooks from a list of Gists. Works with partial Gist objects.
+     * 
+     * @param {object[]} gistList list of gist objects from GH API
+     */
     static fromGistList(gistList) {
         return gistList.map(gist => Notebook.fromGist(gist))
     }
 
+    /**
+     * Formats the Notebook into a Gist object suitable for the GH API.
+     */
     toGist() {
         let files = {}
         const pages = this.pages.filter(p => p.content)
         pages.forEach(page => {
             let key = page.gistFilename || (page.name + '.md')
-            if (page.deleted) {
-                files[key] = null
-            } else {
-                files[key] = {
-                    content: page.content,
-                    filename: page.name + '.md'
-                }
-            }
+            files[key] = page.toGistFile()
         })
         return {
             description: this.name || 'Untitled Notebook',
@@ -53,6 +63,11 @@ export default class Notebook {
         }
     }
 
+    /**
+     * Finds an unused page name beginning with `stub`.
+     * 
+     * @param {string} stub Default page name. Defaults to 'Untitled Page'.
+     */
     getUnusedName(stub) {
         stub = stub || 'Untitled Page'
         let name = stub

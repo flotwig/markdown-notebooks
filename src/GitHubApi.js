@@ -34,10 +34,13 @@ export class GitHubApi {
         }
     }
 
-    static getAuthUrl() {
+    /**
+     * Generates and returns the authorization URL to redirect a user to for login.
+     * 
+     * @param {string} stateId stateId to validate the returned code
+     */
+    static getAuthUrl(stateId) {
         const scopes = ['gist']
-        const stateId = Math.random().toString().split('.')[1]
-        localStorage.setItem('stateId', stateId)
         return GH_BASEURL + "login/oauth/authorize" +
             "?client_id=" + githubClientId +
             "&redirect_uri=" + window.location.origin +
@@ -46,7 +49,10 @@ export class GitHubApi {
     }
 
     /**
-     * Gets the auth code from the URL and verifies the state code matches.
+     * Gets the auth code from the URL and verifies the state code matches what is supplied.
+     * 
+     * @param {string} url URL to parse
+     * @param {string} stateId stateId to validate. If incorrect, function will return undefined.
      */
     static getAuthCode(url, stateId) {
         const regex = /\?code=([a-z0-9]+)&state=([0-9]+)/gm;
@@ -57,21 +63,27 @@ export class GitHubApi {
         return code;
     }
 
-    static getAccessToken(code, stateId, cb) {
+    /**
+     * Uses a third-party server to exchange the code for an access token that will be used for future 
+     * requests. An external server must be used because the GitHub authorization endpoint requires
+     * the client secret and blocks cross-origin requests.
+     * 
+     * @param {string} code The code from OAuth redirect
+     * @param {string} stateId stateId to send to validate request
+     */
+    static getAccessToken(code, stateId) {
         const tokenUrl = authEndpoint +
             "?client_id=" + githubClientId +
             "&code=" + code +
             "&redirect_uri=" + window.location.origin +
             "&state=" + stateId
-        fetch(tokenUrl).then(response => {
+        return fetch(tokenUrl).then(response => {
             if (response.status !== 200) {
                 console.log('Auth problem')
             } else {
-                response.json().then(data => {
-                    cb(data['access_token'])
-                })
+                return response.json()
             }
-        })
+        }).then(data => data['access_token'])
     }
 
     static updateGist(gistId, gist) {
@@ -90,6 +102,13 @@ export class GitHubApi {
         return GitHubApi._fetch('gists/' + gistId)
     }
 
+    /**
+     * Internal fetch method that hits GitHub API.
+     * 
+     * @param {string} endpoint API endpoint to reach
+     * @param {string} method Optional HTTP method to use
+     * @param {object} body Optional object to send as a JSON body
+     */
     static _fetch(endpoint, method='GET', body=undefined) {
         let { token } = GitHubApi.getStoredAuth()
         return fetch(API_BASEURL + endpoint, {

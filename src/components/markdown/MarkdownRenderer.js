@@ -2,6 +2,11 @@ import React from 'react';
 import marked from 'marked';
 import sanitize from 'sanitize-html';
 
+/**
+ * Standalone renderer for input markdown.
+ * 
+ * Sanitizes output HTML from markdown as well.
+ */
 export default class MarkdownRenderer extends React.Component {
     constructor(props) {
         super(props);
@@ -20,12 +25,22 @@ export default class MarkdownRenderer extends React.Component {
         }
     }
 
+    /**
+     * Renders markdown into the display area.
+     * 
+     * @param {string} markdown Input markdown text
+     */
     renderMarkdown(markdown) {
         marked(markdown, (error, result) => {
             this.setHtml(result);
         })
     }
 
+    /**
+     * Sanitizes the HTML and changes the rendered output.
+     * 
+     * @param {string} html Unsafe HTML string
+     */
     setHtml(html) {
         let sanitized = this.sanitizeHtml(html);
         this.setState({ renderedMarkdown: sanitized });

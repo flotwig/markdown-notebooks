@@ -4,7 +4,12 @@ import GitHubLoginPrompt from './GitHubLoginPrompt';
 import GitHubLoginLoader from './GitHubLoginLoader';
 import { Dialog } from '@blueprintjs/core';
 import { connect } from 'react-redux'
+import { SET_TOKEN } from '../../state/authActions';
 
+/**
+ * Top-level GitHub auth component. Handles displaying either the login button or displaying the
+ * loading screen while the GitHub token is retrieved.
+ */
 class GitHubAuth extends React.Component {
     constructor(props) {
         super(props)
@@ -14,6 +19,7 @@ class GitHubAuth extends React.Component {
             stateId
         }
     }
+
     render() {
         return (
             <Dialog 
@@ -24,7 +30,7 @@ class GitHubAuth extends React.Component {
                     <h4 className="bp3-heading">Welcome to Markdown Notebooks!</h4>
                 </div>
                 {!this.state.code ? 
-                    <GitHubLoginPrompt/> 
+                    <GitHubLoginPrompt setToken={this.props.setToken}/> 
                     : 
                     <GitHubLoginLoader code={this.state.code} stateId={this.state.stateId}/>}
             </Dialog>
@@ -32,12 +38,17 @@ class GitHubAuth extends React.Component {
     }
 }
 
-GitHubAuth = connect(
-    (state, ownProps) => {
+const ConnectedGitHubAuth = connect(
+    (state) => {
         return {
             auth: state.auth
+        }
+    },
+    (dispatch) => {
+        return {
+            setToken: (token) => dispatch(SET_TOKEN(token))
         }
     }
 )(GitHubAuth)
 
-export default GitHubAuth
+export default ConnectedGitHubAuth

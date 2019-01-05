@@ -1,20 +1,21 @@
 import React from 'react';
 import { NonIdealState, Spinner } from '@blueprintjs/core';
 import { GitHubApi } from '../../GitHubApi';
-import { connect } from 'react-redux';
-import { createAction } from 'redux-starter-kit';
 
-class GitHubLoginLoader extends React.Component {
+/**
+ * Component to display loading screen while token is retrieved.
+ */
+export default class GitHubLoginLoader extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
             error: false
         }
     }
+
     componentDidMount() {
-        GitHubApi.getAccessToken(this.props.code, this.props.stateId, token => {
+        GitHubApi.getAccessToken(this.props.code, this.props.stateId).then(token => {
             window.history.pushState(undefined, undefined, '/')
-            this.props.setValid(!!token)
             this.props.setToken(token)
             GitHubApi.storeAuth(!!token, token)
             if (!token) {
@@ -22,6 +23,7 @@ class GitHubLoginLoader extends React.Component {
             }
         })
     }
+
     render() {
         return (
             <div className="bp3-dialog-body">
@@ -34,15 +36,4 @@ class GitHubLoginLoader extends React.Component {
             </div>
         )
     }
-} 
-
-GitHubLoginLoader = connect((state) => {
-    return {}
-}, (dispatch) => {
-    return {
-        setValid: (valid) => dispatch(createAction('SET_VALID')(valid)),
-        setToken: (token) => dispatch(createAction('SET_TOKEN')(token))
-    }
-})(GitHubLoginLoader)
-
-export default GitHubLoginLoader
+}

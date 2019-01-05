@@ -14,8 +14,11 @@ import Notebook from '../models/Notebook';
 import NotebookPage from '../models/NotebookPage';
 import moment from 'moment';
 
-var initialNotebook = new Notebook();
+const initialNotebook = new Notebook();
 
+/**
+ * Reducer for the state of the currently active Notebook.
+ */
 const notebookReducer = createReducer({
     isSaving: false,
     saveError: false,
@@ -106,19 +109,28 @@ const notebookReducer = createReducer({
     },
     [ADD_PAGE]: (state) => {
         let pages = state.notebook.pages.slice()
-        pages.push(new NotebookPage(state.notebook.getUnusedName()))
+        const page = new NotebookPage(state.notebook.getUnusedName())
+        pages.push(page)
+        state.activePageId = page._id
         state.notebook = Object.assign(new Notebook(), state.notebook, { pages })
     },
     [DELETE_PAGE]: (state, { payload }) => {
         if (!payload) payload = state.notebook.pages.find(p => p._id === state.activePageId)
+        const pageIndex = state.notebook.pages.findIndex(p=> p._id === payload._id)
         let pages = state.notebook.pages.filter(page => payload._id !== page._id)
         state.notebook = Object.assign(new Notebook(), state.notebook, { pages })
         if (pages.length === 0) {
+            // always have at least 1 page
             pages = [new NotebookPage(state.notebook.getUnusedName())]
         }
         state.notebook = Object.assign(new Notebook(), state.notebook, { pages })
         if (payload._id === state.activePageId || pages.length === 1) {
-            state.activePageId = pages[0]._id
+            // activate another page
+            if (pages[pageIndex - 1]) {
+                state.activePageId = pages[pageIndex - 1]._id
+            } else {
+                state.activePageId = pages[0]._id
+            }
         }
     },
     [RENAME_NOTEBOOK]: (state, { payload }) => {

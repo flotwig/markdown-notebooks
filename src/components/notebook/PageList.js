@@ -2,6 +2,8 @@ import React from 'react';
 import { Tab, Tabs } from '@blueprintjs/core';
 
 /**
+ * Displays the list of pages in the sidebar.
+ * 
  * <PageList pages={pages} onClickPage={(page) => {}} activePage={somePage}/>
  */
 export default class PageList extends React.Component {

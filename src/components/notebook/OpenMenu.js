@@ -3,6 +3,10 @@ import { HTMLTable, NonIdealState, Spinner, Button } from '@blueprintjs/core';
 import React from 'react';
 import { connect } from 'react-redux';
 
+/**
+ * Component for showing a user's existing Gists. Allows them to open any one
+ * as a notebook.
+ */
 export class OpenMenu extends React.Component {
     componentDidMount() {
         this.props.fetchNotebooks()
@@ -10,18 +14,13 @@ export class OpenMenu extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
-                <div className="bp3-dialog-header">
-                    <h4 className="bp3-heading">Open a notebook</h4>
-                </div>
-                <div className="bp3-dialog-body">
-                    {this.props.isLoadingNotebookList ?
-                        <NonIdealState icon={<Spinner/>} description="Loading notebooks..."/>
-                    :
-                        this.renderList()
-                    }
-                </div>
-            </React.Fragment>
+            <div className="bp3-dialog-body">
+                {this.props.isLoadingNotebookList ?
+                    <NonIdealState icon={<Spinner/>} description="Loading notebooks..."/>
+                :
+                    this.renderList()
+                }
+            </div>
         )
     }
 

@@ -21,6 +21,12 @@ export default class ImgurApi {
         })
     }
 
+    /**
+     * Helper method to convert Blob objects to base64 strings.
+     * 
+     * @param {Blob} blob Input blob
+     * @param {Function} cb Callback that will receive the base64 string
+     */
     static blobToBase64(blob, cb) {
         var reader = new FileReader();
         reader.onload = function() {

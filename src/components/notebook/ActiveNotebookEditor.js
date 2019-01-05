@@ -5,7 +5,7 @@ import {
     UPLOAD_IMAGE, RENAME_NOTEBOOK
 } from '../../state/notebookActions'
 
-const ActiveNotebookEditor = connect(
+const ConnectedNotebookEditor = connect(
     (state) => {
         return {
             ...state.notebook
@@ -23,4 +23,4 @@ const ActiveNotebookEditor = connect(
     }
 )(NotebookEditor)
 
-export default ActiveNotebookEditor;
+export default ConnectedNotebookEditor;

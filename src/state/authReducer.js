@@ -1,17 +1,15 @@
 import { createReducer } from 'redux-starter-kit';
 import { GitHubApi } from '../GitHubApi';
+import { SET_TOKEN } from './authActions';
 
-function setToken(state, token) {
-    state.token = token;
-}
-
-function setValid(state, valid) {
-    state.valid = valid;
-}
-
+/**
+ * Reducer for GitHub authentication logic.
+ */
 const authReducer = createReducer(GitHubApi.getStoredAuth(), {
-    SET_TOKEN: setToken,
-    SET_VALID: setValid
+    [SET_TOKEN]: (state, { payload }) => {
+        state.token = payload
+        state.valid = !!payload
+    }
 })
 
 export default authReducer;
