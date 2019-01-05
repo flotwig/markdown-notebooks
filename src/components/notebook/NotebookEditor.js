@@ -5,7 +5,7 @@ import ConnectedOpenMenu from './OpenMenu';
 import PageList from './PageList';
 import { 
     Icon, Button, ButtonGroup, Divider, Dialog, 
-    NonIdealState, Spinner, H2, EditableText, Card
+    NonIdealState, Spinner, H2, H4, EditableText, Card
 } from '@blueprintjs/core';
 
 export default class NotebookEditor extends React.Component {
@@ -15,12 +15,14 @@ export default class NotebookEditor extends React.Component {
         this.state = {
             isOpenMenuOpen: false,
             activePageContent: activePage.content,
-            activePageName: activePage.name
+            activePageName: activePage.name,
+            notebookName: this.props.notebook.name
         }
         this.onClickSave = this.onClickSave.bind(this)
         this.onClickOpen = this.onClickOpen.bind(this)
         this.handleEdit = this.handleEdit.bind(this)
-        this.handleNameChange = this.handleNameChange.bind(this)
+        this.handlePageNameChange = this.handlePageNameChange.bind(this)
+        this.handleNotebookNameChange = this.handleNotebookNameChange.bind(this)
         this.handlePaste = this.handlePaste.bind(this)
         this.textareaRef = React.createRef();
     }
@@ -31,6 +33,11 @@ export default class NotebookEditor extends React.Component {
             this.setState({
                 activePageContent: activePage.content,
                 activePageName: activePage.name
+            })
+        }
+        if (prevProps.notebook.name !== this.props.notebook.name) {
+            this.setState({
+                notebookName: this.props.notebook.name
             })
         }
     }
@@ -52,8 +59,8 @@ export default class NotebookEditor extends React.Component {
                             <Button text="Save" icon="cloud-upload" onClick={this.onClickSave}/>
                             <Button text="Open" icon="cloud-download" onClick={this.onClickOpen}/>
                             <Divider/>
-                            <Button text="New Page" onClick={this.props.addPage}/>
-                            <Button text="Delete Page" onClick={this.props.deletePage}/>
+                            <Button text="New Page" onClick={()=>this.props.addPage()}/>
+                            <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
                             <Divider/>
                         </ButtonGroup>
                         {this.props.notebook && <PageList pages={this.props.notebook.pages} 
@@ -79,13 +86,19 @@ export default class NotebookEditor extends React.Component {
         return (
             <React.Fragment>
                 <div style={{width: '50%', flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
-                    <div style={{maxWidth: '100%', overflow: 'cli+p'}}>
+                    <div style={{maxWidth: '100%'}}>
                         <H2>
+                            <EditableText value={this.state.notebookName} 
+                                        placeholder="Untitled Page" 
+                                        onChange={(notebookName)=>this.setState({ notebookName })}
+                                        onConfirm={this.handleNotebookNameChange}/>
+                        </H2>
+                        <H4>
                             <EditableText value={this.state.activePageName} 
                                         placeholder="Untitled Page" 
                                         onChange={(activePageName)=>this.setState({ activePageName })}
-                                        onConfirm={this.handleNameChange}/>
-                        </H2>
+                                        onConfirm={this.handlePageNameChange}/>
+                        </H4>
                     </div>
                     <MarkdownEditor markdown={this.state.activePageContent} 
                                     onChange={this.handleEdit}
@@ -112,9 +125,14 @@ export default class NotebookEditor extends React.Component {
         this.props.handleEdit && this.props.handleEdit({ name: this.state.name, content })
     }
 
-    handleNameChange(name) {
+    handlePageNameChange(name) {
         this.setState({ activePageName: name })
         this.props.handleEdit && this.props.handleEdit({ name, content: this.state.content })
+    }
+
+    handleNotebookNameChange(name) {
+        this.setState({ notebookName: name })
+        this.props.renameNotebook(name)
     }
 
     onClickOpen() {

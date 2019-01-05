@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-starter-kit';
 import { 
     HANDLE_EDIT, 
+    RENAME_NOTEBOOK,
     SET_ACTIVE_PAGE,
     SET_ACTIVE_NOTEBOOK,
     ADD_PAGE, DELETE_PAGE,
@@ -119,6 +120,9 @@ const notebookReducer = createReducer({
         if (payload._id === state.activePageId || pages.length === 1) {
             state.activePageId = pages[0]._id
         }
+    },
+    [RENAME_NOTEBOOK]: (state, { payload }) => {
+        state.notebook = Object.assign(new Notebook(), state.notebook, { name: payload })
     }
 })
 

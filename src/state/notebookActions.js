@@ -15,6 +15,7 @@ export const SET_ACTIVE_NOTEBOOK = createAction('SET_ACTIVE_NOTEBOOK');
 export const HANDLE_EDIT = createAction('HANDLE_EDIT');
 export const ADD_PAGE = createAction('ADD_PAGE');
 export const DELETE_PAGE = createAction('DELETE_PAGE');
+export const RENAME_NOTEBOOK = createAction('RENAME_NOTEBOOK');
 
 
 export function UPLOAD_IMAGE(blob, cursorLocation) {
