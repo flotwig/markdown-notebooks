@@ -1,6 +1,6 @@
 import React from 'react';
 import ConnectedGitHubAuth from './components/auth/GitHubAuth'
-import ConnectedNotebookEditor from './components/notebook/ActiveNotebookEditor';
+import ConnectedNotebookEditor from './components/notebook/ConnectedNotebookEditor';
 
 /**
  * Root-level component of application.

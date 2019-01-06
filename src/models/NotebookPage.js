@@ -8,7 +8,6 @@ export default class NotebookPage {
     name = "Untitled";
     gistFilename = ""; // cached filename of gistfile, needed to rename pages
     content = "";
-    deleted = false; // did the user delete this page this session?
 
     constructor(name) {
         this._id = idCounter
@@ -20,7 +19,6 @@ export default class NotebookPage {
      * Formats the NotebookPage into a gistfile suitable for the GH API.
      */
     toGistFile() {
-        if (this.deleted) return undefined
         return {
             content: this.content,
             filename: this.name + '.md'

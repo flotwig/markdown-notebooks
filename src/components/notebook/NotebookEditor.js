@@ -31,8 +31,10 @@ export default class NotebookEditor extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.activePageId !== this.props.activePageId) {
-            const activePage = this.getActivePage()
+        const activePage = this.getActivePage()
+        if (prevProps.activePageId !== this.props.activePageId ||
+            activePage.content !== this.state.activePageContent ||
+            activePage.name !== this.state.activePageName) {
             this.setState({
                 activePageContent: activePage.content,
                 activePageName: activePage.name

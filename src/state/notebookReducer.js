@@ -61,7 +61,7 @@ const notebookReducer = createReducer({
     [REQUEST_UPLOAD_IMAGE]: (state, { payload }) => {
         const cursorLocation = payload
         let pages = state.notebook.pages.slice()
-        let pageIndex = pages.findIndex(page => page._id === state.activePageId)
+        const pageIndex = pages.findIndex(page => page._id === state.activePageId)
         let { content } = pages[pageIndex]
         content = content.substring(0, cursorLocation)
                  + "![Pasted image](Uploading...)" 

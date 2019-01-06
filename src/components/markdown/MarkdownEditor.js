@@ -18,8 +18,7 @@ export default class MarkdownEditor extends React.Component {
                 value={this.props.markdown} 
                 ref={this.props.textareaRef}
                 onChange={this.handleChange}
-                onPaste={this.props.onPaste}
-                fill={true}/>
+                onPaste={this.props.onPaste}/>
     }
 
     handleChange(e) {
