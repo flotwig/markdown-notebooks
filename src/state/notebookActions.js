@@ -38,7 +38,7 @@ export function FETCH_SAVE(notebook) {
             GitHubApi.updateGist(notebook.gistId, gist) :
             GitHubApi.createGist(gist)
         ).then(response => {
-            if (response.ok) {
+            if (response) {
                 dispatch(RECEIVE_SAVE(response))
             } else {
                 throw new Error()

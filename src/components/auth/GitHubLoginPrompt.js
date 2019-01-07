@@ -15,6 +15,7 @@ export default class GitHubLoginPrompt extends React.Component {
                 <div className="bp3-dialog-footer">
                     <div className="bp3-dialog-footer-actions">
                     <AnchorButton 
+                            className="gh-login-button"
                             onClick={()=>this.onClickLogin()}
                             icon={<img src="/assets/github.svg" 
                                        style={{width: '16px', height: '16px'}}
@@ -30,6 +31,10 @@ export default class GitHubLoginPrompt extends React.Component {
         // generate and store a code that will be used to validate the response
         const stateId = Math.random().toString().split('.')[1]
         localStorage.setItem('stateId', stateId)
-        window.location.href = GitHubApi.getAuthUrl(stateId)
+        this.redirectTo(GitHubApi.getAuthUrl(stateId))
+    }
+
+    redirectTo(url) {
+        window.location.href = url
     }
 }

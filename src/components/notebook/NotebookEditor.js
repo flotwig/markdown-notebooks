@@ -3,8 +3,9 @@ import MarkdownEditor from '../markdown/MarkdownEditor';
 import MarkdownRenderer from '../markdown/MarkdownRenderer';
 import ConnectedOpenMenu from './OpenMenu';
 import PageList from './PageList';
+import LogoLockup from '../LogoLockup';
 import { 
-    Icon, Button, ButtonGroup, Divider, Dialog, Tag,
+    Button, ButtonGroup, Divider, Dialog, Tag,
     NonIdealState, Spinner, H2, H4, EditableText, Card
 } from '@blueprintjs/core';
 
@@ -58,15 +59,11 @@ export default class NotebookEditor extends React.Component {
                 </Dialog>
                 <div style={{display: 'flex', width: '100%', height: '100%', margin: 0, padding: '1em'}}>
                     <div style={{display: 'flex', width: '10%', flexDirection: 'column', marginRight: '1em'}}>
-                        <div style={{fontWeight: '600', fontSize: '1.1em', paddingBottom: '1em', textAlign: 'center'}}>
-                            <Icon icon="book" iconSize="60" style={{marginBottom: '.2em'}}></Icon><br/>
-                            Markdown<br/>
-                            Notebooks
-                        </div>
+                        <LogoLockup/>
                         <ButtonGroup alignText="right" minimal={true} vertical={true}>
                             {this.props.saveError &&
                                 <Tag icon="warning-sign" intent="danger" large>Error While Saving</Tag>}
-                            {this.props.notebook && this.props.notebook.saveError && 
+                            {this.props.notebook && this.props.notebook.modified && 
                                 <Tag icon="warning-sign" intent="warning" large>Unsaved Changes</Tag>}
                             <Button text={
                                 <React.Fragment>
