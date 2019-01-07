@@ -58,34 +58,40 @@ export default class NotebookEditor extends React.Component {
                     <ConnectedOpenMenu closeMenu={()=>{this.setState({ isOpenMenuOpen: false })}}/>
                 </Dialog>
                 <div style={{display: 'flex', width: '100%', height: '100%', margin: 0, padding: '1em'}}>
-                    <div style={{display: 'flex', width: '10%', flexDirection: 'column', marginRight: '1em'}}>
-                        <LogoLockup/>
-                        <ButtonGroup alignText="right" minimal={true} vertical={true}>
-                            {this.props.saveError &&
-                                <Tag icon="warning-sign" intent="danger" large>Error While Saving</Tag>}
-                            {this.props.notebook && this.props.notebook.modified && 
-                                <Tag icon="warning-sign" intent="warning" large>Unsaved Changes</Tag>}
-                            <Button text={
-                                <React.Fragment>
-                                    Save
-                                    {this.props.isSaving && <Spinner size="15" intent="primary"/>}
-                                </React.Fragment>
-                            }
-                             icon="cloud-upload" onClick={this.onClickSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
-                            <Button text="Open" icon="cloud-download" onClick={this.onClickOpen}/>
-                            <Divider/>
-                            <Button text="New Page" onClick={()=>this.props.addPage()}/>
-                            <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
-                            <Divider/>
-                        </ButtonGroup>
-                        {this.props.notebook && <PageList pages={this.props.notebook.pages} 
-                                                          activePage={this.props.activePage} 
-                                                          onClickPage={this.props.setActivePage}/>
-                        }
-                    </div>
+                    {this.renderSidebar()}
                     {this.props.isLoadingNotebook ? this.renderLoading() : (!this.props.notebook ? this.renderNoNotebook() : this.renderEditor())}
                 </div>
             </React.Fragment>
+        )
+    }
+
+    renderSidebar() {
+        return (
+            <div style={{display: 'flex', width: '10%', flexDirection: 'column', marginRight: '1em'}}>
+                <LogoLockup/>
+                <ButtonGroup alignText="right" minimal={true} vertical={true}>
+                    {this.props.saveError &&
+                        <Tag icon="warning-sign" intent="danger" large>Error While Saving</Tag>}
+                    {this.props.notebook && this.props.notebook.modified && 
+                        <Tag icon="warning-sign" intent="warning" large>Unsaved Changes</Tag>}
+                    <Button text={
+                        <React.Fragment>
+                            Save
+                            {this.props.isSaving && <Spinner size="15" intent="primary"/>}
+                        </React.Fragment>
+                    }
+                        icon="cloud-upload" onClick={this.onClickSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
+                    <Button text="Open" icon="cloud-download" onClick={this.onClickOpen}/>
+                    <Divider/>
+                    <Button text="New Page" onClick={()=>this.props.addPage()}/>
+                    <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
+                    <Divider/>
+                </ButtonGroup>
+                {this.props.notebook && <PageList pages={this.props.notebook.pages} 
+                                                    activePage={this.props.activePage} 
+                                                    onClickPage={this.props.setActivePage}/>
+                }
+            </div>
         )
     }
 
