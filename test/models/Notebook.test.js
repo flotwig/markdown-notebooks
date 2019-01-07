@@ -1,5 +1,5 @@
-import Notebook from '../../models/Notebook';
-import NotebookPage from '../../models/NotebookPage';
+import Notebook from '../../src/models/Notebook';
+import NotebookPage from '../../src/models/NotebookPage';
 
 it('creates a notebook with one page by default', () => {
     const notebook = new Notebook();

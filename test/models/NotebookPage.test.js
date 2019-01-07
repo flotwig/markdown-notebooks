@@ -1,4 +1,4 @@
-import NotebookPage from '../../models/NotebookPage';
+import NotebookPage from '../../src/models/NotebookPage';
 
 const mockGistFile = {
     content: 'Test',
