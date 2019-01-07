@@ -19,6 +19,10 @@ export default class MarkdownRenderer extends React.Component {
         return <div dangerouslySetInnerHTML={{__html: this.state.renderedMarkdown}}/>
     }
 
+    componentDidMount() {
+        this.renderMarkdown(this.props.markdown)
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.markdown !== prevProps.markdown) {
             this.renderMarkdown(this.props.markdown)
