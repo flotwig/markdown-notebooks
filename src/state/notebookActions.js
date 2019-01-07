@@ -4,6 +4,7 @@ import ImgurApi from '../ImgurApi';
 
 export const REQUEST_SAVE = createAction('REQUEST_SAVE');
 export const RECEIVE_SAVE = createAction('RECEIVE_SAVE');
+export const RECEIVE_SAVE_ERROR = createAction('RECEIVE_SAVE_ERROR');
 export const REQUEST_NOTEBOOKS = createAction('REQUEST_NOTEBOOKS');
 export const RECEIVE_NOTEBOOKS = createAction('RECEIVE_NOTEBOOKS');
 export const REQUEST_NOTEBOOK = createAction('REQUEST_NOTEBOOK');
@@ -13,6 +14,7 @@ export const RECEIVE_UPLOAD_IMAGE = createAction('RECEIVE_UPLOAD_IMAGE');
 export const SET_ACTIVE_PAGE = createAction('SET_ACTIVE_PAGE');
 export const SET_ACTIVE_NOTEBOOK = createAction('SET_ACTIVE_NOTEBOOK');
 export const HANDLE_EDIT = createAction('HANDLE_EDIT');
+export const RENAME_PAGE = createAction('RENAME_PAGE');
 export const ADD_PAGE = createAction('ADD_PAGE');
 export const DELETE_PAGE = createAction('DELETE_PAGE');
 export const RENAME_NOTEBOOK = createAction('RENAME_NOTEBOOK');
@@ -35,7 +37,13 @@ export function FETCH_SAVE(notebook) {
         (notebook.gistId ? // if it has an ID, it's been saved, make a new revision
             GitHubApi.updateGist(notebook.gistId, gist) :
             GitHubApi.createGist(gist)
-        ).then(response => dispatch(RECEIVE_SAVE(response)))
+        ).then(response => {
+            if (response.ok) {
+                dispatch(RECEIVE_SAVE(response))
+            } else {
+                throw new Error()
+            }
+        }).catch(error => dispatch(RECEIVE_SAVE_ERROR(error)))
     }
 }
 

@@ -4,7 +4,7 @@ import MarkdownRenderer from '../markdown/MarkdownRenderer';
 import ConnectedOpenMenu from './OpenMenu';
 import PageList from './PageList';
 import { 
-    Icon, Button, ButtonGroup, Divider, Dialog, 
+    Icon, Button, ButtonGroup, Divider, Dialog, Tag,
     NonIdealState, Spinner, H2, H4, EditableText, Card
 } from '@blueprintjs/core';
 
@@ -23,7 +23,6 @@ export default class NotebookEditor extends React.Component {
         this.onClickSave = this.onClickSave.bind(this)
         this.onClickOpen = this.onClickOpen.bind(this)
         this.handleEdit = this.handleEdit.bind(this)
-        this.handlePageNameChange = this.handlePageNameChange.bind(this)
         this.handleNotebookNameChange = this.handleNotebookNameChange.bind(this)
         this.handlePaste = this.handlePaste.bind(this)
         this.textareaRef = React.createRef();
@@ -65,6 +64,10 @@ export default class NotebookEditor extends React.Component {
                             Notebooks
                         </div>
                         <ButtonGroup alignText="right" minimal={true} vertical={true}>
+                            {this.props.saveError &&
+                                <Tag icon="warning-sign" intent="danger" large>Error While Saving</Tag>}
+                            {this.props.notebook && this.props.notebook.saveError && 
+                                <Tag icon="warning-sign" intent="warning" large>Unsaved Changes</Tag>}
                             <Button text={
                                 <React.Fragment>
                                     Save
@@ -79,7 +82,7 @@ export default class NotebookEditor extends React.Component {
                             <Divider/>
                         </ButtonGroup>
                         {this.props.notebook && <PageList pages={this.props.notebook.pages} 
-                                                          activePage={this.getActivePage()} 
+                                                          activePage={this.props.activePage} 
                                                           onClickPage={this.props.setActivePage}/>
                         }
                     </div>
@@ -106,13 +109,13 @@ export default class NotebookEditor extends React.Component {
                             <EditableText value={this.state.notebookName} 
                                         placeholder="Untitled Page" 
                                         onChange={(notebookName)=>this.setState({ notebookName })}
-                                        onConfirm={this.handleNotebookNameChange}/>
+                                        onConfirm={(name) => this.props.renameNotebook(name)}/>
                         </H2>
                         <H4>
                             <EditableText value={this.state.activePageName} 
                                         placeholder="Untitled Page" 
                                         onChange={(activePageName)=>this.setState({ activePageName })}
-                                        onConfirm={this.handlePageNameChange}/>
+                                        onConfirm={(name) => this.props.renamePage(name)}/>
                         </H4>
                     </div>
                     <MarkdownEditor markdown={this.props.activePage.content} 
@@ -127,20 +130,12 @@ export default class NotebookEditor extends React.Component {
         )
     }
 
-    getActivePage() {
-        return this.props.activePage
-    }
-
     onClickSave() {
         this.props.onClickSave(this.props.notebook)
     }
 
     handleEdit(content) {
         this.props.handleEdit({ name: this.state.activePageName, content })
-    }
-
-    handlePageNameChange(name) {
-        this.props.handleEdit({ name, content: this.props.activePage.content })
     }
 
     handleNotebookNameChange(name) {

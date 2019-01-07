@@ -91,4 +91,19 @@ export default class Notebook {
         }
         return false
     }
+
+    /**
+     * Returns a copy of the Notebook with changes made.
+     */
+    withChanges(changes) {
+        let modified = changes.modified || this.modified
+        Object.keys(changes).forEach(key => {
+            if (changes[key] !== this[key]) modified = true;
+        })
+        return Object.assign(new Notebook(), this, {
+            modified,
+            updated_at: modified ? moment() : this.updated_at,
+            ...changes,
+        })
+    }
 }

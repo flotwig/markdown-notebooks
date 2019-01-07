@@ -2,7 +2,7 @@ import NotebookEditor from './NotebookEditor';
 import { connect } from 'react-redux';
 import { 
     FETCH_SAVE, HANDLE_EDIT, ADD_PAGE, DELETE_PAGE, SET_ACTIVE_PAGE, 
-    UPLOAD_IMAGE, RENAME_NOTEBOOK
+    UPLOAD_IMAGE, RENAME_NOTEBOOK, RENAME_PAGE
 } from '../../state/notebookActions'
 import { getActivePage } from '../../state/notebookSelectors';
 
@@ -20,7 +20,8 @@ const ConnectedNotebookEditor = connect(
             deletePage: (page) => dispatch(DELETE_PAGE(page)),
             setActivePage: (page) => dispatch(SET_ACTIVE_PAGE(page)),
             uploadImage: (blob, cursorLocation) => dispatch(UPLOAD_IMAGE(blob, cursorLocation)),
-            renameNotebook: (name) => dispatch(RENAME_NOTEBOOK(name))
+            renameNotebook: (name) => dispatch(RENAME_NOTEBOOK(name)),
+            renamePage: (name, page) => dispatch(RENAME_PAGE({ page, name }))
         }
     }
 )(NotebookEditor)
