@@ -4,7 +4,7 @@ import GitHubLoginPrompt from './GitHubLoginPrompt';
 import GitHubLoginLoader from './GitHubLoginLoader';
 import { Dialog } from '@blueprintjs/core';
 import { connect } from 'react-redux'
-import { SET_TOKEN } from '../../state/authActions';
+import { FETCH_TOKEN } from '../../state/authActions';
 
 /**
  * Top-level GitHub auth component. Handles displaying either the login button or displaying the
@@ -20,6 +20,18 @@ class GitHubAuth extends React.Component {
         }
     }
 
+    componentDidMount() {
+        if (this.state.code) {
+            this.props.fetchToken(this.state.code, this.state.stateId)
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.auth.valid !== this.props.auth.valid) {
+            window.history.pushState(undefined, undefined, '/')
+        }
+    }
+
     render() {
         return (
             <Dialog 
@@ -29,8 +41,8 @@ class GitHubAuth extends React.Component {
                 <div className="bp3-dialog-header">
                     <h4 className="bp3-heading">Welcome to Markdown Notebooks!</h4>
                 </div>
-                {!this.state.code ? 
-                    <GitHubLoginPrompt setToken={this.props.setToken}/> 
+                {!this.props.auth.isLoadingToken ? 
+                    <GitHubLoginPrompt fetchToken={this.props.fetchToken}/> 
                     : 
                     <GitHubLoginLoader code={this.state.code} stateId={this.state.stateId}/>}
             </Dialog>
@@ -46,7 +58,7 @@ const ConnectedGitHubAuth = connect(
     },
     (dispatch) => {
         return {
-            setToken: (token) => dispatch(SET_TOKEN(token))
+            fetchToken: (code, stateId) => dispatch(FETCH_TOKEN(code, stateId))
         }
     }
 )(GitHubAuth)

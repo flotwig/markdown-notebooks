@@ -32,7 +32,7 @@ export function FETCH_SAVE(notebook) {
     return function(dispatch) {
         dispatch(REQUEST_SAVE())
         let gist = notebook.toGist();
-        (notebook.gistId ? 
+        (notebook.gistId ? // if it has an ID, it's been saved, make a new revision
             GitHubApi.updateGist(notebook.gistId, gist) :
             GitHubApi.createGist(gist)
         ).then(response => dispatch(RECEIVE_SAVE(response)))

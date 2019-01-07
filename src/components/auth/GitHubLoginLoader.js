@@ -1,33 +1,14 @@
 import React from 'react';
 import { NonIdealState, Spinner } from '@blueprintjs/core';
-import { GitHubApi } from '../../GitHubApi';
 
 /**
  * Component to display loading screen while token is retrieved.
  */
 export default class GitHubLoginLoader extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            error: false
-        }
-    }
-
-    componentDidMount() {
-        GitHubApi.getAccessToken(this.props.code, this.props.stateId).then(token => {
-            window.history.pushState(undefined, undefined, '/')
-            this.props.setToken(token)
-            GitHubApi.storeAuth(!!token, token)
-            if (!token) {
-                this.setState({ error: true })
-            }
-        })
-    }
-
     render() {
         return (
             <div className="bp3-dialog-body">
-                {this.state.error ? 
+                {this.props.error ? 
                     <NonIdealState icon="error"
                                 description="An authentication error has occurred. Please reload the page."/>
                     :

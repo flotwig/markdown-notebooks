@@ -31,19 +31,22 @@ export default class NotebookEditor extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const activePage = this.getActivePage()
-        if (prevProps.activePageId !== this.props.activePageId ||
-            activePage.content !== this.state.activePageContent ||
-            activePage.name !== this.state.activePageName) {
-            this.setState({
-                activePageContent: activePage.content,
-                activePageName: activePage.name
-            })
-        }
-        if (prevProps.notebook.name !== this.props.notebook.name) {
-            this.setState({
-                notebookName: this.props.notebook.name
-            })
+        if (this.props.notebook) {
+            const activePage = this.getActivePage()
+            if (prevProps.activePageId !== this.props.activePageId ||
+                activePage.content !== this.state.activePageContent ||
+                activePage.name !== this.state.activePageName) {
+                this.setState({
+                    activePageContent: activePage.content,
+                    activePageName: activePage.name
+                })
+            }
+            if (prevProps.notebook && 
+                prevProps.notebook.name !== this.props.notebook.name) {
+                this.setState({
+                    notebookName: this.props.notebook.name
+                })
+            }
         }
     }
 
@@ -124,17 +127,17 @@ export default class NotebookEditor extends React.Component {
     }
 
     onClickSave() {
-        this.props.onClickSave && this.props.onClickSave(this.props.notebook)
+        this.props.onClickSave(this.props.notebook)
     }
 
     handleEdit(content) {
         this.setState({ activePageContent: content })
-        this.props.handleEdit && this.props.handleEdit({ name: this.state.activePageNname, content })
+        this.props.handleEdit({ name: this.state.activePageName, content })
     }
 
     handlePageNameChange(name) {
         this.setState({ activePageName: name })
-        this.props.handleEdit && this.props.handleEdit({ name, content: this.state.activePagEcontent })
+        this.props.handleEdit({ name, content: this.state.activePageContent })
     }
 
     handleNotebookNameChange(name) {
