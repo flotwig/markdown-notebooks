@@ -7,7 +7,7 @@ script:
 - yarn build
 - yarn test --coverage
 - yarn start & wait-on http://localhost:3000
-- cypress run
+- cypress run --record
 
 after_success:
 - chmod +x scripts/deploy.sh
