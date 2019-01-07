@@ -4,11 +4,13 @@ import {
     FETCH_SAVE, HANDLE_EDIT, ADD_PAGE, DELETE_PAGE, SET_ACTIVE_PAGE, 
     UPLOAD_IMAGE, RENAME_NOTEBOOK
 } from '../../state/notebookActions'
+import { getActivePage } from '../../state/notebookSelectors';
 
 const ConnectedNotebookEditor = connect(
     (state) => {
         return {
-            ...state.notebook
+            ...state.notebook,
+            activePage: getActivePage(state.notebook)
         }
     }, (dispatch) => {
         return {

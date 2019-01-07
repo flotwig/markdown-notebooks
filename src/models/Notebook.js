@@ -79,4 +79,16 @@ export default class Notebook {
         }
         return name
     }
+
+    /**
+     * Returns true if the notebook has enough content to be saved.
+     */
+    isSaveable() {
+        for (let i = 0; i < this.pages.length; i++) {
+            if (this.pages[i].content.length > 0) {
+                return true
+            }
+        }
+        return false
+    }
 }

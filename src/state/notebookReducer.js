@@ -1,4 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
+import { getActivePage } from './notebookSelectors';
 import { 
     HANDLE_EDIT, 
     RENAME_NOTEBOOK,
@@ -29,7 +30,7 @@ const notebookReducer = createReducer({
     activePageId: initialNotebook.pages[0]._id,
 }, {
     [REQUEST_SAVE]: (state) => {
-        state.isSaving = false
+        state.isSaving = true
         state.saveError = false
     },
     [RECEIVE_SAVE]: (state, { payload }) => {
@@ -115,7 +116,7 @@ const notebookReducer = createReducer({
         state.notebook = Object.assign(new Notebook(), state.notebook, { pages })
     },
     [DELETE_PAGE]: (state, { payload }) => {
-        if (!payload) payload = state.notebook.pages.find(p => p._id === state.activePageId)
+        if (!payload) payload = getActivePage(state)
         const pageIndex = state.notebook.pages.findIndex(p=> p._id === payload._id)
         let pages = state.notebook.pages.filter(page => payload._id !== page._id)
         state.notebook = Object.assign(new Notebook(), state.notebook, { pages })
@@ -134,6 +135,7 @@ const notebookReducer = createReducer({
         }
     },
     [RENAME_NOTEBOOK]: (state, { payload }) => {
+        if (!payload) payload = 'Untitled Notebook'
         state.notebook = Object.assign(new Notebook(), state.notebook, { name: payload })
     }
 })

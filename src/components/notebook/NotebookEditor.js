@@ -14,12 +14,11 @@ import {
 export default class NotebookEditor extends React.Component {
     constructor(props) {
         super(props)
-        const activePage = this.getActivePage()
         this.state = {
             isOpenMenuOpen: false,
-            activePageContent: activePage.content,
-            activePageName: activePage.name,
-            notebookName: this.props.notebook.name
+            notebookName: props.notebook.name,
+            activePageName: props.activePage.name,
+            saveDisabled: !props.notebook.isSaveable()
         }
         this.onClickSave = this.onClickSave.bind(this)
         this.onClickOpen = this.onClickOpen.bind(this)
@@ -32,17 +31,17 @@ export default class NotebookEditor extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.notebook) {
-            const activePage = this.getActivePage()
-            if (prevProps.activePageId !== this.props.activePageId ||
-                activePage.content !== this.state.activePageContent ||
-                activePage.name !== this.state.activePageName) {
+            if (!prevProps.notebook || this.props.notebook.isSaveable() !== prevProps.notebook.isSaveable()) {
                 this.setState({
-                    activePageContent: activePage.content,
-                    activePageName: activePage.name
+                    saveDisabled: !this.props.notebook.isSaveable()
                 })
             }
-            if (prevProps.notebook && 
-                prevProps.notebook.name !== this.props.notebook.name) {
+            if (!prevProps.activePage || prevProps.activePage.name !== this.props.activePage.name) {
+                this.setState({
+                    activePageName: this.props.activePage.name
+                })
+            }
+            if (!prevProps.notebook || prevProps.notebook.name !== this.props.notebook.name) {
                 this.setState({
                     notebookName: this.props.notebook.name
                 })
@@ -66,7 +65,13 @@ export default class NotebookEditor extends React.Component {
                             Notebooks
                         </div>
                         <ButtonGroup alignText="right" minimal={true} vertical={true}>
-                            <Button text="Save" icon="cloud-upload" onClick={this.onClickSave}/>
+                            <Button text={
+                                <React.Fragment>
+                                    Save
+                                    {this.props.isSaving && <Spinner size="15" intent="primary"/>}
+                                </React.Fragment>
+                            }
+                             icon="cloud-upload" onClick={this.onClickSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
                             <Button text="Open" icon="cloud-download" onClick={this.onClickOpen}/>
                             <Divider/>
                             <Button text="New Page" onClick={()=>this.props.addPage()}/>
@@ -110,20 +115,20 @@ export default class NotebookEditor extends React.Component {
                                         onConfirm={this.handlePageNameChange}/>
                         </H4>
                     </div>
-                    <MarkdownEditor markdown={this.state.activePageContent} 
+                    <MarkdownEditor markdown={this.props.activePage.content} 
                                     onChange={this.handleEdit}
                                     textareaRef={this.textareaRef}
                                     onPaste={this.handlePaste}/>
                 </div>
                 <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
-                    <MarkdownRenderer markdown={this.state.activePageContent}/>
+                    <MarkdownRenderer markdown={this.props.activePage.content}/>
                 </Card>
             </React.Fragment>
         )
     }
 
     getActivePage() {
-        return this.props.notebook.pages.find(p => p._id === this.props.activePageId);
+        return this.props.activePage
     }
 
     onClickSave() {
@@ -131,13 +136,11 @@ export default class NotebookEditor extends React.Component {
     }
 
     handleEdit(content) {
-        this.setState({ activePageContent: content })
         this.props.handleEdit({ name: this.state.activePageName, content })
     }
 
     handlePageNameChange(name) {
-        this.setState({ activePageName: name })
-        this.props.handleEdit({ name, content: this.state.activePageContent })
+        this.props.handleEdit({ name, content: this.props.activePage.content })
     }
 
     handleNotebookNameChange(name) {
