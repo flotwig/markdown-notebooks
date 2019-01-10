@@ -1,15 +1,22 @@
 # MDNB: Markdown Notebooks
 
-Features:
-* Create and shagre notebooks using markdown
-* Notebooks can consist of multiple pages, each page is a file in a Gist
-* There can be a hierarchy which will match the folder structure of the Gist
+[![Build Status](https://travis-ci.org/flotwig/markdown-notebooks.svg?branch=master)](https://travis-ci.org/flotwig/markdown-notebooks)
 
-Roadmap:
-* Build core markdown editor functionality
-    * Edit text in textbox pane, changes reflected in markdown preview pane
-* Connect with GitHub Gist
-* Add hierarchical editing
-* Add image pasting (imgur upload)
-* Add unit testing
-* Add core markdown editor functionality (bold, italic, etc.)
+Live at https://mdnb.bloomqu.ist/
+
+Features:
+- [x] Create notebooks using Markdown format with visual preview
+- [x] Notebooks can consist of multiple pages
+- [x] Notebooks can be saved to a GitHub Gist for portability and versioning
+- [x] Images can be directly pasted in to your notebook
+- [x] Pages can be re-ordered by dragging and dropping
+
+Planned modifications:
+- [ ] Enable sharing via URLs (React router integration)
+- [ ] Prevent navigating away with unsaved changes
+- [ ] Store local draft
+- [ ] Add help functionality
+- [ ] Add about text
+- [ ] Add unit tests for reducers and actions
+- [ ] Add Cypress tests for pasting images, dragging & dropping
+- [ ] Add buttons and keyboard shortcuts for core markdown editor functionality (bold, italic, etc.)
