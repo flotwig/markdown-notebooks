@@ -17,6 +17,7 @@ export const HANDLE_EDIT = createAction('HANDLE_EDIT');
 export const RENAME_PAGE = createAction('RENAME_PAGE');
 export const ADD_PAGE = createAction('ADD_PAGE');
 export const DELETE_PAGE = createAction('DELETE_PAGE');
+export const MOVE_PAGE_TO_INDEX = createAction('MOVE_PAGE_TO_INDEX');
 export const RENAME_NOTEBOOK = createAction('RENAME_NOTEBOOK');
 
 

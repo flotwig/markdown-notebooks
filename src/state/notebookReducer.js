@@ -7,6 +7,7 @@ import {
     SET_ACTIVE_PAGE,
     SET_ACTIVE_NOTEBOOK,
     ADD_PAGE, DELETE_PAGE,
+    MOVE_PAGE_TO_INDEX,
     RECEIVE_UPLOAD_IMAGE, REQUEST_UPLOAD_IMAGE,
     RECEIVE_SAVE, REQUEST_SAVE, 
     RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS, 
@@ -117,6 +118,13 @@ const notebookReducer = createReducer({
     [SET_ACTIVE_PAGE]: (state, { payload }) => {
         if (payload) state.activePageId = payload._id;
         else state.activePageId = undefined
+    },
+    [MOVE_PAGE_TO_INDEX]: (state, { payload }) => {
+        // note: `index` is expected to be relative to the list of pages WITHOUT `page`
+        const { page, index } = payload;
+        let pages = state.notebook.pages.filter(p => p !== page)
+        pages.splice(index, 0, page)
+        state.notebook = state.notebook.withChanges({ pages })
     },
     [ADD_PAGE]: (state) => {
         const page = new NotebookPage(state.notebook.getUnusedName())

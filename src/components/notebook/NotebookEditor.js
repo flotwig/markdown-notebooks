@@ -90,6 +90,7 @@ export default class NotebookEditor extends React.Component {
                     <Divider/>
                 </ButtonGroup>
                 {this.props.notebook && <PageList pages={this.props.notebook.pages} 
+                                                    movePageToIndex={this.props.movePageToIndex}
                                                     activePage={this.props.activePage} 
                                                     onClickPage={this.props.setActivePage}/>
                 }
