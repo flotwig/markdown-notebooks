@@ -2,7 +2,7 @@ import NotebookPage from '../../src/models/NotebookPage';
 
 const mockGistFile = {
     content: 'Test',
-    filename: 'Test File.md'
+    filename: '1. Test File.md'
 }
 
 describe('NotebookPage model', () => {
@@ -17,16 +17,16 @@ describe('NotebookPage model', () => {
         expect(page).toMatchObject({
             content: 'Test',
             name: 'Test File',
-            gistFilename: 'Test File.md'
+            gistFilename: '1. Test File.md'
         })
     })
 
     it('converts a loaded gistfile page back to a gistfile', () => {
         const page = NotebookPage.fromGistFile(mockGistFile);
-        const gistFile = page.toGistFile()
+        const gistFile = page.toGistFile(mockGistFile.filename)
         expect(gistFile).toMatchObject({
             content: 'Test',
-            filename: 'Test File.md'
+            filename: '1. Test File.md'
         })
     })
 })

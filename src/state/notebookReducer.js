@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { getActivePage } from './notebookSelectors';
+import { getActivePage, getActivePageIndex } from './notebookSelectors';
 import { 
     HANDLE_EDIT, 
     RENAME_PAGE,
@@ -37,7 +37,17 @@ const notebookReducer = createReducer({
     [RECEIVE_SAVE]: (state, { payload }) => {
         state.isSaving = false;
         state.saveError = false;
+        let i = 0;
+        const pages = state.notebook.pages.map(page => {
+            if (page.content) {
+                // all pages with content now have a gist filename
+                return page.withChanges({ gistFilename: Object.values(payload.files)[i++].filename })
+            }
+            return page
+        });
         state.notebook = state.notebook.withChanges({
+            pages,
+            deletedPages: [],
             saved_at: moment(),
             gistId: payload.id,
             modified: false
@@ -65,38 +75,38 @@ const notebookReducer = createReducer({
     },
     [REQUEST_UPLOAD_IMAGE]: (state, { payload }) => {
         const cursorLocation = payload
-        let pages = state.notebook.pages.slice()
-        const pageIndex = pages.findIndex(page => page._id === state.activePageId)
+        let pages = [...state.notebook.pages]
+        const pageIndex = getActivePageIndex(state)
         let { content } = pages[pageIndex]
         content = content.substring(0, cursorLocation)
                  + "![Pasted image](Uploading...)" 
                  + content.substring(cursorLocation)
-        pages[pageIndex] = Object.assign(new NotebookPage(), pages[pageIndex], { content })
+        pages[pageIndex] = pages[pageIndex].withChanges({ content })
         state.notebook = state.notebook.withChanges({ pages })
     },
     [RECEIVE_UPLOAD_IMAGE]: (state, { payload }) => {
-        let pages = state.notebook.pages.slice()
-        let pageIndex = pages.findIndex(page => page._id === state.activePageId)
+        let pages = [...state.notebook.pages]
+        let pageIndex = getActivePageIndex(state)
         let { content } = pages[pageIndex]
         content = content.replace("![Pasted image](Uploading...)", 
                                   "![Pasted image](" + payload.data.link + ")")
-        pages[pageIndex] = Object.assign(new NotebookPage(), pages[pageIndex], { content })
+        pages[pageIndex] = pages[pageIndex].withChanges({ content })
         state.notebook = state.notebook.withChanges({ pages })
     },
     [RENAME_PAGE]: (state, { payload }) => {
         let page = payload.page || getActivePage(state);
         if (payload.name !== page.name)
             payload.name = state.notebook.getUnusedName(payload.name)
-        page = Object.assign(new NotebookPage(), page, { name: payload.name })
-        let pages = state.notebook.pages.slice()
+        page = page.withChanges({ name: payload.name })
+        let pages = [...state.notebook.pages]
         const pageIndex = pages.findIndex(p => p._id === page._id)
         pages[pageIndex] = page
         state.notebook = state.notebook.withChanges({ pages })
     },
     [HANDLE_EDIT]: (state, { payload }) => {
-        let pages = state.notebook.pages.slice()
-        let pageIndex = pages.findIndex(page => page._id === state.activePageId)
-        pages[pageIndex] = Object.assign(new NotebookPage(), pages[pageIndex], payload)
+        let pages = [...state.notebook.pages]
+        let pageIndex = getActivePageIndex(state)
+        pages[pageIndex] = pages[pageIndex].withChanges(payload)
         state.notebook = state.notebook.withChanges({ pages })
     },
     [SET_ACTIVE_NOTEBOOK]: (state, { payload }) => {
@@ -109,9 +119,10 @@ const notebookReducer = createReducer({
         else state.activePageId = undefined
     },
     [ADD_PAGE]: (state) => {
-        let pages = state.notebook.pages.slice()
         const page = new NotebookPage(state.notebook.getUnusedName())
-        pages.push(page)
+        const pageIndex = getActivePageIndex(state)
+        let pages = [...state.notebook.pages]
+        pages.splice(pageIndex + 1, 0, page)
         state.activePageId = page._id
         state.notebook = state.notebook.withChanges({ pages })
     },
@@ -119,12 +130,13 @@ const notebookReducer = createReducer({
         if (!payload) payload = getActivePage(state)
         const pageIndex = state.notebook.pages.findIndex(p=> p._id === payload._id)
         let pages = state.notebook.pages.filter(page => payload._id !== page._id)
-        state.notebook = Object.assign(new Notebook(), state.notebook, { pages })
+        state.notebook = state.notebook.withChanges({ pages })
         if (pages.length === 0) {
             // always have at least 1 page
             pages = [new NotebookPage(state.notebook.getUnusedName())]
         }
-        state.notebook = state.notebook.withChanges({ pages })
+        const deletedPages = [...state.notebook.deletedPages, payload]
+        state.notebook = state.notebook.withChanges({ deletedPages, pages })
         if (payload._id === state.activePageId || pages.length === 1) {
             // activate another page
             if (pages[pageIndex - 1]) {

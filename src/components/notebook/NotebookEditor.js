@@ -72,8 +72,10 @@ export default class NotebookEditor extends React.Component {
                 <ButtonGroup alignText="right" minimal={true} vertical={true}>
                     {this.props.saveError &&
                         <Tag icon="warning-sign" intent="danger" large>Error While Saving</Tag>}
-                    {this.props.notebook && this.props.notebook.modified && 
-                        <Tag icon="warning-sign" intent="warning" large>Unsaved Changes</Tag>}
+                    {this.props.notebook && this.props.notebook.modified ? 
+                        <Tag icon="warning-sign" intent="warning" large>Unsaved Changes</Tag>
+                    :
+                        <Tag icon="thumbs-up" intent="success" large>No Unsaved Changes</Tag>}
                     <Button text={
                         <React.Fragment>
                             Save

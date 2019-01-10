@@ -15,6 +15,7 @@ export default class Notebook {
     gistOwnerLogin = ''; // GitHub username
     name = 'Untitled Notebook'; // description on Gist
     pages = [new NotebookPage('Untitled Page')]; // array of pages
+    deletedPages = []; // list of deleted pages - needed to delete from Gist
 
     /**
      * From a GitHub Gist, generate a matching Notebook.
@@ -51,10 +52,14 @@ export default class Notebook {
      */
     toGist() {
         let files = {}
-        const pages = this.pages.filter(p => p.content)
-        pages.forEach(page => {
-            let key = page.gistFilename || (page.name + '.md')
-            files[key] = page.toGistFile()
+        const pages = this.pages.filter(p => p.content) // gist does not accept empty files, TODO: consider giving feedback to user
+        pages.forEach((page, i) => {
+            const filename = `${i+1}. ${page.name}.md`
+            const key = page.gistFilename || filename
+            files[key] = page.toGistFile(filename)
+        })
+        this.deletedPages.filter(page => page.gistFilename).forEach(page => {
+            files[page.gistFilename] = null
         })
         return {
             description: this.name || 'Untitled Notebook',

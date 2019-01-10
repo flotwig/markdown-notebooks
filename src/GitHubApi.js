@@ -119,6 +119,12 @@ export class GitHubApi {
                 "Authorization": "token " + token
             },
             body: JSON.stringify(body)
-        }).then(res => res.json())
+        }).then(response => {
+            if (response.status > 299) {
+                throw Error(response)
+            } else {
+                return response.json()
+            }
+        })
     }
 }
