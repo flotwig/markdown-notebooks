@@ -156,13 +156,12 @@ export default class NotebookEditor extends React.Component {
     }
 
     handlePaste(e) {
-        // cancel default behavior and stop bubbling
-        e.preventDefault();
-        e.stopPropagation();
         let items = e.clipboardData.items
         for (var i = 0; i < items.length; i++) {
             let item = items[i]
             if (item.type.includes('image')) { // upload any image pasted
+                // cancel default behavior
+                e.preventDefault();
                 const cursorLocation = this.textareaRef.current.selectionStart
                 const blob = item.getAsFile()
                 this.props.uploadImage(blob, cursorLocation)
