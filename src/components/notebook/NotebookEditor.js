@@ -78,12 +78,12 @@ export default class NotebookEditor extends React.Component {
                         <Tag icon="thumbs-up" intent="success" large>No Unsaved Changes</Tag>}
                     <Button text={
                         <React.Fragment>
-                            Save
+                            Save Notebook
                             {this.props.isSaving && <Spinner size="15" intent="primary"/>}
                         </React.Fragment>
                     }
                         icon="cloud-upload" onClick={this.onClickSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
-                    <Button text="Open" icon="cloud-download" onClick={this.onClickOpen}/>
+                    <Button text="Open Notebook" icon="cloud-download" onClick={this.onClickOpen}/>
                     <Divider/>
                     <Button text="New Page" onClick={()=>this.props.addPage()}/>
                     <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
