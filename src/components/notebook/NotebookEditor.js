@@ -31,6 +31,9 @@ export default class NotebookEditor extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.notebook) {
+            if (this.props.notebook.name !== document.title) {
+                document.title = this.props.notebook.name
+            }
             if (!prevProps.notebook || this.props.notebook.isSaveable() !== prevProps.notebook.isSaveable()) {
                 this.setState({
                     saveDisabled: !this.props.notebook.isSaveable()
