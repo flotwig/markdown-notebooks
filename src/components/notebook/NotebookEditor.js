@@ -30,13 +30,15 @@ export default class NotebookEditor extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.notebook) {
-            if (this.props.notebook.name !== document.title) {
-                document.title = this.props.notebook.name
+        const { notebook } = this.props // shortcut
+        if (notebook) {
+            const title = (notebook.modified ? '* ' : '') + notebook.name
+            if (title !== document.title) {
+                document.title = title
             }
-            if (!prevProps.notebook || this.props.notebook.isSaveable() !== prevProps.notebook.isSaveable()) {
+            if (!prevProps.notebook || notebook.isSaveable() !== prevProps.notebook.isSaveable()) {
                 this.setState({
-                    saveDisabled: !this.props.notebook.isSaveable()
+                    saveDisabled: !notebook.isSaveable()
                 })
             }
             if (!prevProps.activePage || prevProps.activePage.name !== this.props.activePage.name) {
@@ -44,9 +46,9 @@ export default class NotebookEditor extends React.Component {
                     activePageName: this.props.activePage.name
                 })
             }
-            if (!prevProps.notebook || prevProps.notebook.name !== this.props.notebook.name) {
+            if (!prevProps.notebook || prevProps.notebook.name !== notebook.name) {
                 this.setState({
-                    notebookName: this.props.notebook.name
+                    notebookName: notebook.name
                 })
             }
         }
