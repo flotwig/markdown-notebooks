@@ -21,12 +21,21 @@ export default class NotebookEditor extends React.Component {
             activePageName: props.activePage.name,
             saveDisabled: !props.notebook.isSaveable()
         }
-        this.onClickSave = this.onClickSave.bind(this)
-        this.onClickOpen = this.onClickOpen.bind(this)
+        this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.handleSave = this.handleSave.bind(this)
+        this.handleOpen = this.handleOpen.bind(this)
         this.handleEdit = this.handleEdit.bind(this)
         this.handleNotebookNameChange = this.handleNotebookNameChange.bind(this)
         this.handlePaste = this.handlePaste.bind(this)
         this.textareaRef = React.createRef();
+    }
+
+    componentDidMount() {
+        window.addEventListener('keydown', this.handleKeyDown)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -87,8 +96,8 @@ export default class NotebookEditor extends React.Component {
                             {this.props.isSaving && <Spinner size="15" intent="primary"/>}
                         </React.Fragment>
                     }
-                        icon="cloud-upload" onClick={this.onClickSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
-                    <Button text="Open Notebook" icon="cloud-download" onClick={this.onClickOpen}/>
+                        icon="cloud-upload" onClick={this.handleSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
+                    <Button text="Open Notebook" icon="cloud-download" onClick={this.handleOpen}/>
                     <Divider/>
                     <Button text="New Page" onClick={()=>this.props.addPage()}/>
                     <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
@@ -141,8 +150,19 @@ export default class NotebookEditor extends React.Component {
         )
     }
 
-    onClickSave() {
-        this.props.onClickSave(this.props.notebook)
+    handleKeyDown(e) {
+        if (e.ctrlKey && e.key.toLowerCase() === 's') { // Ctrl+S
+            this.handleSave()
+            e.preventDefault()
+        } else if (e.ctrlKey && e.key.toLowerCase() === 'o') {
+            this.handleOpen()
+            e.preventDefault()
+        }
+    }
+
+    handleSave() {
+        if (this.state.saveDisabled) return
+        this.props.handleSave(this.props.notebook)
     }
 
     handleEdit(content) {
@@ -154,7 +174,7 @@ export default class NotebookEditor extends React.Component {
         this.props.renameNotebook(name)
     }
 
-    onClickOpen() {
+    handleOpen() {
         this.setState({
             isOpenMenuOpen: true
         })
