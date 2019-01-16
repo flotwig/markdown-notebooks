@@ -16,7 +16,7 @@ export default class MarkdownRenderer extends React.Component {
     }
 
     render() {
-        return <div dangerouslySetInnerHTML={{__html: this.state.renderedMarkdown}}/>
+        return <div className="markdown-renderer" dangerouslySetInnerHTML={{__html: this.state.renderedMarkdown}}/>
     }
 
     componentDidMount() {
@@ -53,7 +53,7 @@ export default class MarkdownRenderer extends React.Component {
     sanitizeHtml(html) {
         return sanitize(html, {
             allowedTags: [
-                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'img', 'a', 'b', 'p', 'i', 'em', 'strong', 'blockquote', 'big', 'small', 'div', 'br', 'hr', 'li', 'ol', 'ul', 'table', 'tbody', 'thead', 'td', 'th', 'tr', 'caption', 'span'
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'img', 'a', 'b', 'p', 'i', 'em', 'strong', 'blockquote', 'big', 'small', 'div', 'br', 'hr', 'li', 'ol', 'ul', 'table', 'tbody', 'thead', 'td', 'th', 'tr', 'caption', 'span', 'code'
             ],
             allowedAttributes: {
                 'a': ['href', 'target', 'rel'],

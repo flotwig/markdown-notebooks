@@ -29,3 +29,11 @@ body.bp3-dark {
               0 0 0 0 rgba(19, 124, 189, 0), 
               inset 0 0 0 1px rgba(16, 22, 26, 0.2);
 }
+
+.markdown-renderer code {
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  font-size: 85%;
+  overflow: auto;
+  white-space: pre;
+}
