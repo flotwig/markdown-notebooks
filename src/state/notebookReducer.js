@@ -130,7 +130,7 @@ const notebookReducer = createReducer({
         const page = new NotebookPage(state.notebook.getUnusedName())
         const pageIndex = getActivePageIndex(state)
         let pages = [...state.notebook.pages]
-        pages.splice(pageIndex + 1, 0, page)
+        pages.splice(pageIndex, 0, page)
         state.activePageId = page._id
         state.notebook = state.notebook.withChanges({ pages })
     },
