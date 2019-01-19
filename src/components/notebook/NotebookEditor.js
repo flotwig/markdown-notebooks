@@ -18,10 +18,8 @@ export default class NotebookEditor extends React.Component {
         super(props)
         this.state = {
             isOpenMenuOpen: false,
-            notebookName: props.notebook.name,
-            activePageName: props.activePage.name,
-            saveDisabled: !props.notebook.isSaveable()
         }
+        this.componentDidUpdate({}, {}, {})
         this.handleKeyDown = this.handleKeyDown.bind(this)
         this.handleSave = this.handleSave.bind(this)
         this.handleOpen = this.handleOpen.bind(this)
@@ -67,7 +65,9 @@ export default class NotebookEditor extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <DraftManager restoreDraft={this.props.restoreDraft} notebook={this.props.notebook}/>
+                <DraftManager restoreDraft={this.props.restoreDraft} 
+                              notebook={this.props.notebook}
+                              fetchNotebook={this.props.fetchNotebook}/>
                 <Dialog onClose={()=>this.setState({ isOpenMenuOpen: false })}
                         isOpen={this.state.isOpenMenuOpen} 
                         title="Open a notebook">

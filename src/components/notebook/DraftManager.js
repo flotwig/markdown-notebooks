@@ -10,7 +10,21 @@ export default class DraftManager extends React.Component {
         this.state = {
             newerDraftLocally: false,
             draft: undefined,
-            dialogOpen: false
+            dialogOpen: false,
+            lastNotebook: undefined
+        }
+    }
+
+    componentDidMount() {
+        const lastGistId = this.getLastGistId()
+        const lastOpenDraft = this.getDraft(lastGistId)
+        if (lastOpenDraft) {
+            this.restoreDraft(lastOpenDraft)
+        } else if (lastGistId) {
+            // we can load it from github then
+            this.props.fetchNotebook({
+                gistId: lastGistId
+            })
         }
     }
 
@@ -18,6 +32,7 @@ export default class DraftManager extends React.Component {
         const { notebook } = this.props
         if (notebook) {
             if (!prevProps.notebook || prevProps.notebook.gistId !== notebook.gistId) {
+                this.saveLastGistId(notebook.gistId)
                 const draft = this.getDraft(notebook.gistId)
                 if (draft && draft.updated_at.isAfter(notebook.updated_at)) {
                     this.setState({
@@ -29,6 +44,8 @@ export default class DraftManager extends React.Component {
             }
             if (notebook.modified) {
                 this.saveDraft(notebook)
+            } else {
+                this.deleteDraft(notebook.gistId)
             }
         } else if(this.state.newerDraftLocally || this.state.dialogOpen) {
             this.setState({
@@ -36,6 +53,14 @@ export default class DraftManager extends React.Component {
                 dialogOpen: false
             })
         }
+    }
+
+    saveLastGistId(gistId) {
+        localStorage.setItem('lastGistId', gistId)
+    }
+
+    getLastGistId() {
+        return localStorage.getItem('lastGistId')
     }
 
     getKey = (gistId) => `draft.${gistId}`

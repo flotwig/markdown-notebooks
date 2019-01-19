@@ -18,8 +18,6 @@ import Notebook from '../models/Notebook';
 import NotebookPage from '../models/NotebookPage';
 import moment from 'moment';
 
-const initialNotebook = new Notebook();
-
 /**
  * Reducer for the state of the currently active Notebook.
  */
@@ -29,8 +27,8 @@ const notebookReducer = createReducer({
     isLoadingNotebookList: false,
     isLoadingNotebook: false,
     notebookList: [],
-    notebook: initialNotebook,
-    activePageId: initialNotebook.pages[0]._id,
+    notebook: undefined,
+    activePageId: undefined
 }, {
     [REQUEST_SAVE]: (state) => {
         state.isSaving = true
