@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { 
     FETCH_SAVE, HANDLE_EDIT, ADD_PAGE, DELETE_PAGE, SET_ACTIVE_PAGE, 
     UPLOAD_IMAGE, RENAME_NOTEBOOK, RENAME_PAGE, MOVE_PAGE_TO_INDEX,
-    RESTORE_DRAFT, FETCH_NOTEBOOK
+    RESTORE_DRAFT, FETCH_NOTEBOOK, SET_ACTIVE_NOTEBOOK
 } from '../../state/notebookActions'
 import { getActivePage } from '../../state/notebookSelectors';
 
@@ -25,7 +25,8 @@ const ConnectedNotebookEditor = connect(
             renamePage: (name, page) => dispatch(RENAME_PAGE({ page, name })),
             movePageToIndex: (page, index) => dispatch(MOVE_PAGE_TO_INDEX({ page, index })),
             restoreDraft: (draft) => dispatch(RESTORE_DRAFT(draft)),
-            fetchNotebook: (notebook) => dispatch(FETCH_NOTEBOOK(notebook))
+            fetchNotebook: (notebook) => dispatch(FETCH_NOTEBOOK(notebook)),
+            setActiveNotebook: (notebook) => dispatch(SET_ACTIVE_NOTEBOOK(notebook))
         }
     }
 )(NotebookEditor)

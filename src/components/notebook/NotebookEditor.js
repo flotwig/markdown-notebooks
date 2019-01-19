@@ -9,6 +9,7 @@ import {
     Button, ButtonGroup, Divider, Dialog, Tag,
     NonIdealState, Spinner, H2, H4, EditableText, Card
 } from '@blueprintjs/core';
+import Notebook from '../../models/Notebook';
 
 /**
  * Editor pane for a notebook. Includes all the needed controls.
@@ -92,14 +93,15 @@ export default class NotebookEditor extends React.Component {
                         <Tag icon="warning-sign" intent="warning" large>Unsaved Changes</Tag>
                     :
                         <Tag icon="thumbs-up" intent="success" large>No Unsaved Changes</Tag>}
+                    <Button text="New Notebook" onClick={()=>this.handleNew()}/>
                     <Button text={
                         <React.Fragment>
                             Save Notebook
                             {this.props.isSaving && <Spinner size="15" intent="primary"/>}
                         </React.Fragment>
                     }
-                        icon="cloud-upload" onClick={this.handleSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
-                    <Button text="Open Notebook" icon="cloud-download" onClick={this.handleOpen}/>
+                        onClick={this.handleSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
+                    <Button text="Open Notebook" onClick={this.handleOpen}/>
                     <Divider/>
                     <Button text="New Page" onClick={()=>this.props.addPage()}/>
                     <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
@@ -160,6 +162,10 @@ export default class NotebookEditor extends React.Component {
             this.handleOpen()
             e.preventDefault()
         }
+    }
+
+    handleNew() {
+        this.props.setActiveNotebook(new Notebook())
     }
 
     handleSave() {
