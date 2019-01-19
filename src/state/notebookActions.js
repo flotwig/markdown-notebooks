@@ -19,7 +19,7 @@ export const ADD_PAGE = createAction('ADD_PAGE');
 export const DELETE_PAGE = createAction('DELETE_PAGE');
 export const MOVE_PAGE_TO_INDEX = createAction('MOVE_PAGE_TO_INDEX');
 export const RENAME_NOTEBOOK = createAction('RENAME_NOTEBOOK');
-
+export const RESTORE_DRAFT = createAction('RESTORE_DRAFT');
 
 export function UPLOAD_IMAGE(blob, cursorLocation) {
     // TODO: enqueue uploads, right now multiple simultaneous uploads can break due to a race condition

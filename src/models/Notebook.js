@@ -68,6 +68,21 @@ export default class Notebook {
         }
     }
 
+    static fromJson(json) {
+        const parsedJson = JSON.parse(json)
+        return Object.assign(new Notebook(), parsedJson, {
+            pages: parsedJson.pages.map(page => Object.assign(new NotebookPage(), page)),
+            deletedPages: parsedJson.deletedPages.map(page => Object.assign(new NotebookPage(), page)),
+            updated_at: parsedJson.updated_at ? moment(parsedJson.updated_at) : undefined,
+            saved_at: parsedJson.saved_at ? moment(parsedJson.saved_at) : undefined,
+            created_at: parsedJson.created_at ? moment(parsedJson.created_at) : undefined
+        })
+    }
+
+    toJson() {
+        return JSON.stringify(this)
+    }
+
     /**
      * Finds an unused page name beginning with `stub`.
      * 

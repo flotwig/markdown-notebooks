@@ -3,6 +3,7 @@ import MarkdownEditor from '../markdown/MarkdownEditor';
 import MarkdownRenderer from '../markdown/MarkdownRenderer';
 import ConnectedOpenMenu from './OpenMenu';
 import PageList from './PageList';
+import DraftManager from './DraftManager';
 import LogoLockup from '../LogoLockup';
 import { 
     Button, ButtonGroup, Divider, Dialog, Tag,
@@ -66,6 +67,7 @@ export default class NotebookEditor extends React.Component {
     render() {
         return (
             <React.Fragment>
+                <DraftManager restoreDraft={this.props.restoreDraft} notebook={this.props.notebook}/>
                 <Dialog onClose={()=>this.setState({ isOpenMenuOpen: false })}
                         isOpen={this.state.isOpenMenuOpen} 
                         title="Open a notebook">

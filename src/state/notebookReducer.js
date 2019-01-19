@@ -8,6 +8,7 @@ import {
     SET_ACTIVE_NOTEBOOK,
     ADD_PAGE, DELETE_PAGE,
     MOVE_PAGE_TO_INDEX,
+    RESTORE_DRAFT,
     RECEIVE_UPLOAD_IMAGE, REQUEST_UPLOAD_IMAGE,
     RECEIVE_SAVE, REQUEST_SAVE, 
     RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS, 
@@ -159,6 +160,10 @@ const notebookReducer = createReducer({
         state.notebook = state.notebook.withChanges({ 
             name: payload
         })
+    },
+    [RESTORE_DRAFT]: (state, { payload: draft }) => {
+        state.notebook = draft
+        state.activePageId = draft.pages[0]._id
     }
 })
 
