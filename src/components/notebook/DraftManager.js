@@ -63,10 +63,9 @@ export default class DraftManager extends React.Component {
         return localStorage.getItem('lastGistId')
     }
 
-    getKey = (gistId) => `draft.${gistId}`
+    getKey = (gistId) => `draft.${gistId || '__unsaved'}`
 
     getDraft(gistId) {
-        if (!gistId) return
         const json = localStorage.getItem(this.getKey(gistId))
         if (!json) return
         try {
