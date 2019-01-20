@@ -92,13 +92,7 @@ export default class NotebookEditor extends React.Component {
                     :
                         <Tag icon="thumbs-up" intent="success" large>No Unsaved Changes</Tag>}
                     <Button text="New Notebook" onClick={()=>this.handleNew()}/>
-                    <Button text={
-                        <>
-                            Save Notebook
-                            {this.props.isSaving && <Spinner size="15" intent="primary"/>}
-                        </>
-                    }
-                        onClick={this.handleSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
+                    <Button text="Save Notebook" onClick={this.handleSave} loading={this.props.isSaving} disabled={this.props.isSaving || this.state.saveDisabled}/>
                     <Button text="Open Notebook" onClick={this.handleOpen}/>
                     <Divider/>
                     <Button text="New Page" onClick={()=>this.props.addPage()}/>
