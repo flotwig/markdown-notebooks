@@ -100,14 +100,23 @@ export default class MarkdownEditor extends React.Component {
             this.props.onChange(markdown + textarea.value.substring(currentLine.end))
             e.preventDefault()
         } else if (e.key === 'Enter') {
-            // if they're in a bulleted list, insert a new line with their bullet
             const currentLine = this.getCurrentLine()
-            const bulleted = /^\s*([-+*]) /.exec(currentLine.text)
-            if (bulleted !== null) {
-                const markdown = textarea.value.substring(0, currentLine.end) + '\n' + bulleted[0]
+            // if they're pressing Enter on an empty bullet, delete that bullet
+            if (/^\s*([-+*])\s*$/.test(currentLine.text)) {
+                const markdown = textarea.value.substring(0, currentLine.start);
                 this.setState({ deferredCursorLocation: markdown.length })
-                this.props.onChange(markdown +  textarea.value.substring(currentLine.end))
+                this.props.onChange(markdown + textarea.value.substring(currentLine.end))
                 e.preventDefault()
+            } else {
+                const bulleted = /^\s*([-+*]) /.exec(currentLine.text)
+                if (bulleted !== null) {
+                    // if they're in a bulleted list, insert a new line with their bullet
+                    const split = textarea.selectionStart
+                    const markdown = textarea.value.substring(0, split) + '\n' + bulleted[0]
+                    this.setState({ deferredCursorLocation: markdown.length })
+                    this.props.onChange(markdown + textarea.value.substring(split))
+                    e.preventDefault()
+                }
             }
         }
     }
