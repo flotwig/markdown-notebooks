@@ -26,8 +26,6 @@ export default class NotebookEditor extends React.Component {
         this.handleOpen = this.handleOpen.bind(this)
         this.handleEdit = this.handleEdit.bind(this)
         this.handleNotebookNameChange = this.handleNotebookNameChange.bind(this)
-        this.handlePaste = this.handlePaste.bind(this)
-        this.textareaRef = React.createRef();
     }
 
     componentDidMount() {
@@ -144,8 +142,7 @@ export default class NotebookEditor extends React.Component {
                     </div>
                     <MarkdownEditor markdown={this.props.activePage.content} 
                                     onChange={this.handleEdit}
-                                    textareaRef={this.textareaRef}
-                                    onPaste={this.handlePaste}/>
+                                    uploadImage={this.props.uploadImage}/>
                 </div>
                 <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
                     <MarkdownRenderer markdown={this.props.activePage.content}/>
@@ -186,19 +183,5 @@ export default class NotebookEditor extends React.Component {
         this.setState({
             isOpenMenuOpen: true
         })
-    }
-
-    handlePaste(e) {
-        let items = e.clipboardData.items
-        for (var i = 0; i < items.length; i++) {
-            let item = items[i]
-            if (item.type.includes('image')) { // upload any image pasted
-                // cancel default behavior
-                e.preventDefault();
-                const cursorLocation = this.textareaRef.current.selectionStart
-                const blob = item.getAsFile()
-                this.props.uploadImage(blob, cursorLocation)
-            }
-        }
     }
 }

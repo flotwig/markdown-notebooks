@@ -9,8 +9,7 @@ export default class MarkdownEditor extends React.Component {
         this.state = {
             deferredCursorLocation: undefined
         }
-        this.handleChange = this.handleChange.bind(this)
-        this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.textareaRef = React.createRef();
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -28,14 +27,14 @@ export default class MarkdownEditor extends React.Component {
                 style={{height: '100%', width: '100%', resize: 'none'}}
                 placeholder="Begin typing here..."
                 value={this.props.markdown} 
-                ref={this.props.textareaRef}
-                onChange={this.handleChange}
-                onKeyDown={this.handleKeyDown}
-                onPaste={this.props.onPaste}/>
+                ref={this.textareaRef}
+                onChange={(e)=>this.handleChange(e)}
+                onKeyDown={(e)=>this.handleKeyDown(e)}
+                onPaste={(e)=>this.handlePaste(e)}/>
     }
 
     getTextarea() {
-        return this.props.textareaRef.current
+        return this.textareaRef.current
     }
 
     getCurrentLine() {
@@ -77,6 +76,20 @@ export default class MarkdownEditor extends React.Component {
                 this.setState({ deferredCursorLocation: markdown.length })
                 this.props.onChange(markdown +  textarea.value.substring(currentLine.end))
                 e.preventDefault()
+            }
+        }
+    }
+
+    handlePaste(e) {
+        let items = e.clipboardData.items
+        for (var i = 0; i < items.length; i++) {
+            let item = items[i]
+            if (item.type.includes('image')) { // upload any image pasted
+                // cancel default behavior
+                e.preventDefault();
+                const cursorLocation = this.getTextarea().selectionStart
+                const blob = item.getAsFile()
+                this.props.uploadImage(blob, cursorLocation)
             }
         }
     }
