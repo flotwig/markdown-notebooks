@@ -7,7 +7,8 @@ export default class MarkdownEditor extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            deferredCursorLocation: undefined
+            deferredCursorLocation: undefined,
+            showDragOverlay: false
         }
         this.textareaRef = React.createRef();
     }
@@ -22,15 +23,34 @@ export default class MarkdownEditor extends React.Component {
 
     render() {
         // note: do not use blueprint3 TextArea - it does not implement all needed features like selectionStart, onPaste...
-        return <textarea 
-                className="bp3-input"
-                style={{height: '100%', width: '100%', resize: 'none'}}
-                placeholder="Begin typing here..."
-                value={this.props.markdown} 
-                ref={this.textareaRef}
-                onChange={(e)=>this.handleChange(e)}
-                onKeyDown={(e)=>this.handleKeyDown(e)}
-                onPaste={(e)=>this.handlePaste(e)}/>
+        return (
+            <div style={{height: '100%', width: '100%', position: 'relative'}}>
+                {this.state.showDragOverlay && 
+                    <div 
+                        style={{position: 'absolute', width: '100%', height: '100%', fontSize: '2em', fontWeight: 800, backgroundColor: 'rgba(0,0,0,.3)', paddingTop: '40%', textAlign: 'center'}}
+                        onDragOver={(e)=>this.handleDragOver(e)}
+                        onDragEnd={(e)=>this.handleDragEnd(e)}
+                        onDrop={(e)=>this.handleDrop(e)}
+                        >
+                        Drop your image here!
+                    </div>
+                }
+                <textarea 
+                    className="bp3-input"
+                    style={{height: '100%', width: '100%', resize: 'none'}}
+                    placeholder="Begin typing here..."
+                    value={this.props.markdown} 
+                    disabled={this.props.disabled}
+                    ref={this.textareaRef}
+                    onDragOver={(e)=>this.handleDragOver(e)}
+                    onDragEnd={(e)=>this.handleDragEnd(e)}
+                    onDrop={(e)=>this.handleDrop(e)}
+                    onChange={(e)=>this.handleChange(e)}
+                    onKeyDown={(e)=>this.handleKeyDown(e)}
+                    onPaste={(e)=>this.handlePaste(e)}
+                    />
+            </div>
+        )
     }
 
     getTextarea() {
@@ -45,6 +65,12 @@ export default class MarkdownEditor extends React.Component {
         if (end === -1) end = textarea.value.length
         end += start
         return { start, end, cursor: cursorLocation - start, text: textarea.value.substring(start, end) }
+    }
+
+    queueImageInsert(item) {
+        const blob = item.getAsFile()
+        const cursorLocation = this.getTextarea().selectionStart
+        this.props.uploadImage(blob, cursorLocation)
     }
 
     handleChange(e) {
@@ -81,16 +107,49 @@ export default class MarkdownEditor extends React.Component {
     }
 
     handlePaste(e) {
-        let items = e.clipboardData.items
+        const items = e.clipboardData.items
         for (var i = 0; i < items.length; i++) {
-            let item = items[i]
+            const item = items[i]
             if (item.type.includes('image')) { // upload any image pasted
                 // cancel default behavior
                 e.preventDefault();
-                const cursorLocation = this.getTextarea().selectionStart
-                const blob = item.getAsFile()
-                this.props.uploadImage(blob, cursorLocation)
+                this.queueImageInsert(item)
             }
+        }
+    }
+
+    handleDrop(e) {
+        const { items } = e.dataTransfer;
+        if (items) {
+            for (var i = 0; i < items.length; i++) {
+                const item = items[i]
+                if (item.type.includes('image')) {
+                    e.preventDefault();
+                    this.queueImageInsert(item);
+                    this.setState({ showDragOverlay: false })
+                }
+            }
+        }
+    }
+
+    handleDragOver(e) {
+        const { items } = e.dataTransfer;
+        if (items) {
+            for (var i = 0; i < items.length; i++) {
+                const item = items[i]
+                if (item.type.includes('image')) {
+                    e.preventDefault();
+                    this.setState({ showDragOverlay: true });
+                    break;
+                }
+            }
+        }
+    }
+
+    handleDragEnd(e) {
+        e.preventDefault();
+        if (this.state.showDragOverlay) {
+            this.setState({ showDragOverlay: false })
         }
     }
 }
