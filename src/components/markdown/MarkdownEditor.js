@@ -82,13 +82,19 @@ export default class MarkdownEditor extends React.Component {
         const textarea = this.getTextarea()
         console.log(e.nativeEvent)
         if (e.key === 'Tab') {
-            // insert 4 spaces, if they're in a bulleted list then insert it at the front of the line
             const currentLine = this.getCurrentLine()
             const { text } = currentLine
-            // https://github.github.com/gfm/#bullet-list-marker
-            const newCurrentLineText = /^\s*[-+*] /.test(text)
-                ? '    ' + text 
-                : text.substring(0, currentLine.cursor) + '    ' + text.substring(currentLine.cursor);
+            let newCurrentLineText;
+            if (e.shiftKey) {
+                // slide backwards 4 spaces/to front of line if it's indented
+                newCurrentLineText = text.replace(/^([ ]{1,4}|\t)/, '')
+            } else {
+                // insert 4 spaces, if they're in a bulleted list then insert it at the front of the line
+                // https://github.github.com/gfm/#bullet-list-marker
+                newCurrentLineText = /^\s*[-+*] /.test(text)
+                    ? '    ' + text 
+                    : text.substring(0, currentLine.cursor) + '    ' + text.substring(currentLine.cursor);
+            }
             const markdown = textarea.value.substring(0, currentLine.start) + newCurrentLineText;
             this.setState({ deferredCursorLocation: markdown.length })
             this.props.onChange(markdown + textarea.value.substring(currentLine.end))
