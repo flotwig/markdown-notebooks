@@ -8,7 +8,7 @@ import { AnchorButton } from '@blueprintjs/core';
 export default class GitHubLoginPrompt extends React.Component {
     render() {
         return (
-            <React.Fragment>
+            <>
                 <div className="bp3-dialog-body">
                     MDNB saves your notebooks to GitHub Gists. Please log in with GitHub to continue.
                 </div>
@@ -23,7 +23,7 @@ export default class GitHubLoginPrompt extends React.Component {
                         Log in with GitHub</AnchorButton>
                     </div>
                 </div>
-            </React.Fragment>
+            </>
         )
     }
 

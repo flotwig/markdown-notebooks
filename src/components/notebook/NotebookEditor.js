@@ -65,7 +65,7 @@ export default class NotebookEditor extends React.Component {
 
     render() {
         return (
-            <React.Fragment>
+            <>
                 <DraftManager restoreDraft={this.props.restoreDraft} 
                               notebook={this.props.notebook}
                               fetchNotebook={this.props.fetchNotebook}/>
@@ -78,7 +78,7 @@ export default class NotebookEditor extends React.Component {
                     {this.renderSidebar()}
                     {this.props.isLoadingNotebook ? this.renderLoading() : (!this.props.notebook ? this.renderNoNotebook() : this.renderEditor())}
                 </div>
-            </React.Fragment>
+            </>
         )
     }
 
@@ -95,10 +95,10 @@ export default class NotebookEditor extends React.Component {
                         <Tag icon="thumbs-up" intent="success" large>No Unsaved Changes</Tag>}
                     <Button text="New Notebook" onClick={()=>this.handleNew()}/>
                     <Button text={
-                        <React.Fragment>
+                        <>
                             Save Notebook
                             {this.props.isSaving && <Spinner size="15" intent="primary"/>}
-                        </React.Fragment>
+                        </>
                     }
                         onClick={this.handleSave} disabled={this.props.isSaving || this.state.saveDisabled}/>
                     <Button text="Open Notebook" onClick={this.handleOpen}/>
@@ -126,7 +126,7 @@ export default class NotebookEditor extends React.Component {
 
     renderEditor() {
         return (
-            <React.Fragment>
+            <>
                 <div style={{width: '50%', flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
                     <div style={{maxWidth: '100%'}}>
                         <H2>
@@ -150,7 +150,7 @@ export default class NotebookEditor extends React.Component {
                 <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
                     <MarkdownRenderer markdown={this.props.activePage.content}/>
                 </Card>
-            </React.Fragment>
+            </>
         )
     }
 

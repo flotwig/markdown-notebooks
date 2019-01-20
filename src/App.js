@@ -8,10 +8,10 @@ import ConnectedNotebookEditor from './components/notebook/ConnectedNotebookEdit
 class App extends React.Component {
   render() {
     return (
-      <React.Fragment>
+      <>
         <ConnectedGitHubAuth/>
         <ConnectedNotebookEditor/>
-      </React.Fragment>
+      </>
     );
   }
 }
