@@ -74,22 +74,23 @@ const notebookReducer = createReducer({
         state.activePageId = state.notebook.pages[0]._id
     },
     [REQUEST_UPLOAD_IMAGE]: (state, { payload }) => {
-        const cursorLocation = payload
+        const { cursorLocation, imageId } = payload
         let pages = [...state.notebook.pages]
         const pageIndex = getActivePageIndex(state)
         let { content } = pages[pageIndex]
         content = content.substring(0, cursorLocation)
-                 + "![Pasted image](Uploading...)" 
+                 + `![Pasted image](Uploading image #${imageId}...)` 
                  + content.substring(cursorLocation)
         pages[pageIndex] = pages[pageIndex].withChanges({ content })
         state.notebook = state.notebook.withChanges({ pages })
     },
     [RECEIVE_UPLOAD_IMAGE]: (state, { payload }) => {
+        let { response, imageId } = payload
         let pages = [...state.notebook.pages]
         let pageIndex = getActivePageIndex(state)
         let { content } = pages[pageIndex]
-        content = content.replace("![Pasted image](Uploading...)", 
-                                  "![Pasted image](" + payload.data.link + ")")
+        content = content.replace(`![Pasted image](Uploading image #${imageId}...)`, 
+                                  "![Pasted image](" + response.data.link + ")")
         pages[pageIndex] = pages[pageIndex].withChanges({ content })
         state.notebook = state.notebook.withChanges({ pages })
     },
