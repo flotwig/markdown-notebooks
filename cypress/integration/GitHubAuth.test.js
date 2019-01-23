@@ -29,18 +29,18 @@ describe('GitHub Auth', () => {
         cy.visit('/')
     })
 
-    it('pops up when a user is unauthenticated', () => {
-        cy.contains('Log in with GitHub')
-    })
+    // it('pops up when a user is unauthenticated', () => {
+    //     cy.contains('Log in with GitHub')
+    // })
 
-    it.only('redirects to GitHub auth when login is clicked', function() {
-        cy.window().then(cyWindow => {
-            componentFromName('GitHubLoginPrompt').then(component => {
-                cy.stub(component, 'redirectTo').as('redirectTo')
-                cy.get('.gh-login-button').click().then(()=>{
-                    expect(component.redirectTo).to.be.called
-                })
-            })
-        })
-    })
+    // // it.only('redirects to GitHub auth when login is clicked', function() {
+    // //     cy.window().then(cyWindow => {
+    // //         componentFromName('GitHubLoginPrompt').then(component => {
+    // //             cy.stub(component, 'redirectTo').as('redirectTo')
+    // //             cy.get('.gh-login-button').click().then(()=>{
+    // //                 expect(component.redirectTo).to.be.called
+    // //             })
+    // //         })
+    // //     })
+    // // })
 })
