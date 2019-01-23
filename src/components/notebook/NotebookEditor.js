@@ -94,10 +94,14 @@ export default class NotebookEditor extends React.Component {
                     <Button text="New Notebook" onClick={()=>this.handleNew()}/>
                     <Button text="Save Notebook" onClick={this.handleSave} loading={this.props.isSaving} disabled={this.props.isSaving || this.state.saveDisabled}/>
                     <Button text="Open Notebook" onClick={this.handleOpen}/>
-                    <Divider/>
-                    <Button text="New Page" onClick={()=>this.props.addPage()}/>
-                    <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
-                    <Divider/>
+                    {this.props.notebook &&
+                        <>
+                            <Divider/>
+                            <Button text="New Page" onClick={()=>this.props.addPage()}/>
+                            <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
+                            <Divider/>
+                        </>
+                    }
                 </ButtonGroup>
                 {this.props.notebook && <PageList pages={this.props.notebook.pages} 
                                                     movePageToIndex={this.props.movePageToIndex}

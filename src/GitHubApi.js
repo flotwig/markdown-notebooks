@@ -1,4 +1,4 @@
-import { authEndpoint, githubClientId } from './env';
+import { AUTH_ENDPOINT, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from './env';
 
 const GH_BASEURL = 'https://github.com/';
 const API_BASEURL = 'https://api.github.com/';
@@ -42,7 +42,7 @@ export class GitHubApi {
     static getAuthUrl(stateId) {
         const scopes = ['gist']
         return GH_BASEURL + "login/oauth/authorize" +
-            "?client_id=" + githubClientId +
+            "?client_id=" + GITHUB_CLIENT_ID +
             "&redirect_uri=" + window.location.origin +
             "&scope=" + scopes.join(' ') +
             "&state=" + stateId
@@ -72,11 +72,13 @@ export class GitHubApi {
      * @param {string} stateId stateId to send to validate request
      */
     static getAccessToken(code, stateId) {
-        const tokenUrl = authEndpoint +
-            "?client_id=" + githubClientId +
+        const tokenUrl = AUTH_ENDPOINT +
+            "?client_id=" + GITHUB_CLIENT_ID +
             "&code=" + code +
             "&redirect_uri=" + window.location.origin +
-            "&state=" + stateId
+            "&state=" + stateId +
+            (GITHUB_CLIENT_SECRET ? 
+                "&client_secret=" + GITHUB_CLIENT_SECRET : "")
         return fetch(tokenUrl).then(response => {
             if (response.status !== 200) {
                 console.log('Auth problem')

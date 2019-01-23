@@ -4,7 +4,7 @@ import GitHubLoginPrompt from './GitHubLoginPrompt';
 import GitHubLoginLoader from './GitHubLoginLoader';
 import { Dialog } from '@blueprintjs/core';
 import { connect } from 'react-redux'
-import { FETCH_TOKEN } from '../../state/authActions';
+import { FETCH_TOKEN, TOGGLE_AUTH_PROMPT } from '../../state/authActions';
 
 /**
  * Top-level GitHub auth component. Handles displaying either the login button or displaying the
@@ -37,7 +37,7 @@ class GitHubAuth extends React.Component {
             <Dialog 
                     canEscapeKeyClose={false}
                     canOutsideClickClose={false}
-                    isOpen={!this.props.auth.valid}>
+                    isOpen={this.props.auth.showAuthPrompt}>
                 <div className="bp3-dialog-header">
                     <h4 className="bp3-heading">Welcome to Markdown Notebooks!</h4>
                 </div>
@@ -58,7 +58,8 @@ const ConnectedGitHubAuth = connect(
     },
     (dispatch) => {
         return {
-            fetchToken: (code, stateId) => dispatch(FETCH_TOKEN(code, stateId))
+            fetchToken: (code, stateId) => dispatch(FETCH_TOKEN(code, stateId)),
+            toggleAuthPrompt: (toggle) => dispatch(TOGGLE_AUTH_PROMPT(toggle))
         }
     }
 )(GitHubAuth)

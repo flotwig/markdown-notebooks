@@ -1,5 +1,6 @@
 import { createAction } from 'redux-starter-kit';
 import { GitHubApi } from '../GitHubApi';
+import { withAuth } from './util';
 import ImgurApi from '../ImgurApi';
 
 export const REQUEST_SAVE = createAction('REQUEST_SAVE');
@@ -20,6 +21,7 @@ export const DELETE_PAGE = createAction('DELETE_PAGE');
 export const MOVE_PAGE_TO_INDEX = createAction('MOVE_PAGE_TO_INDEX');
 export const RENAME_NOTEBOOK = createAction('RENAME_NOTEBOOK');
 export const RESTORE_DRAFT = createAction('RESTORE_DRAFT');
+export const TOGGLE_OPEN_MENU = withAuth(createAction('TOGGLE_OPEN_MENU'));
 
 let imageCounter = 0;
 
@@ -34,7 +36,7 @@ export function UPLOAD_IMAGE(blob, cursorLocation) {
     }
 }
 
-export function FETCH_SAVE(notebook) {
+export const FETCH_SAVE = withAuth((notebook) => {
     return function(dispatch) {
         dispatch(REQUEST_SAVE())
         let gist = notebook.toGist();
@@ -49,15 +51,15 @@ export function FETCH_SAVE(notebook) {
             }
         }).catch(error => dispatch(RECEIVE_SAVE_ERROR(error)))
     }
-}
+})
 
-export function FETCH_NOTEBOOKS() {
+export const FETCH_NOTEBOOKS = withAuth(() => {
     return function(dispatch) {
         dispatch(REQUEST_NOTEBOOKS())
         GitHubApi.listOwnedGists()
                  .then(response => dispatch(RECEIVE_NOTEBOOKS(response)))
     }
-}
+})
 
 export function FETCH_NOTEBOOK(notebook) {
     return function(dispatch) {

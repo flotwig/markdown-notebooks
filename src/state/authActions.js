@@ -3,6 +3,7 @@ import { GitHubApi } from '../GitHubApi';
 
 export const REQUEST_TOKEN = createAction('REQUEST_TOKEN');
 export const RECEIVE_TOKEN = createAction('RECEIVE_TOKEN');
+export const TOGGLE_AUTH_PROMPT = createAction('TOGGLE_AUTH_PROMPT');
 
 export function FETCH_TOKEN(code, stateId) {
     return function(dispatch) {

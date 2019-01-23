@@ -12,7 +12,7 @@ import {
     RECEIVE_UPLOAD_IMAGE, REQUEST_UPLOAD_IMAGE,
     RECEIVE_SAVE, REQUEST_SAVE, 
     RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS, 
-    RECEIVE_NOTEBOOK, REQUEST_NOTEBOOK, RECEIVE_SAVE_ERROR 
+    RECEIVE_NOTEBOOK, REQUEST_NOTEBOOK, RECEIVE_SAVE_ERROR, TOGGLE_OPEN_MENU 
 } from './notebookActions';
 import Notebook from '../models/Notebook';
 import NotebookPage from '../models/NotebookPage';
@@ -28,7 +28,8 @@ const notebookReducer = createReducer({
     isLoadingNotebook: false,
     notebookList: [],
     notebook: undefined,
-    activePageId: undefined
+    activePageId: undefined,
+    showOpenMenu: false
 }, {
     [REQUEST_SAVE]: (state) => {
         state.isSaving = true
@@ -163,6 +164,12 @@ const notebookReducer = createReducer({
     [RESTORE_DRAFT]: (state, { payload: draft }) => {
         state.notebook = draft
         state.activePageId = draft.pages[0]._id
+    },
+    [TOGGLE_OPEN_MENU]: (state, { payload: showOpenMenu }) => {
+        if (showOpenMenu !== undefined)
+            this.state.showOpenMenu = showOpenMenu
+        else
+            this.state.showOpenMenu = !this.state.showOpenMenu
     }
 })
 
