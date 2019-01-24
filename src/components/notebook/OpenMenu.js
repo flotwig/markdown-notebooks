@@ -1,5 +1,5 @@
 import { FETCH_NOTEBOOKS, FETCH_NOTEBOOK } from "../../state/notebookActions";
-import { HTMLTable, NonIdealState, Spinner, Button } from '@blueprintjs/core';
+import { HTMLTable, NonIdealState, Spinner } from '@blueprintjs/core';
 import React from 'react';
 import { connect } from 'react-redux';
 
