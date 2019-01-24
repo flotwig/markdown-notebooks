@@ -1,4 +1,4 @@
-import { imgurClientId } from './env';
+import { IMGUR_CLIENT_ID } from './env';
 
 const API_BASEURL = 'https://api.imgur.com/3/';
 
@@ -50,7 +50,7 @@ export default class ImgurApi {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": "Client-ID " + imgurClientId
+                "Authorization": "Client-ID " + IMGUR_CLIENT_ID
             },
             body: JSON.stringify(body)
         }).then(res => res.json())
