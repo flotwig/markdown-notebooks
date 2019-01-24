@@ -13,15 +13,13 @@ export class OpenMenu extends React.Component {
     }
 
     render() {
-        return (
-            <div className="bp3-dialog-body">
-                {this.props.isLoadingNotebookList ?
-                    <NonIdealState icon={<Spinner/>} description="Loading notebooks..."/>
-                :
-                    this.renderList()
-                }
-            </div>
-        )
+        if (this.props.isLoadingNotebookList) {
+            return (
+                <NonIdealState className="bp3-dialog-body" icon={<Spinner/>} description="Loading notebooks..."/>
+            )
+        } else {
+            return this.renderList()
+        }
     }
 
     renderList() {
@@ -38,7 +36,6 @@ export class OpenMenu extends React.Component {
                         <th style={{width: '120px'}}>
                             Modified
                         </th>
-                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,11 +49,6 @@ export class OpenMenu extends React.Component {
                             </td>
                             <td>
                                 {notebook.updated_at.fromNow()}
-                            </td>
-                            <td>
-                                <Button>
-                                    Open
-                                </Button>
                             </td>
                         </tr>
                     ))}

@@ -96,8 +96,11 @@ export class GitHubApi {
         return GitHubApi._fetch('gists', 'POST', gist)
     }
 
-    static listOwnedGists() {
-        return GitHubApi._fetch('gists')
+    /**
+     * @param {Moment} since Optional. Only gists updated at or after this time are returned.
+     */
+    static listOwnedGists(since) {
+        return GitHubApi._fetch('gists' + (since ? `?since=${since.toISOString()}` : ''))
     }
 
     static getGist(gistId) {

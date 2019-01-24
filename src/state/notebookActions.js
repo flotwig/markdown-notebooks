@@ -1,6 +1,7 @@
 import { createAction } from 'redux-starter-kit';
 import { GitHubApi } from '../GitHubApi';
 import { withAuth } from './util';
+import moment from 'moment';
 import ImgurApi from '../ImgurApi';
 
 export const REQUEST_SAVE = createAction('REQUEST_SAVE');
@@ -56,7 +57,7 @@ export const FETCH_SAVE = withAuth((notebook) => {
 export const FETCH_NOTEBOOKS = withAuth(() => {
     return function(dispatch) {
         dispatch(REQUEST_NOTEBOOKS())
-        GitHubApi.listOwnedGists()
+        GitHubApi.listOwnedGists(moment().subtract(30, 'days'))
                  .then(response => dispatch(RECEIVE_NOTEBOOKS(response)))
     }
 })

@@ -19,6 +19,7 @@ export default class NotebookEditor extends React.Component {
         super(props)
         this.state = {
             isOpenMenuOpen: false,
+            saveDisabled: true
         }
         this.componentDidUpdate({}, {}, {})
         this.handleKeyDown = this.handleKeyDown.bind(this)
