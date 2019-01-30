@@ -1,5 +1,6 @@
 import NotebookPage from "./NotebookPage";
 import moment from 'moment';
+import leftPad from 'left-pad';
 
 /**
  * A Notebook is the top-level document in Markdown Notebooks. It contains a set of NotebookPages 
@@ -53,8 +54,12 @@ export default class Notebook {
     toGist() {
         let files = {}
         const pages = this.pages.filter(p => p.content) // gist does not accept empty files, TODO: consider giving feedback to user
+        const digits = Math.ceil(Math.log10(pages.length))
+        const getPageNumber = (i) => {
+            return leftPad(i, digits, 0)
+        }
         pages.forEach((page, i) => {
-            const filename = `${i+1}. ${page.name}.md`
+            const filename = `${getPageNumber(i+1)}. ${page.name}.md`
             const key = page.gistFilename || filename
             files[key] = page.toGistFile(filename)
         })
