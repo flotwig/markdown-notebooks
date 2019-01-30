@@ -21,7 +21,7 @@ describe('NotebookEditor', () => {
         })
 
         it('creates a new notebook when asked', () => {
-            cy.get('textarea.bp3-input').should('exist')
+            cy.get('.markdown-textarea').should('exist')
             cy.get('.bp3-tag').should('contain', 'No Unsaved Changes')
         })
 
@@ -52,7 +52,7 @@ describe('NotebookEditor', () => {
 
         context('types in the textarea', () => {
             beforeEach(() => {
-                return cy.get('textarea.bp3-input')
+                return cy.get('.markdown-textarea')
                 .type('Hello world!')
             })
 

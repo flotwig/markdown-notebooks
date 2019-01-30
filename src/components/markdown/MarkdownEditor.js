@@ -11,6 +11,7 @@ export default class MarkdownEditor extends React.Component {
             showDragOverlay: false
         }
         this.textareaRef = React.createRef();
+        console.log(this.textareaRef)
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -22,6 +23,7 @@ export default class MarkdownEditor extends React.Component {
     }
 
     render() {
+        console.log(this.textareaRef)
         // note: do not use blueprint3 TextArea - it does not implement all needed features like selectionStart, onPaste...
         return (
             <div style={{height: '100%', width: '100%', position: 'relative'}}>
