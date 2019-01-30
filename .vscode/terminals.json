@@ -1,0 +1,12 @@
+{
+  "autorun": true,
+  "terminals": [
+    {
+      "name": "start",
+      "command": "yarn start",
+      "recycle": true,
+      "open": true,
+      "execute": true
+    }
+  ]
+}
