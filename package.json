@@ -72,6 +72,10 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "cypress:start": "GITHUB_BASEURL=/__github/ GITHUB_API_BASEURL=/__githubApi/ PORT=3001 yarn start",
+    "cypress:open": "./node_modules/.bin/cypress open",
+    "cypress:run": "./node_modules/.bin/cypress run",
+    "cypress:ci": "yarn cypress:start & wait-on http://localhost:3001 && yarn cypress:run -- --record",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },

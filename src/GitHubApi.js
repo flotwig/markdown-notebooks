@@ -1,7 +1,4 @@
-import { AUTH_ENDPOINT, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from './env';
-
-const GH_BASEURL = 'https://github.com/';
-const API_BASEURL = 'https://api.github.com/';
+import { AUTH_ENDPOINT, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_BASEURL, GITHUB_API_BASEURL } from './env';
 
 /**
  * Facilitates interaction with the GitHub API.
@@ -41,7 +38,7 @@ export class GitHubApi {
      */
     static getAuthUrl(stateId) {
         const scopes = ['gist']
-        return GH_BASEURL + "login/oauth/authorize" +
+        return GITHUB_BASEURL + "login/oauth/authorize" +
             "?client_id=" + GITHUB_CLIENT_ID +
             "&redirect_uri=" + window.location.origin +
             "&scope=" + scopes.join(' ') +
@@ -116,7 +113,7 @@ export class GitHubApi {
      */
     static _fetch(endpoint, method='GET', body=undefined) {
         let { token } = GitHubApi.getStoredAuth()
-        return fetch(API_BASEURL + endpoint, {
+        return fetch(GITHUB_API_BASEURL + endpoint, {
             method,
             headers: {
                 "Accept": "application/json",

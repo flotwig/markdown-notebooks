@@ -36,7 +36,7 @@ export default class MarkdownEditor extends React.Component {
                     </div>
                 }
                 <textarea 
-                    className="bp3-input"
+                    className="bp3-input markdown-textarea"
                     style={{height: '100%', width: '100%', resize: 'none'}}
                     placeholder="Begin typing here..."
                     value={this.props.markdown} 

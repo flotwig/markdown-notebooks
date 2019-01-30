@@ -35,7 +35,7 @@ export default class NotebookPage {
      */
     static fromGistFile(gistFile) {
         let name = gistFile.filename
-        if (/[1-9][0-9]*\..*\.md/g.test(name)) { // importing an existing notebookpage
+        if (/[0-9]+\..*\.md/g.test(name)) { // importing an existing notebookpage
             name = name.substring(name.indexOf('. ') + 2, name.lastIndexOf('.'))
         }
         return Object.assign(new NotebookPage(), {

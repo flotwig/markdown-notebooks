@@ -98,7 +98,7 @@ const notebookReducer = createReducer({
     [RENAME_PAGE]: (state, { payload }) => {
         let page = payload.page || getActivePage(state);
         if (payload.name !== page.name)
-            payload.name = state.notebook.getUnusedName(payload.name)
+            payload.name = state.notebook.getUnusedName(payload.name, page)
         page = page.withChanges({ name: payload.name })
         let pages = [...state.notebook.pages]
         const pageIndex = pages.findIndex(p => p._id === page._id)

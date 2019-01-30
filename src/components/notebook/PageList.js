@@ -16,7 +16,7 @@ export default class PageList extends React.Component {
     }
     render() {
         return (
-            <Tabs vertical>
+            <Tabs vertical className="page-list">
                 {this.props.pages.map(page => {
                     return (
                         <div draggable

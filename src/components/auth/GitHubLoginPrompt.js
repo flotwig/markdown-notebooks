@@ -15,7 +15,7 @@ export default class GitHubLoginPrompt extends React.Component {
                 <div className="bp3-dialog-footer">
                     <div className="bp3-dialog-footer-actions">
                     <AnchorButton 
-                            className="gh-login-button"
+                            className="btn-github-login"
                             onClick={()=>this.onClickLogin()}
                             icon={<img src="/assets/github.svg" 
                                        style={{width: '16px', height: '16px'}}

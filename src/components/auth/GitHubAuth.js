@@ -35,6 +35,7 @@ class GitHubAuth extends React.Component {
     render() {
         return (
             <Dialog 
+                    className="dialog-github-auth"
                     canEscapeKeyClose={false}
                     canOutsideClickClose={false}
                     isOpen={this.props.auth.showAuthPrompt}>

@@ -92,12 +92,13 @@ export default class Notebook {
      * Finds an unused page name beginning with `stub`.
      * 
      * @param {string} stub Default page name. Defaults to 'Untitled Page'.
+     * @param {NotebookPage} ignore Page to ignore while scanning.
      */
-    getUnusedName(stub) {
+    getUnusedName(stub, ignore) {
         stub = stub || 'Untitled Page'
         let name = stub
         let i = 0
-        const predicate = page => page.name === name
+        const predicate = page => (page.name === name && (!ignore || ignore._id !== page._id))
         while (this.pages.find(predicate)) {
             i++
             name = stub + " (" + i + ")"

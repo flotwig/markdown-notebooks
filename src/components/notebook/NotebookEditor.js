@@ -87,19 +87,19 @@ export default class NotebookEditor extends React.Component {
                 <LogoLockup/>
                 <ButtonGroup alignText="right" minimal={true} vertical={true}>
                     {this.props.saveError &&
-                        <Tag icon="warning-sign" intent="danger" large>Error While Saving</Tag>}
+                        <Tag icon="warning-sign" className="tag-error-saving" intent="danger" large>Error While Saving</Tag>}
                     {this.props.notebook && this.props.notebook.modified ? 
-                        <Tag icon="warning-sign" intent="warning" large>Unsaved Changes</Tag>
+                        <Tag icon="warning-sign" className="tag-unsaved-changes" intent="warning" large>Unsaved Changes</Tag>
                     :
-                        <Tag icon="thumbs-up" intent="success" large>No Unsaved Changes</Tag>}
-                    <Button text="New Notebook" onClick={()=>this.handleNew()}/>
-                    <Button text="Save Notebook" onClick={this.handleSave} loading={this.props.isSaving} disabled={this.props.isSaving || this.state.saveDisabled}/>
-                    <Button text="Open Notebook" onClick={this.handleOpen}/>
+                        <Tag icon="thumbs-up" className="tag-no-unsaved-changes" intent="success" large>No Unsaved Changes</Tag>}
+                    <Button text="New Notebook" className="btn-new-notebook" onClick={()=>this.handleNew()}/>
+                    <Button text="Save Notebook" className="btn-save-notebook" onClick={this.handleSave} loading={this.props.isSaving} disabled={this.props.isSaving || this.state.saveDisabled}/>
+                    <Button text="Open Notebook" className="btn-open-notebook" onClick={this.handleOpen}/>
                     {this.props.notebook &&
                         <>
                             <Divider/>
-                            <Button text="New Page" onClick={()=>this.props.addPage()}/>
-                            <Button text="Delete Page" onClick={()=>this.props.deletePage()}/>
+                            <Button text="New Page" className="btn-new-page" onClick={()=>this.props.addPage()}/>
+                            <Button text="Delete Page" className="btn-delete-page" onClick={()=>this.props.deletePage()}/>
                             <Divider/>
                         </>
                     }
@@ -114,11 +114,11 @@ export default class NotebookEditor extends React.Component {
     }
 
     renderLoading() {
-        return <NonIdealState icon={<Spinner/>} description="Loading notebook..."/>
+        return <NonIdealState icon={<Spinner/>} className="nis-loading-notebook" description="Loading notebook..."/>
     }
 
     renderNoNotebook() {
-        return <NonIdealState icon="clean" description="Open a notebook to start editing."/>
+        return <NonIdealState icon="clean" className="nis-no-notebook" description="Open a notebook to start editing."/>
     }
 
     renderEditor() {
