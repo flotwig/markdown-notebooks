@@ -34,15 +34,9 @@ describe('GitHub Auth', () => {
         })
     })
 
-    // it('redirects to GitHub when clicking login button', () => {
-    //     cy.server()
-    //     cy.route('**/__github/login/oauth/authorize*').as('authorize').then(()=>{
-    //         cy.get('.btn-open-notebook').click().then(() => {
-    //             return cy.get('.btn-github-login')
-    //             .then(() => {
-    //                 return cy.wait('@authorize')
-    //             })
-    //         })
-    //     })
-    // })
+    it('redirects to GitHub when clicking login button', () => {
+        cy.get('.btn-open-notebook').click()
+        cy.get('.btn-github-login').click()
+        cy.url().should('contain', '__github/login/oauth/authorize')
+    })
 })
