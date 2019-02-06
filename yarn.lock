@@ -27,9 +27,10 @@
     semver "^5.4.1"
     source-map "^0.5.0"
 
-"@babel/core@^7.0.1":
+"@babel/core@7.2.2", "@babel/core@^7.0.1":
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.2.2.tgz#07adba6dde27bb5ad8d8672f15fde3e08184a687"
+  integrity sha512-59vB0RWt09cAct5EIe58+NzGP4TFSD3Bz//2/ELy3ZeTeKF6VTD1AXlH8BGGbCX0PuobZBsIzO7IAI9PH67eKw==
   dependencies:
     "@babel/code-frame" "^7.0.0"
     "@babel/generator" "^7.2.2"
