@@ -4459,9 +4459,10 @@ immer@1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.7.2.tgz#a51e9723c50b27e132f6566facbec1c85fc69547"
 
-immer@^1.9.3:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-1.9.3.tgz#e88f8cbea730d2cde0f5e7e763000a8608bccdae"
+immer@^1.10.5:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-1.12.1.tgz#40c6e5b292c00560836c2993bda3a24379d466f5"
+  integrity sha512-3fmKM6ovaqDt0CdC9daXpNi5x/YCYS3i4cwLdTVkhJdk5jrDXoPs7lCm3IqM3yhfSnz4tjjxbRG2CziQ7m8ztg==
 
 import-cwd@^2.0.0:
   version "2.1.0"
@@ -7726,12 +7727,12 @@ redux-logger@3.0.6:
   dependencies:
     deep-diff "^0.3.5"
 
-redux-starter-kit@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/redux-starter-kit/-/redux-starter-kit-0.3.0.tgz#d2e35bf09fed95322317e43aed57e58d37e68779"
-  integrity sha512-qKPrZsB47g5Hj58WXgqE5UY8SPoMYStCsd5LLTLPoTvN3+sFDfnpw33iobO5VSfH3Wf5Y+zQ6+lrRxjbpxtPwg==
+redux-starter-kit@0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/redux-starter-kit/-/redux-starter-kit-0.4.3.tgz#66a583cde1f1995ae59782d87cc462260ca85fa8"
+  integrity sha512-T3HXtwEGyFLCy63QlZEM95rDzTQ5BKbBhhTINNVFD1yWgHBKtgN3tXw4/sX9+Ve1Y8mAtXbAhep/E7I0YVvZPg==
   dependencies:
-    immer "^1.9.3"
+    immer "^1.10.5"
     redux "^4.0.0"
     redux-devtools-extension "^2.13.7"
     redux-immutable-state-invariant "^2.1.0"
