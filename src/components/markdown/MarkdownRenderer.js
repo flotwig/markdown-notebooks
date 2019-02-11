@@ -4,7 +4,7 @@ import sanitize from 'sanitize-html';
 
 /**
  * Standalone renderer for input markdown.
- * 
+ *
  * Sanitizes output HTML from markdown as well.
  */
 export default class MarkdownRenderer extends React.Component {
@@ -31,7 +31,7 @@ export default class MarkdownRenderer extends React.Component {
 
     /**
      * Renders markdown into the display area.
-     * 
+     *
      * @param {string} markdown Input markdown text
      */
     renderMarkdown(markdown) {
@@ -42,7 +42,7 @@ export default class MarkdownRenderer extends React.Component {
 
     /**
      * Sanitizes the HTML and changes the rendered output.
-     * 
+     *
      * @param {string} html Unsafe HTML string
      */
     setHtml(html) {
@@ -53,7 +53,12 @@ export default class MarkdownRenderer extends React.Component {
     sanitizeHtml(html) {
         return sanitize(html, {
             allowedTags: [
-                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'img', 'a', 'b', 'p', 'i', 'em', 'strong', 'blockquote', 'big', 'small', 'div', 'br', 'hr', 'li', 'ol', 'ul', 'table', 'tbody', 'thead', 'td', 'th', 'tr', 'caption', 'span', 'code'
+                'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7',
+                'img', 'a', 'b', 'p', 'i', 'em', 'strong',
+                'blockquote', 'big', 'small', 'div', 'br',
+                'hr', 'li', 'ol', 'ul', 'table', 'tbody',
+                'thead', 'td', 'th', 'tr', 'caption',
+                'span', 'code', 'del', 's'
             ],
             allowedAttributes: {
                 'a': ['href', 'target', 'rel'],
