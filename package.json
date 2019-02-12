@@ -42,15 +42,9 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.5.0",
     "postcss-safe-parser": "4.0.1",
-<<<<<<< HEAD
     "react-dev-utils": "7.0.3",
-=======
-    "pre-git": "^3.17.1",
-    "react-dev-utils": "7.0.1",
->>>>>>> add stop-only
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
-    "stop-only": "^3.0.1",
     "style-loader": "0.23.1",
     "terser-webpack-plugin": "1.2.2",
     "url-loader": "1.1.2",
@@ -143,16 +137,5 @@
   },
   "release": {
     "analyzeCommits": "simple-commit-message"
-  },
-  "config": {
-    "pre-git": {
-      "enabled": true,
-      "pre-commit": [
-      ],
-      "pre-push": [],
-      "post-commit": [],
-      "post-checkout": [],
-      "post-merge": []
-    }
   }
 }
