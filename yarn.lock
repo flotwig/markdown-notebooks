@@ -3015,7 +3015,7 @@ cyclist@~0.2.2:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
   integrity sha1-GzN5LhHpFKL9bW7WRHRkRE5fpkA=
 
-cypress-get-react-component@^1.0.0-dev4:
+cypress-get-react-component@1.0.0-dev4:
   version "1.0.0-dev4"
   resolved "https://registry.yarnpkg.com/cypress-get-react-component/-/cypress-get-react-component-1.0.0-dev4.tgz#64cd6c0af1c880bebfce714479f064be8df54109"
   integrity sha512-+26irD2NTUbNNsLaCVehH7T9wkUDGI5yoAC1ZNuWvsJZn/odXW2BAJl7aXhAN0JawEbPCzEOaaUMjmFMJfZ6PQ==
