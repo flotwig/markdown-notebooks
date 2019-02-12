@@ -2,6 +2,17 @@ import React from 'react';
 import marked from 'marked';
 import sanitize from 'sanitize-html';
 
+const renderer = new marked.Renderer()
+
+renderer.checkbox = function(checked) {
+    return '<input '
+      + (checked ? 'checked="" ' : '')
+      + 'disabled="" type="checkbox" '
+      + 'data-rendered-by="markdown-renderer"'
+      + (this.options.xhtml ? ' /' : '')
+      + '> ';
+  };
+
 /**
  * Standalone renderer for input markdown.
  *
@@ -13,10 +24,14 @@ export default class MarkdownRenderer extends React.Component {
         this.state = {
             renderedMarkdown: ''
         }
+        this.containerRef = React.createRef()
     }
 
     render() {
-        return <div className="markdown-renderer" dangerouslySetInnerHTML={{__html: this.state.renderedMarkdown}}/>
+        return <div className="markdown-renderer"
+                    dangerouslySetInnerHTML={{__html: this.state.renderedMarkdown}}
+                    ref={this.containerRef}
+                    />
     }
 
     componentDidMount() {
@@ -27,6 +42,28 @@ export default class MarkdownRenderer extends React.Component {
         if (this.props.markdown !== prevProps.markdown) {
             this.renderMarkdown(this.props.markdown)
         }
+        if (this.state.renderedMarkdown !== prevState.renderedMarkdown) {
+            this.attachCheckboxListeners()
+        }
+    }
+
+    /**
+     * Attaches listeners to GFM checkboxes.
+     */
+    attachCheckboxListeners() {
+        const _this = this;
+        let checkboxIndex = 0;
+        this.containerRef.current.querySelectorAll('input[type="checkbox"]').forEach(node => {
+            if (node.getAttribute('data-rendered-by') !== 'markdown-renderer') {
+                node.setAttribute('disabled', true)
+                return
+            }
+            const thisCheckboxIndex = checkboxIndex
+            checkboxIndex++
+            node.addEventListener('change', e => {
+                _this.onCheckboxToggle(thisCheckboxIndex, e.target.checked)
+            })
+        })
     }
 
     /**
@@ -35,7 +72,7 @@ export default class MarkdownRenderer extends React.Component {
      * @param {string} markdown Input markdown text
      */
     renderMarkdown(markdown) {
-        marked(markdown, (error, result) => {
+        marked(markdown, { renderer }, (error, result) => {
             this.setHtml(result);
         })
     }
@@ -58,11 +95,22 @@ export default class MarkdownRenderer extends React.Component {
                 'blockquote', 'big', 'small', 'div', 'br',
                 'hr', 'li', 'ol', 'ul', 'table', 'tbody',
                 'thead', 'td', 'th', 'tr', 'caption',
-                'span', 'code', 'del', 's'
+                'span', 'code', 'del', 's', 'input'
             ],
             allowedAttributes: {
                 'a': ['href', 'target', 'rel'],
-                'img': ['src', 'alt']
+                'img': ['src', 'alt'],
+                'input': [
+                    {
+                        name: 'type',
+                        values: ['checkbox']
+                    },
+                    {
+                        name: 'data-rendered-by',
+                        values: ['markdown-renderer']
+                    },
+                    'checked'
+                ]
             },
             transformTags: {
                 'a': (tagName, attribs) => {
@@ -72,8 +120,19 @@ export default class MarkdownRenderer extends React.Component {
                         attribs.rel = 'noopener noreferrer';
                     }
                     return { tagName, attribs };
+                },
+                'input': (tagName, attribs) => {
+                    if (attribs.type !== 'checkbox') {
+                        return false
+                    }
+
+                    return { tagName, attribs }
                 }
             }
         })
+    }
+
+    onCheckboxToggle(checkboxIndex, value) {
+        this.props.onCheckboxToggle(checkboxIndex, value)
     }
 }

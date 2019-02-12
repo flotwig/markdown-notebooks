@@ -147,9 +147,7 @@
   "config": {
     "pre-git": {
       "enabled": true,
-      "commit-msg": "simple",
       "pre-commit": [
-        "yarn run stop-only"
       ],
       "pre-push": [],
       "post-commit": [],

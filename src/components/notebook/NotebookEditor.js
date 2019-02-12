@@ -5,7 +5,7 @@ import ConnectedOpenMenu from './OpenMenu';
 import PageList from './PageList';
 import DraftManager from './DraftManager';
 import LogoLockup from '../LogoLockup';
-import { 
+import {
     Button, ButtonGroup, Divider, Dialog, Tag,
     NonIdealState, Spinner, H2, H4, EditableText, Card
 } from '@blueprintjs/core';
@@ -65,11 +65,11 @@ export default class NotebookEditor extends React.Component {
     render() {
         return (
             <>
-                <DraftManager restoreDraft={this.props.restoreDraft} 
+                <DraftManager restoreDraft={this.props.restoreDraft}
                               notebook={this.props.notebook}
                               fetchNotebook={this.props.fetchNotebook}/>
                 <Dialog onClose={()=>this.setState({ isOpenMenuOpen: false })}
-                        isOpen={this.state.isOpenMenuOpen} 
+                        isOpen={this.state.isOpenMenuOpen}
                         title="Open a notebook">
                     <ConnectedOpenMenu closeMenu={()=>{this.setState({ isOpenMenuOpen: false })}}/>
                 </Dialog>
@@ -88,7 +88,7 @@ export default class NotebookEditor extends React.Component {
                 <ButtonGroup alignText="right" minimal={true} vertical={true}>
                     {this.props.saveError &&
                         <Tag icon="warning-sign" className="tag-error-saving" intent="danger" large>Error While Saving</Tag>}
-                    {this.props.notebook && this.props.notebook.modified ? 
+                    {this.props.notebook && this.props.notebook.modified ?
                         <Tag icon="warning-sign" className="tag-unsaved-changes" intent="warning" large>Unsaved Changes</Tag>
                     :
                         <Tag icon="thumbs-up" className="tag-no-unsaved-changes" intent="success" large>No Unsaved Changes</Tag>}
@@ -104,9 +104,9 @@ export default class NotebookEditor extends React.Component {
                         </>
                     }
                 </ButtonGroup>
-                {this.props.notebook && <PageList pages={this.props.notebook.pages} 
+                {this.props.notebook && <PageList pages={this.props.notebook.pages}
                                                     movePageToIndex={this.props.movePageToIndex}
-                                                    activePage={this.props.activePage} 
+                                                    activePage={this.props.activePage}
                                                     onClickPage={this.props.setActivePage}/>
                 }
             </div>
@@ -127,27 +127,43 @@ export default class NotebookEditor extends React.Component {
                 <div style={{width: '50%', flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
                     <div style={{maxWidth: '100%'}}>
                         <H2>
-                            <EditableText value={this.state.notebookName} 
-                                        placeholder="Untitled Page" 
+                            <EditableText value={this.state.notebookName}
+                                        placeholder="Untitled Page"
                                         onChange={(notebookName)=>this.setState({ notebookName })}
                                         onConfirm={(name) => this.props.renameNotebook(name)}/>
                         </H2>
                         <H4>
-                            <EditableText value={this.state.activePageName} 
-                                        placeholder="Untitled Page" 
+                            <EditableText value={this.state.activePageName}
+                                        placeholder="Untitled Page"
                                         onChange={(activePageName)=>this.setState({ activePageName })}
                                         onConfirm={(name) => this.props.renamePage(name)}/>
                         </H4>
                     </div>
-                    <MarkdownEditor markdown={this.props.activePage.content} 
+                    <MarkdownEditor markdown={this.props.activePage.content}
                                     onChange={this.handleEdit}
                                     uploadImage={this.props.uploadImage}/>
                 </div>
                 <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
-                    <MarkdownRenderer markdown={this.props.activePage.content}/>
+                    <MarkdownRenderer markdown={this.props.activePage.content}
+                                      onCheckboxToggle={(checkboxIndex, value) => this.handleCheckboxToggle(checkboxIndex, value)}/>
                 </Card>
             </>
         )
+    }
+
+    handleCheckboxToggle(checkboxIndex, value) {
+        const r = /^(\s*[-+*]\s+\[)([ xX])(\])/gm
+        var i = 0;
+        const markdown = this.props.activePage.content.replace(
+            r, (match) => {
+                i++
+                if (i-1 !== checkboxIndex) {
+                    return match
+                }
+                return match.replace(r, `$1${value ? 'x' : ' '}$3`)
+            }
+        )
+        this.handleEdit(markdown)
     }
 
     handleKeyDown(e) {

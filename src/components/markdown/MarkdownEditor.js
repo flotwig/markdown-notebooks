@@ -11,7 +11,6 @@ export default class MarkdownEditor extends React.Component {
             showDragOverlay: false
         }
         this.textareaRef = React.createRef();
-        console.log(this.textareaRef)
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -23,12 +22,11 @@ export default class MarkdownEditor extends React.Component {
     }
 
     render() {
-        console.log(this.textareaRef)
         // note: do not use blueprint3 TextArea - it does not implement all needed features like selectionStart, onPaste...
         return (
             <div style={{height: '100%', width: '100%', position: 'relative'}}>
-                {this.state.showDragOverlay && 
-                    <div 
+                {this.state.showDragOverlay &&
+                    <div
                         style={{position: 'absolute', width: '100%', height: '100%', fontSize: '2em', fontWeight: 800, backgroundColor: 'rgba(0,0,0,.3)', paddingTop: '40%', textAlign: 'center'}}
                         onDragOver={(e)=>this.handleDragOver(e)}
                         onDragEnd={(e)=>this.handleDragEnd(e)}
@@ -37,11 +35,11 @@ export default class MarkdownEditor extends React.Component {
                         Drop your image here!
                     </div>
                 }
-                <textarea 
+                <textarea
                     className="bp3-input markdown-textarea"
                     style={{height: '100%', width: '100%', resize: 'none'}}
                     placeholder="Begin typing here..."
-                    value={this.props.markdown} 
+                    value={this.props.markdown}
                     disabled={this.props.disabled}
                     ref={this.textareaRef}
                     onDragOver={(e)=>this.handleDragOver(e)}
@@ -82,7 +80,6 @@ export default class MarkdownEditor extends React.Component {
 
     handleKeyDown(e) {
         const textarea = this.getTextarea()
-        console.log(e.nativeEvent)
         if (e.key === 'Tab') {
             const currentLine = this.getCurrentLine()
             const { text } = currentLine
@@ -94,7 +91,7 @@ export default class MarkdownEditor extends React.Component {
                 // insert 4 spaces, if they're in a bulleted list then insert it at the front of the line
                 // https://github.github.com/gfm/#bullet-list-marker
                 newCurrentLineText = /^\s*[-+*] /.test(text)
-                    ? '    ' + text 
+                    ? '    ' + text
                     : text.substring(0, currentLine.cursor) + '    ' + text.substring(currentLine.cursor);
             }
             const markdown = textarea.value.substring(0, currentLine.start) + newCurrentLineText;
