@@ -67,6 +67,7 @@ export default class NotebookEditor extends React.Component {
             <>
                 <DraftManager restoreDraft={this.props.restoreDraft}
                               notebook={this.props.notebook}
+                              activePageId={this.props.activePageId}
                               fetchNotebook={this.props.fetchNotebook}/>
                 <Dialog onClose={()=>this.setState({ isOpenMenuOpen: false })}
                         isOpen={this.state.isOpenMenuOpen}

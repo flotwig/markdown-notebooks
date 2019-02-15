@@ -1,5 +1,5 @@
 import React from 'react';
-import Notebook from '../../models/Notebook';
+import Draft from '../../models/Draft';
 import { Dialog, Button } from '@blueprintjs/core';
 
 const dateFormat = "LLLL";
@@ -31,10 +31,10 @@ export default class DraftManager extends React.Component {
     componentDidUpdate(prevProps) {
         const { notebook } = this.props
         if (notebook) {
-            if (!prevProps.notebook || prevProps.notebook.gistId !== notebook.gistId) {
+            if (prevProps.notebook && prevProps.notebook.gistId !== notebook.gistId) {
                 this.saveLastGistId(notebook.gistId)
                 const draft = this.getDraft(notebook.gistId)
-                if (draft && draft.updated_at.isAfter(notebook.updated_at)) {
+                if (draft && draft.notebook.updated_at.isAfter(notebook.updated_at)) {
                     this.setState({
                         newerDraftLocally: true,
                         dialogOpen: true,
@@ -42,8 +42,11 @@ export default class DraftManager extends React.Component {
                     })
                 }
             }
-            if (notebook.modified) {
-                this.saveDraft(notebook)
+            if (notebook.modified || this.props.activePageId !== prevProps.activePageId) {
+                this.saveDraft(new Draft({
+                    notebook,
+                    activePageId: this.props.activePageId
+                }))
             } else {
                 this.deleteDraft(notebook.gistId)
             }
@@ -69,8 +72,7 @@ export default class DraftManager extends React.Component {
         const json = localStorage.getItem(this.getKey(gistId))
         if (!json) return
         try {
-            const draft = Notebook.fromJson(json)
-            return draft
+            return new Draft(JSON.parse(json))
         } catch (e) {
             this.deleteDraft(gistId)
         }
@@ -80,8 +82,8 @@ export default class DraftManager extends React.Component {
         localStorage.removeItem(this.getKey(gistId))
     }
 
-    saveDraft(notebook) {
-        localStorage.setItem(this.getKey(notebook.gistId), notebook.toJson())
+    saveDraft(draft) {
+        localStorage.setItem(this.getKey(draft.notebook.gistId), draft.toJson())
     }
 
     restoreDraft(draft) {
@@ -104,8 +106,8 @@ export default class DraftManager extends React.Component {
             <>
                 {this.state.newerDraftLocally && this.props.notebook &&
                     <Dialog onClose={()=>this.setState({ newerDraftLocally: false })}
-                            isOpen={this.state.newerDraftLocally && this.state.dialogOpen} 
-                            autoFocus enforceFocus 
+                            isOpen={this.state.newerDraftLocally && this.state.dialogOpen}
+                            autoFocus enforceFocus
                             isCloseButtonShown={false}
                             canEscapeKeyClose={false}
                             canOutsideClickClose={false}
@@ -113,7 +115,7 @@ export default class DraftManager extends React.Component {
                         <div className="bp3-dialog-body">
                             There is a newer auto-saved draft of your notebook stored locally than what was retrieved from GitHub.<br/>
                             <br/>
-                            <strong>Your local draft</strong>: Updated on <strong>{draft.updated_at.format(dateFormat)}</strong><br/>
+                            <strong>Your local draft</strong>: Updated on <strong>{draft.notebook.updated_at.format(dateFormat)}</strong><br/>
                             <strong>Remote copy</strong>: Updated on <strong>{this.props.notebook.updated_at.format(dateFormat)}</strong><br/>
                             <br/>
                             Would you like to continue working on your local draft, or would you like to discard your local changes and work from GitHub's copy?<br/>
