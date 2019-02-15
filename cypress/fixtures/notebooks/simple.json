@@ -1,0 +1,27 @@
+{
+    "modified": true,
+    "public": false,
+    "created_at": "2019-01-14T17:08:07.000Z",
+    "updated_at": "2019-02-15T00:47:59.896Z",
+    "saved_at": "2019-02-14T03:14:00.000Z",
+    "gistId": "affdb6774dad57b2dd3a6a8c1eda5396",
+    "gistOwnerLogin": "flotwig",
+    "name": "Ideabook",
+    "pages": [
+        {
+            "_id": 1,
+            "name": "Markdown Notebooks",
+            "gistFilename": "1. Markdown Notebooks.md",
+            "content": "* add the ability to draw some stuff\n* disable controls while saving\n* add links to github\n    * add links to github flavored markdown reference/app reference\n* embedding images",
+            "modified": true
+        },
+        {
+            "_id": 2,
+            "name": "Forloop Studios",
+            "gistFilename": "2. Forloop Studios.md",
+            "content": "* animated for loop - *bum* **bum** *bum* ~bum~ bum, animates each line running!",
+            "modified": true
+        }
+    ],
+    "deletedPages": []
+}

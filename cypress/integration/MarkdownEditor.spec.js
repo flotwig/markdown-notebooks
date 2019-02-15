@@ -1,7 +1,5 @@
 import { Promise } from "bluebird";
-
-const getTextarea = () =>
-    cy.get('.markdown-textarea')
+import { getTextarea } from '../support/util'
 
 // thanks https://github.com/cypress-io/cypress/issues/299#issuecomment-380197761
 const pressTab = () =>
