@@ -127,13 +127,13 @@ export default class NotebookEditor extends React.Component {
             <>
                 <div style={{width: '50%', flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
                     <div style={{maxWidth: '100%'}}>
-                        <H2>
+                        <H2 className="h-notebook-name">
                             <EditableText value={this.state.notebookName}
                                         placeholder="Untitled Page"
                                         onChange={(notebookName)=>this.setState({ notebookName })}
                                         onConfirm={(name) => this.props.renameNotebook(name)}/>
                         </H2>
-                        <H4>
+                        <H4 className="h-page-name">
                             <EditableText value={this.state.activePageName}
                                         placeholder="Untitled Page"
                                         onChange={(activePageName)=>this.setState({ activePageName })}

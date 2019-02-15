@@ -31,7 +31,7 @@ export default class DraftManager extends React.Component {
     componentDidUpdate(prevProps) {
         const { notebook } = this.props
         if (notebook) {
-            if (prevProps.notebook && prevProps.notebook.gistId !== notebook.gistId) {
+            if ((!prevProps.notebook && notebook) || (prevProps.notebook.gistId !== notebook.gistId)) {
                 this.saveLastGistId(notebook.gistId)
                 const draft = this.getDraft(notebook.gistId)
                 if (draft && draft.notebook.updated_at.isAfter(notebook.updated_at)) {
@@ -42,7 +42,7 @@ export default class DraftManager extends React.Component {
                     })
                 }
             }
-            if (notebook.modified || this.props.activePageId !== prevProps.activePageId) {
+            if (notebook.modified || (prevProps.activePageId && this.props.activePageId !== prevProps.activePageId)) {
                 this.saveDraft(new Draft({
                     notebook,
                     activePageId: this.props.activePageId
@@ -111,6 +111,7 @@ export default class DraftManager extends React.Component {
                             isCloseButtonShown={false}
                             canEscapeKeyClose={false}
                             canOutsideClickClose={false}
+                            className="dialog-draft"
                             title="Restore draft?">
                         <div className="bp3-dialog-body">
                             There is a newer auto-saved draft of your notebook stored locally than what was retrieved from GitHub.<br/>
@@ -122,10 +123,10 @@ export default class DraftManager extends React.Component {
                         </div>
                         <div className="bp3-dialog-footer">
                             <div className="bp3-dialog-footer-actions">
-                                <Button intent="primary" onClick={()=>this.restoreDraft(draft)}>
+                                <Button intent="primary" onClick={()=>this.restoreDraft(draft)} className="btn-restore-draft">
                                     Continue from draft
                                 </Button>
-                                <Button intent="danger" onClick={()=>this.dismissDraft(draft)}>
+                                <Button intent="danger" onClick={()=>this.dismissDraft(draft)} className="btn-discard-draft">
                                     Discard local changes
                                 </Button>
                             </div>

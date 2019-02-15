@@ -163,7 +163,7 @@ const notebookReducer = createReducer({
     },
     [RESTORE_DRAFT]: (state, { payload: draft }) => {
         state.notebook = draft.notebook
-        state.activePageId = draft.activePageId || draft.pages[0]._id
+        state.activePageId = draft.activePageId || draft.notebook.pages[0]._id
     },
     [TOGGLE_OPEN_MENU]: (state, { payload: showOpenMenu }) => {
         if (showOpenMenu !== undefined)

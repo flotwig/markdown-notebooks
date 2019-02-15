@@ -10,3 +10,7 @@ ReactDOM.render((
         <App />
     </Provider>
 ), document.getElementById('root'));
+
+if (window.Cypress) {
+    window.store = store
+}
