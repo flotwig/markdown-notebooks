@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-starter-kit';
 import { getActivePage, getActivePageIndex } from './notebookSelectors';
-import { 
-    HANDLE_EDIT, 
+import {
+    HANDLE_EDIT,
     RENAME_PAGE,
     RENAME_NOTEBOOK,
     SET_ACTIVE_PAGE,
@@ -10,9 +10,9 @@ import {
     MOVE_PAGE_TO_INDEX,
     RESTORE_DRAFT,
     RECEIVE_UPLOAD_IMAGE, REQUEST_UPLOAD_IMAGE,
-    RECEIVE_SAVE, REQUEST_SAVE, 
-    RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS, 
-    RECEIVE_NOTEBOOK, REQUEST_NOTEBOOK, RECEIVE_SAVE_ERROR, TOGGLE_OPEN_MENU 
+    RECEIVE_SAVE, REQUEST_SAVE,
+    RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS,
+    RECEIVE_NOTEBOOK, REQUEST_NOTEBOOK, RECEIVE_SAVE_ERROR, TOGGLE_OPEN_MENU
 } from './notebookActions';
 import Notebook from '../models/Notebook';
 import NotebookPage from '../models/NotebookPage';
@@ -80,7 +80,7 @@ const notebookReducer = createReducer({
         const pageIndex = getActivePageIndex(state)
         let { content } = pages[pageIndex]
         content = content.substring(0, cursorLocation)
-                 + `![Pasted image](Uploading image #${imageId}...)` 
+                 + `![Pasted image](Uploading image #${imageId}...)`
                  + content.substring(cursorLocation)
         pages[pageIndex] = pages[pageIndex].withChanges({ content })
         state.notebook = state.notebook.withChanges({ pages })
@@ -90,7 +90,7 @@ const notebookReducer = createReducer({
         let pages = [...state.notebook.pages]
         let pageIndex = getActivePageIndex(state)
         let { content } = pages[pageIndex]
-        content = content.replace(`![Pasted image](Uploading image #${imageId}...)`, 
+        content = content.replace(`![Pasted image](Uploading image #${imageId}...)`,
                                   "![Pasted image](" + response.data.link + ")")
         pages[pageIndex] = pages[pageIndex].withChanges({ content })
         state.notebook = state.notebook.withChanges({ pages })
@@ -157,13 +157,13 @@ const notebookReducer = createReducer({
     },
     [RENAME_NOTEBOOK]: (state, { payload }) => {
         if (!payload) payload = 'Untitled Notebook'
-        state.notebook = state.notebook.withChanges({ 
+        state.notebook = state.notebook.withChanges({
             name: payload
         })
     },
     [RESTORE_DRAFT]: (state, { payload: draft }) => {
-        state.notebook = draft
-        state.activePageId = draft.pages[0]._id
+        state.notebook = draft.notebook
+        state.activePageId = draft.activePageId || draft.notebook.pages[0]._id
     },
     [TOGGLE_OPEN_MENU]: (state, { payload: showOpenMenu }) => {
         if (showOpenMenu !== undefined)

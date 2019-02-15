@@ -2,8 +2,20 @@ import NotebookPage from "./NotebookPage";
 import moment from 'moment';
 import leftPad from 'left-pad';
 
+const hydratePages = (pages) => {
+    if (pages) {
+        return pages.map(page => Object.assign(new NotebookPage(), page))
+    }
+}
+
+const hydrateDate = (date) => {
+    if (date) {
+        return moment(date)
+    }
+}
+
 /**
- * A Notebook is the top-level document in Markdown Notebooks. It contains a set of NotebookPages 
+ * A Notebook is the top-level document in Markdown Notebooks. It contains a set of NotebookPages
  * which contain the actual content.
  */
 export default class Notebook {
@@ -18,9 +30,21 @@ export default class Notebook {
     pages = [new NotebookPage('Untitled Page')]; // array of pages
     deletedPages = []; // list of deleted pages - needed to delete from Gist
 
+    constructor(notebook) {
+        if (notebook) {
+            Object.assign(this, notebook, {
+                pages: hydratePages(notebook.pages),
+                deletedPages: hydratePages(notebook.deletedPages),
+                updated_at: hydrateDate(notebook.updated_at),
+                saved_at: hydrateDate(notebook.saved_at),
+                created_at: hydrateDate(notebook.created_at)
+            })
+        }
+    }
+
     /**
      * From a GitHub Gist, generate a matching Notebook.
-     * 
+     *
      * @param {object} gist gist object from GH API
      */
     static fromGist(gist) {
@@ -41,7 +65,7 @@ export default class Notebook {
 
     /**
      * Generates an array of Notebooks from a list of Gists. Works with partial Gist objects.
-     * 
+     *
      * @param {object[]} gistList list of gist objects from GH API
      */
     static fromGistList(gistList) {
@@ -75,13 +99,7 @@ export default class Notebook {
 
     static fromJson(json) {
         const parsedJson = JSON.parse(json)
-        return Object.assign(new Notebook(), parsedJson, {
-            pages: parsedJson.pages.map(page => Object.assign(new NotebookPage(), page)),
-            deletedPages: parsedJson.deletedPages.map(page => Object.assign(new NotebookPage(), page)),
-            updated_at: parsedJson.updated_at ? moment(parsedJson.updated_at) : undefined,
-            saved_at: parsedJson.saved_at ? moment(parsedJson.saved_at) : undefined,
-            created_at: parsedJson.created_at ? moment(parsedJson.created_at) : undefined
-        })
+        return new Notebook(parsedJson)
     }
 
     toJson() {
@@ -90,7 +108,7 @@ export default class Notebook {
 
     /**
      * Finds an unused page name beginning with `stub`.
-     * 
+     *
      * @param {string} stub Default page name. Defaults to 'Untitled Page'.
      * @param {NotebookPage} ignore Page to ignore while scanning.
      */
