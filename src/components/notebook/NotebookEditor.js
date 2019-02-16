@@ -4,7 +4,8 @@ import MarkdownRenderer from '../markdown/MarkdownRenderer';
 import ConnectedOpenMenu from './OpenMenu';
 import PageList from './PageList';
 import DraftManager from './DraftManager';
-import SplitPane from 'react-split-pane'
+import SplitPane from 'react-split-pane/lib/SplitPane'
+import Pane from 'react-split-pane/lib/Pane'
 import {
     Button, Dialog, Tag, Menu,
     NonIdealState, Spinner, H2, H4, EditableText, Card, Navbar, Alignment, Popover, MenuItem
@@ -69,18 +70,11 @@ export default class NotebookEditor extends React.Component {
                 {this._renderOpenDialog()}
                 <div style={{display: 'flex', flexDirection: 'column', height: '100%', width: '100%'}}>
                     {this._renderNavbar()}
-                    <div style={{display: 'flex', flexGrow: 100, margin: 0}}>
-                        {this._renderSidebar()}
-                        {(()=>{
-                            if (this.props.isLoadingNotebook) {
-                                return this._renderLoading()
-                            }
-                            if (!this.props.notebook) {
-                                return this._renderNoNotebook()
-                            }
-                            return this._renderEditor()
-                        })()}
-                    </div>
+                    <SplitPane split="vertical">
+                        <Pane initialSize="130px" minSize="50px">{this._renderSidebar()}</Pane>
+                        <Pane minSize="80px">{this._renderEditor()}</Pane>
+                        <Pane minSize="50px">{this._renderMarkdown()}</Pane>
+                    </SplitPane>
                 </div>
             </>
         )
@@ -106,7 +100,6 @@ export default class NotebookEditor extends React.Component {
                     </Popover>
                     <Navbar.Divider/>
                     {this._renderStatusIndicator()}
-
                 </Navbar.Group>
                 <Navbar.Group align={Alignment.RIGHT}>
 
@@ -130,7 +123,7 @@ export default class NotebookEditor extends React.Component {
 
     _renderSidebar() {
         return (
-            <div style={{width: '10%'}}>
+            <div>
                 {this.props.notebook && <PageList pages={this.props.notebook.pages}
                                                   movePageToIndex={this.props.movePageToIndex}
                                                   activePage={this.props.activePage}
@@ -173,32 +166,46 @@ export default class NotebookEditor extends React.Component {
     }
 
     _renderEditor() {
+        if (this.props.isLoadingNotebook) {
+            return this._renderLoading()
+        }
+        if (!this.props.notebook) {
+            return this._renderNoNotebook()
+        }
         return (
-            <>
-                <div style={{width: '50%', flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
-                    <div style={{maxWidth: '100%'}}>
-                        <H2 className="h-notebook-name">
-                            <EditableText value={this.state.notebookName}
-                                        placeholder="Untitled Page"
-                                        onChange={(notebookName)=>this.setState({ notebookName })}
-                                        onConfirm={(name) => this.props.renameNotebook(name)}/>
-                        </H2>
-                        <H4 className="h-page-name">
-                            <EditableText value={this.state.activePageName}
-                                        placeholder="Untitled Page"
-                                        onChange={(activePageName)=>this.setState({ activePageName })}
-                                        onConfirm={(name) => this.props.renamePage(name)}/>
-                        </H4>
-                    </div>
-                    <MarkdownEditor markdown={this.props.activePage.content}
-                                    onChange={this._handleEdit}
-                                    uploadImage={this.props.uploadImage}/>
+            <div style={{display: 'flex', flexDirection: 'column', padding: '1em', height: '100%'}}>
+                <div style={{maxWidth: '100%'}}>
+                    <H2 className="h-notebook-name">
+                        <EditableText value={this.state.notebookName}
+                                    placeholder="Untitled Page"
+                                    onChange={(notebookName)=>this.setState({ notebookName })}
+                                    onConfirm={(name) => this.props.renameNotebook(name)}/>
+                    </H2>
+                    <H4 className="h-page-name">
+                        <EditableText value={this.state.activePageName}
+                                    placeholder="Untitled Page"
+                                    onChange={(activePageName)=>this.setState({ activePageName })}
+                                    onConfirm={(name) => this.props.renamePage(name)}/>
+                    </H4>
                 </div>
-                <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
+                <MarkdownEditor markdown={this.props.activePage.content}
+                                onChange={this._handleEdit}
+                                uploadImage={this.props.uploadImage}/>
+            </div>
+        )
+    }
+
+    _renderMarkdown() {
+        if (!this.props.notebook) {
+            return <div/>
+        }
+        return (
+            <div style={{ padding: '1em', height: '100%'}}>
+                <Card style={{overflow: 'auto', height: '100%'}}>
                     <MarkdownRenderer markdown={this.props.activePage.content}
-                                      onCheckboxToggle={(checkboxIndex, value) => this._handleCheckboxToggle(checkboxIndex, value)}/>
+                                    onCheckboxToggle={(checkboxIndex, value) => this._handleCheckboxToggle(checkboxIndex, value)}/>
                 </Card>
-            </>
+            </div>
         )
     }
 

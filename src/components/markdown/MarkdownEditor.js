@@ -24,7 +24,7 @@ export default class MarkdownEditor extends React.Component {
     render() {
         // note: do not use blueprint3 TextArea - it does not implement all needed features like selectionStart, onPaste...
         return (
-            <div style={{height: '100%', width: '100%', position: 'relative'}}>
+            <div style={{flexGrow: 100, width: '100%', position: 'relative'}}>
                 {this.state.showDragOverlay &&
                     <div
                         style={{position: 'absolute', width: '100%', height: '100%', fontSize: '2em', fontWeight: 800, backgroundColor: 'rgba(0,0,0,.3)', paddingTop: '40%', textAlign: 'center'}}

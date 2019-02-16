@@ -19,7 +19,9 @@ export default class PageList extends React.Component {
             <Menu className="page-list">
                 <Menu.Item onClick={()=> this.props.addPage()} icon="plus" text="New Page" className="btn-new-page"/>
                 <Menu.Item onClick={()=> this.props.deletePage()} icon="trash" text="Delete Page" className="btn-delete-page"/>
-                <Menu.Divider/>
+                <li className="bp3-menu-header">
+                    <h6 className="bp3-heading">Pages</h6>
+                </li>
                 {this.props.pages.map(page => {
                     return this._renderPage(page)
                 })
@@ -30,9 +32,8 @@ export default class PageList extends React.Component {
 
     _renderPage(page) {
         return (
-            <li>
+            <li key={page._id}>
                 <button draggable
-                    key={page._id}
                     title={page.name}
                     style={this.state.draggingOver === page ? { borderTop: '2px dashed rgba(19, 124, 189, 0.5)' } : {}}
                     onDragStart={(e) => {
@@ -58,9 +59,11 @@ export default class PageList extends React.Component {
                     }}
                     data-selected={page._id === this.props.activePage._id}
                     onClick={() => this.props.onClickPage(page)}
-                    className="bp3-menu-item"
+                    className="bp3-menu-item btn-page"
                     >
-                    {page.name}
+                    <div className="bp3-text-overflow-ellipsis bp3-fill">
+                        {page.name}
+                    </div>
                 </button>
             </li>
         )
