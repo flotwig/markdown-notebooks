@@ -6,10 +6,6 @@ describe('NotebookEditor', () => {
     it('loads', () => {
     })
 
-    it('renders without crashing', () => {
-        cy.get('.logo-lockup').contains('Markdown')
-    })
-
     it('does not load a notebook by default', () => {
         cy.get('.nis-no-notebook').should('exist')
     })
@@ -26,8 +22,7 @@ describe('NotebookEditor', () => {
         })
 
         it('has save disabled by default', () => {
-            return cy.get('.btn-save-notebook')
-            .should('have.attr', 'disabled')
+            cy.get('.btn-save-notebook.bp3-disabled')
         })
 
         it('can add a new notebook page', () => {
@@ -35,7 +30,7 @@ describe('NotebookEditor', () => {
             .contains('New Page')
             .click()
             .then(() => {
-                return cy.get('.page-list > .bp3-tab-list > .bp3-tab')
+                return cy.get('.btn-page')
                 .should('have.length', 2)
             })
         })
@@ -45,7 +40,7 @@ describe('NotebookEditor', () => {
             .contains('Delete Page')
             .click()
             .then(() => {
-                return cy.get('.page-list > .bp3-tab-list > .bp3-tab')
+                return cy.get('.btn-page')
                 .should('have.length', 1)
             })
         })
@@ -70,8 +65,7 @@ describe('NotebookEditor', () => {
             })
 
             it('and can click the save button', () => {
-                return cy.get('.btn-save-notebook')
-                .should('not.have.attr', 'disabled')
+                cy.get('.btn-save-notebook').should('not.have.class', 'bp3-disabled')
             })
         })
     })

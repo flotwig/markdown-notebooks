@@ -1,22 +1,18 @@
-@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
-@import "~@blueprintjs/core/lib/css/blueprint.css";
-
 body, html, #root {
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 0;
 }
 
 body.bp3-dark {
   background-color: #30404d;
 }
 
-.bp3-tab-list {
-  width: 100%;
+.bp3-menu.menu-sidebar {
+  min-width: initial;
 }
 
-.bp3-tab[aria-selected="true"] {
+.btn-page[data-selected="true"] {
   background-color: rgba(19, 124, 189, 0.2) !important;
 }
 
@@ -25,8 +21,8 @@ body.bp3-dark {
 }
 
 .bp3-editable-text::before {
-  box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 
-              0 0 0 0 rgba(19, 124, 189, 0), 
+  box-shadow: 0 0 0 0 rgba(19, 124, 189, 0),
+              0 0 0 0 rgba(19, 124, 189, 0),
               inset 0 0 0 1px rgba(16, 22, 26, 0.2);
 }
 
@@ -36,4 +32,35 @@ body.bp3-dark {
   font-size: 85%;
   overflow: auto;
   white-space: pre;
+}
+
+.Resizer {
+  background: #000;
+  opacity: .2;
+  z-index: 1;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding;
+  background-clip: padding-box;
+}
+
+.Resizer.vertical {
+  width: 11px;
+  margin: 0 -5px;
+  border-left: 5px solid rgba(255, 255, 255, 0);
+  border-right: 5px solid rgba(255, 255, 255, 0);
+  cursor: col-resize;
+}
+
+.Resizer.vertical:hover {
+  border-left: 5px solid rgba(0, 0, 0, 0.5);
+  border-right: 5px solid rgba(0, 0, 0, 0.5);
+}
+.Resizer.disabled {
+  cursor: not-allowed;
+}
+.Resizer.disabled:hover {
+  border-color: transparent;
 }
