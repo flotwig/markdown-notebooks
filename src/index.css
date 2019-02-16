@@ -1,11 +1,7 @@
-@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
-@import "~@blueprintjs/core/lib/css/blueprint.css";
-
 body, html, #root {
   height: 100%;
   width: 100%;
   margin: 0;
-  padding: 0;
 }
 
 body.bp3-dark {
@@ -16,7 +12,7 @@ body.bp3-dark {
   width: 100%;
 }
 
-.bp3-tab[aria-selected="true"] {
+.bp3-tab[data-selected="true"] {
   background-color: rgba(19, 124, 189, 0.2) !important;
 }
 
@@ -25,8 +21,8 @@ body.bp3-dark {
 }
 
 .bp3-editable-text::before {
-  box-shadow: 0 0 0 0 rgba(19, 124, 189, 0), 
-              0 0 0 0 rgba(19, 124, 189, 0), 
+  box-shadow: 0 0 0 0 rgba(19, 124, 189, 0),
+              0 0 0 0 rgba(19, 124, 189, 0),
               inset 0 0 0 1px rgba(16, 22, 26, 0.2);
 }
 

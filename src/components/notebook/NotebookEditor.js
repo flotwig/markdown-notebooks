@@ -4,10 +4,10 @@ import MarkdownRenderer from '../markdown/MarkdownRenderer';
 import ConnectedOpenMenu from './OpenMenu';
 import PageList from './PageList';
 import DraftManager from './DraftManager';
-import LogoLockup from '../LogoLockup';
+import SplitPane from 'react-split-pane'
 import {
-    Button, ButtonGroup, Divider, Dialog, Tag,
-    NonIdealState, Spinner, H2, H4, EditableText, Card
+    Button, Dialog, Tag, Menu,
+    NonIdealState, Spinner, H2, H4, EditableText, Card, Navbar, Alignment, Popover, MenuItem
 } from '@blueprintjs/core';
 import Notebook from '../../models/Notebook';
 
@@ -22,19 +22,19 @@ export default class NotebookEditor extends React.Component {
             saveDisabled: true
         }
         this.componentDidUpdate({}, {}, {})
-        this.handleKeyDown = this.handleKeyDown.bind(this)
-        this.handleSave = this.handleSave.bind(this)
-        this.handleOpen = this.handleOpen.bind(this)
-        this.handleEdit = this.handleEdit.bind(this)
-        this.handleNotebookNameChange = this.handleNotebookNameChange.bind(this)
+        this._handleKeyDown = this._handleKeyDown.bind(this)
+        this._handleSave = this._handleSave.bind(this)
+        this._handleOpen = this._handleOpen.bind(this)
+        this._handleEdit = this._handleEdit.bind(this)
+        this._handleNotebookNameChange = this._handleNotebookNameChange.bind(this)
     }
 
     componentDidMount() {
-        window.addEventListener('keydown', this.handleKeyDown)
+        window.addEventListener('keydown', this._handleKeyDown)
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeyDown)
+        window.removeEventListener('keydown', this._handleKeyDown)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -65,64 +65,114 @@ export default class NotebookEditor extends React.Component {
     render() {
         return (
             <>
-                <DraftManager restoreDraft={this.props.restoreDraft}
-                              notebook={this.props.notebook}
-                              activePageId={this.props.activePageId}
-                              fetchNotebook={this.props.fetchNotebook}/>
-                <Dialog onClose={()=>this.setState({ isOpenMenuOpen: false })}
-                        isOpen={this.state.isOpenMenuOpen}
-                        title="Open a notebook">
-                    <ConnectedOpenMenu closeMenu={()=>{this.setState({ isOpenMenuOpen: false })}}/>
-                </Dialog>
-                <div style={{display: 'flex', width: '100%', height: '100%', margin: 0, padding: '1em'}}>
-                    {this.renderSidebar()}
-                    {this.props.isLoadingNotebook ? this.renderLoading() : (!this.props.notebook ? this.renderNoNotebook() : this.renderEditor())}
+                {this._renderDraftManager()}
+                {this._renderOpenDialog()}
+                <div style={{display: 'flex', flexDirection: 'column', height: '100%', width: '100%'}}>
+                    {this._renderNavbar()}
+                    <div style={{display: 'flex', flexGrow: 100, margin: 0}}>
+                        {this._renderSidebar()}
+                        {(()=>{
+                            if (this.props.isLoadingNotebook) {
+                                return this._renderLoading()
+                            }
+                            if (!this.props.notebook) {
+                                return this._renderNoNotebook()
+                            }
+                            return this._renderEditor()
+                        })()}
+                    </div>
                 </div>
             </>
         )
     }
 
-    renderSidebar() {
+    _renderNavbar() {
         return (
-            <div style={{display: 'flex', width: '10%', flexDirection: 'column', marginRight: '1em'}}>
-                <LogoLockup/>
-                <ButtonGroup alignText="right" minimal={true} vertical={true}>
-                    {this.props.saveError &&
-                        <Tag icon="warning-sign" className="tag-error-saving" intent="danger" large>Error While Saving</Tag>}
-                    {this.props.notebook && this.props.notebook.modified ?
-                        <Tag icon="warning-sign" className="tag-unsaved-changes" intent="warning" large>Unsaved Changes</Tag>
-                    :
-                        <Tag icon="thumbs-up" className="tag-no-unsaved-changes" intent="success" large>No Unsaved Changes</Tag>}
-                    <Button text="New Notebook" className="btn-new-notebook" onClick={()=>this.handleNew()}/>
-                    <Button text="Save Notebook" className="btn-save-notebook" onClick={this.handleSave} loading={this.props.isSaving} disabled={this.props.isSaving || this.state.saveDisabled}/>
-                    <Button text="Open Notebook" className="btn-open-notebook" onClick={this.handleOpen}/>
-                    {this.props.notebook &&
-                        <>
-                            <Divider/>
-                            <Button text="New Page" className="btn-new-page" onClick={()=>this.props.addPage()}/>
-                            <Button text="Delete Page" className="btn-delete-page" onClick={()=>this.props.deletePage()}/>
-                            <Divider/>
-                        </>
-                    }
-                </ButtonGroup>
+            <Navbar fixedToTop className="bp3-dark">
+                <Navbar.Group align={Alignment.LEFT}>
+                    <Navbar.Heading>Markdown Notebooks</Navbar.Heading>
+                    <Popover
+                        inheritDarkTheme={false}
+                        enforceFocus={false}
+                        content={(
+                            <Menu>
+                                <MenuItem onClick={() => this._handleNew()} icon="plus" text="New Notebook" className="btn-new-notebook"/>
+                                <MenuItem onClick={() => this._handleSave()} icon="upload" text="Save Notebook" className="btn-save-notebook"/>
+                                <MenuItem onClick={() => this._handleOpen()} icon="download" text="Open Notebook" className="btn-open-notebook"/>
+                            </Menu>
+                        )}
+                        >
+                        <Button minimal icon="book" text="Notebook" rightIcon="caret-down" className="btn-notebook"/>
+                    </Popover>
+                    <Navbar.Divider/>
+                    {this._renderStatusIndicator()}
+
+                </Navbar.Group>
+                <Navbar.Group align={Alignment.RIGHT}>
+
+                </Navbar.Group>
+            </Navbar>
+        )
+    }
+
+    _renderStatusIndicator() {
+        if (this.props.isSaving) {
+            return <Tag icon={<Spinner/>} className="tag-is-saving" intent="primary" large>Saving...</Tag>
+        }
+        if (this.props.saveError) {
+            return <Tag icon="warning-sign" className="tag-error-saving" intent="danger" large>Error While Saving</Tag>
+        }
+        if (this.props.notebook && this.props.notebook.modified) {
+            return <Tag icon="warning-sign" className="tag-unsaved-changes" intent="warning" large>Unsaved Changes</Tag>
+        }
+        return <Tag icon="thumbs-up" className="tag-no-unsaved-changes" intent="success" large>No Unsaved Changes</Tag>
+    }
+
+    _renderSidebar() {
+        return (
+            <div style={{width: '10%'}}>
                 {this.props.notebook && <PageList pages={this.props.notebook.pages}
-                                                    movePageToIndex={this.props.movePageToIndex}
-                                                    activePage={this.props.activePage}
-                                                    onClickPage={this.props.setActivePage}/>
+                                                  movePageToIndex={this.props.movePageToIndex}
+                                                  activePage={this.props.activePage}
+                                                  onClickPage={this.props.setActivePage}
+                                                  addPage={this.props.addPage}
+                                                  deletePage={this.props.deletePage}
+                                                  />
                 }
             </div>
         )
     }
 
-    renderLoading() {
+    _renderOpenDialog() {
+        return (
+            <Dialog onClose={()=>this.setState({ isOpenMenuOpen: false })}
+                    isOpen={this.state.isOpenMenuOpen}
+                    title="Open a notebook"
+                    >
+                <ConnectedOpenMenu closeMenu={()=>{this.setState({ isOpenMenuOpen: false })}}/>
+            </Dialog>
+        )
+    }
+
+    _renderDraftManager() {
+        return (
+            <DraftManager restoreDraft={this.props.restoreDraft}
+                        notebook={this.props.notebook}
+                        activePageId={this.props.activePageId}
+                        fetchNotebook={this.props.fetchNotebook}
+                        />
+        )
+    }
+
+    _renderLoading() {
         return <NonIdealState icon={<Spinner/>} className="nis-loading-notebook" description="Loading notebook..."/>
     }
 
-    renderNoNotebook() {
+    _renderNoNotebook() {
         return <NonIdealState icon="clean" className="nis-no-notebook" description="Open a notebook to start editing."/>
     }
 
-    renderEditor() {
+    _renderEditor() {
         return (
             <>
                 <div style={{width: '50%', flex: 'auto', display: 'flex', flexDirection: 'column', marginRight: '1%'}}>
@@ -141,18 +191,18 @@ export default class NotebookEditor extends React.Component {
                         </H4>
                     </div>
                     <MarkdownEditor markdown={this.props.activePage.content}
-                                    onChange={this.handleEdit}
+                                    onChange={this._handleEdit}
                                     uploadImage={this.props.uploadImage}/>
                 </div>
                 <Card style={{width: '40%', height: '100%', overflow: 'auto'}}>
                     <MarkdownRenderer markdown={this.props.activePage.content}
-                                      onCheckboxToggle={(checkboxIndex, value) => this.handleCheckboxToggle(checkboxIndex, value)}/>
+                                      onCheckboxToggle={(checkboxIndex, value) => this._handleCheckboxToggle(checkboxIndex, value)}/>
                 </Card>
             </>
         )
     }
 
-    handleCheckboxToggle(checkboxIndex, value) {
+    _handleCheckboxToggle(checkboxIndex, value) {
         const r = /^(\s*[-+*]\s+\[)([ xX])(\])/gm
         var i = 0;
         const markdown = this.props.activePage.content.replace(
@@ -164,38 +214,38 @@ export default class NotebookEditor extends React.Component {
                 return match.replace(r, `$1${value ? 'x' : ' '}$3`)
             }
         )
-        this.handleEdit(markdown)
+        this._handleEdit(markdown)
     }
 
-    handleKeyDown(e) {
+    _handleKeyDown(e) {
         if (e.ctrlKey && e.key.toLowerCase() === 's') { // Ctrl+S
-            this.handleSave()
+            this._handleSave()
             e.preventDefault()
         } else if (e.ctrlKey && e.key.toLowerCase() === 'o') {
-            this.handleOpen()
+            this._handleOpen()
             e.preventDefault()
         }
     }
 
-    handleNew() {
+    _handleNew() {
         this.props.setActiveNotebook(new Notebook())
     }
 
-    handleSave() {
+    _handleSave() {
         if (this.state.saveDisabled) return
         this.props.handleSave(this.props.notebook)
     }
 
-    handleEdit(content) {
+    _handleEdit(content) {
         this.props.handleEdit({ name: this.state.activePageName, content })
     }
 
-    handleNotebookNameChange(name) {
+    _handleNotebookNameChange(name) {
         this.setState({ notebookName: name })
         this.props.renameNotebook(name)
     }
 
-    handleOpen() {
+    _handleOpen() {
         this.setState({
             isOpenMenuOpen: true
         })
