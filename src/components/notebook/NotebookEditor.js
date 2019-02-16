@@ -7,8 +7,8 @@ import DraftManager from './DraftManager';
 import SplitPane from 'react-split-pane/lib/SplitPane'
 import Pane from 'react-split-pane/lib/Pane'
 import {
-    Button, Dialog, Tag, Menu,
-    NonIdealState, Spinner, H2, H4, EditableText, Card, Navbar, Alignment, Popover, MenuItem
+    Icon, Dialog, Tag, Menu,
+    NonIdealState, Spinner, H2, H4, EditableText, Card, Navbar, Alignment, MenuItem
 } from '@blueprintjs/core';
 import Notebook from '../../models/Notebook';
 
@@ -84,7 +84,7 @@ export default class NotebookEditor extends React.Component {
         return (
             <Navbar fixedToTop className="bp3-dark">
                 <Navbar.Group align={Alignment.LEFT}>
-                    <Navbar.Heading>Markdown Notebooks</Navbar.Heading>
+                    <Navbar.Heading><Icon icon="book"/> Markdown Notebooks</Navbar.Heading>
                     {/* <Popover
                         inheritDarkTheme={false}
                         enforceFocus={false}
