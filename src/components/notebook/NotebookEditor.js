@@ -71,7 +71,7 @@ export default class NotebookEditor extends React.Component {
                 <div style={{display: 'flex', flexDirection: 'column', height: '100%', width: '100%'}}>
                     {this._renderNavbar()}
                     <SplitPane split="vertical">
-                        <Pane initialSize="130px" minSize="50px">{this._renderSidebar()}</Pane>
+                        <Pane initialSize="150px" minSize="50px">{this._renderSidebar()}</Pane>
                         <Pane minSize="80px">{this._renderEditor()}</Pane>
                         <Pane minSize="50px">{this._renderMarkdown()}</Pane>
                     </SplitPane>
@@ -85,20 +85,16 @@ export default class NotebookEditor extends React.Component {
             <Navbar fixedToTop className="bp3-dark">
                 <Navbar.Group align={Alignment.LEFT}>
                     <Navbar.Heading>Markdown Notebooks</Navbar.Heading>
-                    <Popover
+                    {/* <Popover
                         inheritDarkTheme={false}
                         enforceFocus={false}
                         content={(
                             <Menu>
-                                <MenuItem onClick={() => this._handleNew()} icon="plus" text="New Notebook" className="btn-new-notebook"/>
-                                <MenuItem onClick={() => this._handleSave()} icon="upload" text="Save Notebook" className="btn-save-notebook"/>
-                                <MenuItem onClick={() => this._handleOpen()} icon="download" text="Open Notebook" className="btn-open-notebook"/>
                             </Menu>
                         )}
                         >
                         <Button minimal icon="book" text="Notebook" rightIcon="caret-down" className="btn-notebook"/>
-                    </Popover>
-                    <Navbar.Divider/>
+                    </Popover> */}
                     {this._renderStatusIndicator()}
                 </Navbar.Group>
                 <Navbar.Group align={Alignment.RIGHT}>
@@ -123,7 +119,11 @@ export default class NotebookEditor extends React.Component {
 
     _renderSidebar() {
         return (
-            <div>
+            <Menu className="menu-sidebar">
+                <MenuItem onClick={() => this._handleNew()} icon="plus" text="New Notebook" className="btn-new-notebook"/>
+                <MenuItem onClick={() => this._handleSave()} icon="upload" text="Save Notebook" className="btn-save-notebook" disabled={this.props.isSaving || this.state.saveDisabled}/>
+                <MenuItem onClick={() => this._handleOpen()} icon="download" text="Open Notebook" className="btn-open-notebook"/>
+                <Menu.Divider/>
                 {this.props.notebook && <PageList pages={this.props.notebook.pages}
                                                   movePageToIndex={this.props.movePageToIndex}
                                                   activePage={this.props.activePage}
@@ -132,7 +132,7 @@ export default class NotebookEditor extends React.Component {
                                                   deletePage={this.props.deletePage}
                                                   />
                 }
-            </div>
+            </Menu>
         )
     }
 

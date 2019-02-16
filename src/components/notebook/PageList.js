@@ -16,7 +16,7 @@ export default class PageList extends React.Component {
     }
     render() {
         return (
-            <Menu className="page-list">
+            <>
                 <Menu.Item onClick={()=> this.props.addPage()} icon="plus" text="New Page" className="btn-new-page"/>
                 <Menu.Item onClick={()=> this.props.deletePage()} icon="trash" text="Delete Page" className="btn-delete-page"/>
                 <li className="bp3-menu-header">
@@ -26,7 +26,7 @@ export default class PageList extends React.Component {
                     return this._renderPage(page)
                 })
                 }
-            </Menu>
+            </>
         )
     }
 
