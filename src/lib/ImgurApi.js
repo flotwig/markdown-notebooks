@@ -1,4 +1,4 @@
-import { IMGUR_CLIENT_ID } from './env';
+import { IMGUR_CLIENT_ID } from '../env';
 
 const API_BASEURL = 'https://api.imgur.com/3/';
 
@@ -8,7 +8,7 @@ const API_BASEURL = 'https://api.imgur.com/3/';
 export default class ImgurApi {
     /**
      * Upload an image to Imgur. Returns a promise with the response.
-     * 
+     *
      * @param {string} image base64-encoded image string
      * @param {string} title description, title, and name of uploaded image
      */
@@ -23,7 +23,7 @@ export default class ImgurApi {
 
     /**
      * Helper method to convert Blob objects to base64 strings.
-     * 
+     *
      * @param {Blob} blob Input blob
      * @param {Function} cb Callback that will receive the base64 string
      */
@@ -39,7 +39,7 @@ export default class ImgurApi {
 
     /**
      * Internal fetch method that hits Imgur API.
-     * 
+     *
      * @param {string} endpoint API endpoint to reach
      * @param {string} method Optional HTTP method to use
      * @param {object} body Optional object to send as a JSON body
