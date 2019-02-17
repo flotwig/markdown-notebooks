@@ -3,6 +3,7 @@ import { GitHubApi } from '../lib/GitHubApi';
 import { withAuth } from './util';
 import moment from 'moment';
 import ImgurApi from '../lib/ImgurApi';
+import { SET_PATHNAME } from './router';
 
 export const REQUEST_SAVE = createAction('REQUEST_SAVE');
 export const RECEIVE_SAVE = createAction('RECEIVE_SAVE');
@@ -48,6 +49,9 @@ export const FETCH_SAVE = withAuth((notebook) => {
         ).then(response => {
             if (response) {
                 dispatch(RECEIVE_SAVE(response))
+                if (response.id) {
+                    dispatch(SET_PATHNAME(`/${response.owner.login}/${response.id}`))
+                }
             } else {
                 throw new Error()
             }

@@ -1,3 +1,4 @@
+import { fetch } from 'whatwg-fetch'
 import { IMGUR_CLIENT_ID } from '../env';
 
 const API_BASEURL = 'https://api.imgur.com/3/';

@@ -93,7 +93,7 @@ export default class NotebookEditor extends React.Component {
 
     _renderStatusIndicator() {
         if (this.props.isSaving) {
-            return <Tag icon={<Spinner/>} className="tag-is-saving" intent="primary" large>Saving...</Tag>
+            return <Tag icon={<Spinner size={Spinner.SIZE_SMALL}/>} className="tag-is-saving" intent="primary" large>Saving...</Tag>
         }
         if (this.props.saveError) {
             return <Tag icon="warning-sign" className="tag-error-saving" intent="danger" large>Error While Saving</Tag>
