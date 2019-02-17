@@ -6,9 +6,9 @@ import { AUTH_ENDPOINT, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_BASEURL, 
 export class GitHubApi {
     /**
      * Stores token and validity in internal storage.
-     * 
-     * @param {boolean} valid 
-     * @param {string} token 
+     *
+     * @param {boolean} valid
+     * @param {string} token
      */
     static storeAuth(valid, token) {
         localStorage.setItem('githubAuth', JSON.stringify({
@@ -33,7 +33,7 @@ export class GitHubApi {
 
     /**
      * Generates and returns the authorization URL to redirect a user to for login.
-     * 
+     *
      * @param {string} stateId stateId to validate the returned code
      */
     static getAuthUrl(stateId) {
@@ -47,7 +47,7 @@ export class GitHubApi {
 
     /**
      * Gets the auth code from the URL and verifies the state code matches what is supplied.
-     * 
+     *
      * @param {string} url URL to parse
      * @param {string} stateId stateId to validate. If incorrect, function will return undefined.
      */
@@ -61,10 +61,10 @@ export class GitHubApi {
     }
 
     /**
-     * Uses a third-party server to exchange the code for an access token that will be used for future 
+     * Uses a third-party server to exchange the code for an access token that will be used for future
      * requests. An external server must be used because the GitHub authorization endpoint requires
      * the client secret and blocks cross-origin requests.
-     * 
+     *
      * @param {string} code The code from OAuth redirect
      * @param {string} stateId stateId to send to validate request
      */
@@ -74,7 +74,7 @@ export class GitHubApi {
             "&code=" + code +
             "&redirect_uri=" + window.location.origin +
             "&state=" + stateId +
-            (GITHUB_CLIENT_SECRET ? 
+            (GITHUB_CLIENT_SECRET ?
                 "&client_secret=" + GITHUB_CLIENT_SECRET : "")
         return fetch(tokenUrl).then(response => {
             if (response.status !== 200) {
@@ -104,9 +104,13 @@ export class GitHubApi {
         return GitHubApi._fetch('gists/' + gistId)
     }
 
+    static getCurrentUser() {
+        return GitHubApi._fetch('user')
+    }
+
     /**
      * Internal fetch method that hits GitHub API.
-     * 
+     *
      * @param {string} endpoint API endpoint to reach
      * @param {string} method Optional HTTP method to use
      * @param {object} body Optional object to send as a JSON body
