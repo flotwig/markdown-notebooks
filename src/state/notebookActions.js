@@ -1,8 +1,8 @@
 import { createAction } from 'redux-starter-kit';
-import { GitHubApi } from '../GitHubApi';
+import { GitHubApi } from '../lib/GitHubApi';
 import { withAuth } from './util';
 import moment from 'moment';
-import ImgurApi from '../ImgurApi';
+import ImgurApi from '../lib/ImgurApi';
 
 export const REQUEST_SAVE = createAction('REQUEST_SAVE');
 export const RECEIVE_SAVE = createAction('RECEIVE_SAVE');

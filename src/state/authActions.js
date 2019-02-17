@@ -1,5 +1,5 @@
 import { createAction } from 'redux-starter-kit';
-import { GitHubApi } from '../GitHubApi';
+import { GitHubApi } from '../lib/GitHubApi';
 
 export const REQUEST_TOKEN = createAction('REQUEST_TOKEN');
 export const RECEIVE_TOKEN = createAction('RECEIVE_TOKEN');
