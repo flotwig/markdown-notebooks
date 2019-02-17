@@ -1,7 +1,8 @@
 import { createReducer } from 'redux-starter-kit';
-import { 
+import {
     REQUEST_TOKEN, RECEIVE_TOKEN,
-    TOGGLE_AUTH_PROMPT
+    TOGGLE_AUTH_PROMPT,
+    SET_TOKEN, RECEIVE_USER
 } from './authActions';
 import { GitHubApi } from '../GitHubApi';
 
@@ -11,7 +12,8 @@ import { GitHubApi } from '../GitHubApi';
 const authReducer = createReducer({
     ...GitHubApi.getStoredAuth(),
     isLoadingToken: false,
-    showAuthPrompt: false
+    showAuthPrompt: false,
+    user: undefined
 }, {
     [RECEIVE_TOKEN]: (state, { payload }) => {
         state.token = payload
@@ -23,11 +25,18 @@ const authReducer = createReducer({
         state.isLoadingToken = true
         state.showAuthPrompt = true
     },
+    [SET_TOKEN]: (state, { payload: token }) => {
+        state.token = token
+        state.valid = !!token
+    },
     [TOGGLE_AUTH_PROMPT]: (state, { payload: showAuthPrompt }) => {
         if (showAuthPrompt !== undefined)
             state.showAuthPrompt = showAuthPrompt
         else
             state.showAuthPrompt = !state.showAuthPrompt
+    },
+    [RECEIVE_USER]: (state, { payload: user }) => {
+        state.user = user
     }
 })
 
