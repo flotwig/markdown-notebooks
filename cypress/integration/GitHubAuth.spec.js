@@ -44,7 +44,7 @@ describe('GitHub Auth', () => {
         })
     })
 
-    context.only('when an invalidated token is stored', () => {
+    context('when an invalidated token is stored', () => {
         beforeEach(() => {
             localStorage.setItem('githubAuth', JSON.stringify({
                 valid: true,
