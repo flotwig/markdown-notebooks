@@ -19,13 +19,13 @@ export default class DraftManager extends React.Component {
         if (this.props.isLoadingNotebook) return;
         const lastGist = this.getLastGist()
         if (!lastGist) return;
-        const { lastGistId, lastGistOwnerLogin } = lastGist
-        const lastOpenDraft = this.getDraft(lastGistId)
+        const { gistId, gistOwnerLogin } = lastGist;
+        const lastOpenDraft = this.getDraft(gistId)
         if (lastOpenDraft) {
             this.restoreDraft(lastOpenDraft)
-        } else if (lastGistId) {
+        } else if (gistId) {
             // we can load it from github then
-            this.props.setPathname(`/${lastGistOwnerLogin}/${lastGistId}`)
+            this.props.setPathname(`/${gistOwnerLogin}/${gistId}`)
         }
     }
 
@@ -33,7 +33,7 @@ export default class DraftManager extends React.Component {
         const { notebook } = this.props
         if (notebook) {
             if ((!prevProps.notebook && notebook) || (prevProps.notebook.gistId !== notebook.gistId)) {
-                this.saveLastGist(notebook.gistId, notebook.gistOwnerLogin)
+                this.saveLastGist(notebook)
                 const draft = this.getDraft(notebook.gistId)
                 if (draft && draft.notebook.updated_at.isAfter(notebook.updated_at)) {
                     this.setState({
@@ -59,7 +59,7 @@ export default class DraftManager extends React.Component {
         }
     }
 
-    saveLastGist(gistId, gistOwnerLogin) {
+    saveLastGist({ gistId, gistOwnerLogin }) {
         localStorage.setItem('lastGist', JSON.stringify({ gistId, gistOwnerLogin }))
     }
 
