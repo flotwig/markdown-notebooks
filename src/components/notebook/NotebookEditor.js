@@ -39,7 +39,7 @@ export default class NotebookEditor extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const { notebook } = this.props // shortcut
+        const { notebook } = this.props
         if (notebook) {
             const title = (notebook.modified ? '* ' : '') + notebook.name
             if (title !== document.title) {
@@ -85,20 +85,7 @@ export default class NotebookEditor extends React.Component {
             <Navbar fixedToTop className="bp3-dark">
                 <Navbar.Group align={Alignment.LEFT}>
                     <Navbar.Heading><Icon icon="book"/> Markdown Notebooks</Navbar.Heading>
-                    {/* <Popover
-                        inheritDarkTheme={false}
-                        enforceFocus={false}
-                        content={(
-                            <Menu>
-                            </Menu>
-                        )}
-                        >
-                        <Button minimal icon="book" text="Notebook" rightIcon="caret-down" className="btn-notebook"/>
-                    </Popover> */}
                     {this._renderStatusIndicator()}
-                </Navbar.Group>
-                <Navbar.Group align={Alignment.RIGHT}>
-
                 </Navbar.Group>
             </Navbar>
         )
@@ -152,9 +139,15 @@ export default class NotebookEditor extends React.Component {
             <DraftManager restoreDraft={this.props.restoreDraft}
                         notebook={this.props.notebook}
                         activePageId={this.props.activePageId}
-                        fetchNotebook={this.props.fetchNotebook}
+                        setPathname={this.props.setPathname}
+                        isLoadingNotebook={this.props.isLoadingNotebook}
                         />
         )
+    }
+
+    _renderErrorLoadingNotebook() {
+        return <NonIdealState className="nis-error-loading-notebook" icon="error" title="Error loading notebook"
+                              description="There was an error loading the requested notebook. Double-check that you've entered the correct URL."/>
     }
 
     _renderLoading() {
@@ -166,6 +159,9 @@ export default class NotebookEditor extends React.Component {
     }
 
     _renderEditor() {
+        if (this.props.loadingNotebookError) {
+            return this._renderErrorLoadingNotebook()
+        }
         if (this.props.isLoadingNotebook) {
             return this._renderLoading()
         }
@@ -236,6 +232,7 @@ export default class NotebookEditor extends React.Component {
 
     _handleNew() {
         this.props.setActiveNotebook(new Notebook())
+        this.props.setPathname('')
     }
 
     _handleSave() {

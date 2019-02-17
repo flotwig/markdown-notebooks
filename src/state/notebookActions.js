@@ -11,6 +11,7 @@ export const REQUEST_NOTEBOOKS = createAction('REQUEST_NOTEBOOKS');
 export const RECEIVE_NOTEBOOKS = createAction('RECEIVE_NOTEBOOKS');
 export const REQUEST_NOTEBOOK = createAction('REQUEST_NOTEBOOK');
 export const RECEIVE_NOTEBOOK = createAction('RECEIVE_NOTEBOOK');
+export const RECEIVE_NOTEBOOK_ERROR = createAction('RECEIVE_NOTEBOOK_ERROR');
 export const REQUEST_UPLOAD_IMAGE = createAction('REQUEST_UPLOAD_IMAGE');
 export const RECEIVE_UPLOAD_IMAGE = createAction('RECEIVE_UPLOAD_IMAGE');
 export const SET_ACTIVE_PAGE = createAction('SET_ACTIVE_PAGE');
@@ -67,5 +68,6 @@ export function FETCH_NOTEBOOK(notebook) {
         dispatch(REQUEST_NOTEBOOK())
         GitHubApi.getGist(notebook.gistId)
                  .then(response => dispatch(RECEIVE_NOTEBOOK(response)))
+                 .catch(error => dispatch(RECEIVE_NOTEBOOK_ERROR(error)))
     }
 }

@@ -1,12 +1,14 @@
-import { configureStore } from 'redux-starter-kit';
-import authReducer from './authReducer';
-import notebookReducer from './notebookReducer';
-import logger from 'redux-logger';
-import thunk from 'redux-thunk';
+import { configureStore } from 'redux-starter-kit'
+import { withRouter, routerReducer } from './router'
+import authReducer from './authReducer'
+import notebookReducer from './notebookReducer'
+import logger from 'redux-logger'
+import thunk from 'redux-thunk'
 
 const reducer = {
     auth: authReducer,
-    notebook: notebookReducer
+    notebook: notebookReducer,
+    location: routerReducer
 }
 
 const middleware = [
@@ -14,7 +16,7 @@ const middleware = [
     logger
 ]
 
-export const store = configureStore({
+export const store = withRouter(configureStore({
     reducer,
     middleware
-})
+}))

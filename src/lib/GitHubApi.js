@@ -31,6 +31,10 @@ export class GitHubApi {
         }
     }
 
+    static clearStoredAuth() {
+        localStorage.removeItem('githubAuth')
+    }
+
     /**
      * Generates and returns the authorization URL to redirect a user to for login.
      *
@@ -127,10 +131,15 @@ export class GitHubApi {
             body: JSON.stringify(body)
         }).then(response => {
             if (response.status > 299) {
-                throw Error(response)
-            } else {
-                return response.json()
+                if (response.status === 401) {
+                    GitHubApi.clearStoredAuth()
+                }
+                const err = new Error()
+                err.response = response
+                throw err
             }
+
+            return response.json()
         })
     }
 }

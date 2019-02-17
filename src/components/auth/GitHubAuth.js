@@ -31,7 +31,7 @@ class GitHubAuth extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.auth.valid !== this.props.auth.valid) {
-            window.history.pushState(undefined, undefined, '/')
+            //window.history.pushState(undefined, undefined, '/')
         }
     }
 

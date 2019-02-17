@@ -16,15 +16,15 @@ export default class DraftManager extends React.Component {
     }
 
     componentDidMount() {
-        const lastGistId = this.getLastGistId()
-        const lastOpenDraft = this.getDraft(lastGistId)
+        if (this.props.isLoadingNotebook) return;
+        const lastGist = this.getLastGist()
+        if (!lastGist) return;
+        const lastOpenDraft = this.getDraft(lastGist.gistId)
         if (lastOpenDraft) {
             this.restoreDraft(lastOpenDraft)
-        } else if (lastGistId) {
+        } else {
             // we can load it from github then
-            this.props.fetchNotebook({
-                gistId: lastGistId
-            })
+            this.props.setPathname(`/${lastGist.gistOwnerLogin}/${lastGist.gistId}`)
         }
     }
 
@@ -32,7 +32,7 @@ export default class DraftManager extends React.Component {
         const { notebook } = this.props
         if (notebook) {
             if ((!prevProps.notebook && notebook) || (prevProps.notebook.gistId !== notebook.gistId)) {
-                this.saveLastGistId(notebook.gistId)
+                this.saveLastGist(notebook.gistId, notebook.gistOwnerLogin)
                 const draft = this.getDraft(notebook.gistId)
                 if (draft && draft.notebook.updated_at.isAfter(notebook.updated_at)) {
                     this.setState({
@@ -58,12 +58,16 @@ export default class DraftManager extends React.Component {
         }
     }
 
-    saveLastGistId(gistId) {
-        localStorage.setItem('lastGistId', gistId)
+    saveLastGist(gistId, gistOwnerLogin) {
+        localStorage.setItem('lastGist', JSON.stringify({ gistId, gistOwnerLogin }))
     }
 
-    getLastGistId() {
-        return localStorage.getItem('lastGistId')
+    getLastGist() {
+        try {
+            return JSON.parse(localStorage.getItem('lastGist'))
+        } catch (e) {
+            localStorage.removeItem('lastGist')
+        }
     }
 
     getKey = (gistId) => `draft.${gistId || '__unsaved'}`
@@ -91,6 +95,8 @@ export default class DraftManager extends React.Component {
         this.setState({
             newerDraftLocally: false,
         })
+        if (draft.notebook.gistId)
+            this.props.setPathname(`/${draft.notebook.gistOwnerLogin}/${draft.notebook.gistId}`)
     }
 
     dismissDraft(draft) {
