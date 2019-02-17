@@ -1,18 +1,8 @@
 describe('NotebookEditor', () => {
-    beforeEach(() => {
-        cy.visit('/')
-    })
-
-    it('loads', () => {
-    })
-
-    it('does not load a notebook by default', () => {
-        cy.get('.nis-no-notebook').should('exist')
-    })
-
     context('notebook editing', () => {
         beforeEach(() => {
-            return cy.get('.btn-new-notebook')
+            cy.visit('/')
+            cy.get('.btn-new-notebook')
             .click()
         })
 

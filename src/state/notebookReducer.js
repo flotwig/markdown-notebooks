@@ -120,6 +120,7 @@ const notebookReducer = createReducer({
     },
     [SET_ACTIVE_NOTEBOOK]: (state, { payload }) => {
         state.notebook = payload;
+        state.loadingNotebookError = false
         if (payload) state.activePageId = payload.pages[0]._id;
         else state.activePageId = undefined;
     },

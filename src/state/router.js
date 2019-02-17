@@ -36,7 +36,7 @@ export const withRouter = (store) => {
     store.subscribe(() => {
         const pathname = store.getState().location.pathname
         if (pathname !== history.location.pathname) {
-            history.push(store.getState().location.pathname)
+            history.push(pathname)
         }
     })
 

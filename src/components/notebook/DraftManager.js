@@ -19,12 +19,13 @@ export default class DraftManager extends React.Component {
         if (this.props.isLoadingNotebook) return;
         const lastGist = this.getLastGist()
         if (!lastGist) return;
-        const lastOpenDraft = this.getDraft(lastGist.gistId)
+        const { lastGistId, lastGistOwnerLogin } = lastGist
+        const lastOpenDraft = this.getDraft(lastGistId)
         if (lastOpenDraft) {
             this.restoreDraft(lastOpenDraft)
-        } else {
+        } else if (lastGistId) {
             // we can load it from github then
-            this.props.setPathname(`/${lastGist.gistOwnerLogin}/${lastGist.gistId}`)
+            this.props.setPathname(`/${lastGistOwnerLogin}/${lastGistId}`)
         }
     }
 
