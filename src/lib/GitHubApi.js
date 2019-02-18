@@ -98,6 +98,10 @@ export class GitHubApi {
         return GitHubApi._fetch('gists', 'POST', gist)
     }
 
+    static forkGist(gistId) {
+        return GitHubApi._fetch(`gists/${gistId}/forks`, 'POST')
+    }
+
     /**
      * @param {Moment} since Optional. Only gists updated at or after this time are returned.
      */

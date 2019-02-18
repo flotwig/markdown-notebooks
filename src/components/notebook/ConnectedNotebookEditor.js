@@ -16,7 +16,7 @@ const ConnectedNotebookEditor = connect(
         }
     }, (dispatch) => {
         return {
-            handleSave: notebook => dispatch(FETCH_SAVE(notebook)),
+            handleSave: (notebook, obj) => dispatch(FETCH_SAVE(notebook, obj)),
             handleEdit: (page) => dispatch(HANDLE_EDIT(page)),
             addPage: () => dispatch(ADD_PAGE()),
             deletePage: (page) => dispatch(DELETE_PAGE(page)),

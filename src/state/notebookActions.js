@@ -39,14 +39,27 @@ export function UPLOAD_IMAGE(blob, cursorLocation) {
     }
 }
 
-export const FETCH_SAVE = withAuth((notebook) => {
+export const FETCH_SAVE = withAuth((notebook, obj) => {
+    const fork = obj && obj.fork
     return function(dispatch) {
         dispatch(REQUEST_SAVE())
-        let gist = notebook.toGist();
-        (notebook.gistId ? // if it has an ID, it's been saved, make a new revision
-            GitHubApi.updateGist(notebook.gistId, gist) :
-            GitHubApi.createGist(gist)
-        ).then(response => {
+
+        const chain = function() {
+            if (fork === true) {
+                return GitHubApi.forkGist(notebook.gistId).then(forkedGist => {
+                    notebook.gistId = forkedGist.id
+                    return GitHubApi.updateGist(notebook.gistId, notebook.toGist())
+                })
+            }
+            let gist = notebook.toGist();
+            if (notebook.gistId) {
+                return GitHubApi.updateGist(notebook.gistId, gist)
+            }
+            return GitHubApi.createGist(gist)
+        }
+
+        chain()
+        .then(response => {
             if (response) {
                 dispatch(RECEIVE_SAVE(response))
                 if (response.id) {

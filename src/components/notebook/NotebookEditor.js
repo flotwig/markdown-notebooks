@@ -109,6 +109,7 @@ export default class NotebookEditor extends React.Component {
             <Menu className="menu-sidebar">
                 <MenuItem onClick={() => this._handleNew()} icon="plus" text="New Notebook" className="btn-new-notebook"/>
                 <MenuItem onClick={() => this._handleSave()} icon="upload" text="Save Notebook" className="btn-save-notebook" disabled={this.props.isSaving || this.state.saveDisabled}/>
+                <MenuItem onClick={() => this._handleSave({ fork: true })} icon="git-new-branch" text="Save as Fork" className="btn-fork-notebook"/>
                 <MenuItem onClick={() => this._handleOpen()} icon="download" text="Open Notebook" className="btn-open-notebook"/>
                 <Menu.Divider/>
                 {this.props.notebook && <PageList pages={this.props.notebook.pages}
@@ -235,9 +236,9 @@ export default class NotebookEditor extends React.Component {
         this.props.setPathname('')
     }
 
-    _handleSave() {
+    _handleSave(obj) {
         if (this.state.saveDisabled) return
-        this.props.handleSave(this.props.notebook)
+        this.props.handleSave(this.props.notebook, obj)
     }
 
     _handleEdit(content) {
