@@ -1,5 +1,5 @@
 import React from 'react';
-import { GitHubApi } from '../../GitHubApi';
+import { GitHubApi } from '../../lib/GitHubApi';
 import GitHubLoginPrompt from './GitHubLoginPrompt';
 import GitHubLoginLoader from './GitHubLoginLoader';
 import { Dialog } from '@blueprintjs/core';
@@ -31,7 +31,7 @@ class GitHubAuth extends React.Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.auth.valid !== this.props.auth.valid) {
-            window.history.pushState(undefined, undefined, '/')
+            //window.history.pushState(undefined, undefined, '/')
         }
     }
 

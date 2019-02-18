@@ -1,6 +1,6 @@
 import React from 'react';
 import ConnectedGitHubAuth from './components/auth/GitHubAuth'
-import ConnectedNotebookEditor from './components/notebook/ConnectedNotebookEditor';
+import ConnectedNotebookEditor from './components/notebook/ConnectedNotebookEditor'
 
 /**
  * Root-level component of application.
@@ -8,10 +8,10 @@ import ConnectedNotebookEditor from './components/notebook/ConnectedNotebookEdit
 class App extends React.Component {
   render() {
     return (
-      <>
-        <ConnectedGitHubAuth/>
-        <ConnectedNotebookEditor/>
-      </>
+        <>
+          <ConnectedGitHubAuth/>
+          <ConnectedNotebookEditor/>
+        </>
     );
   }
 }

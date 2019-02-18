@@ -1,8 +1,9 @@
 import { createAction } from 'redux-starter-kit';
-import { GitHubApi } from '../GitHubApi';
+import { GitHubApi } from '../lib/GitHubApi';
 import { withAuth } from './util';
 import moment from 'moment';
-import ImgurApi from '../ImgurApi';
+import ImgurApi from '../lib/ImgurApi';
+import { SET_PATHNAME } from './router';
 
 export const REQUEST_SAVE = createAction('REQUEST_SAVE');
 export const RECEIVE_SAVE = createAction('RECEIVE_SAVE');
@@ -11,6 +12,7 @@ export const REQUEST_NOTEBOOKS = createAction('REQUEST_NOTEBOOKS');
 export const RECEIVE_NOTEBOOKS = createAction('RECEIVE_NOTEBOOKS');
 export const REQUEST_NOTEBOOK = createAction('REQUEST_NOTEBOOK');
 export const RECEIVE_NOTEBOOK = createAction('RECEIVE_NOTEBOOK');
+export const RECEIVE_NOTEBOOK_ERROR = createAction('RECEIVE_NOTEBOOK_ERROR');
 export const REQUEST_UPLOAD_IMAGE = createAction('REQUEST_UPLOAD_IMAGE');
 export const RECEIVE_UPLOAD_IMAGE = createAction('RECEIVE_UPLOAD_IMAGE');
 export const SET_ACTIVE_PAGE = createAction('SET_ACTIVE_PAGE');
@@ -47,6 +49,9 @@ export const FETCH_SAVE = withAuth((notebook) => {
         ).then(response => {
             if (response) {
                 dispatch(RECEIVE_SAVE(response))
+                if (response.id) {
+                    dispatch(SET_PATHNAME(`/${response.owner.login}/${response.id}`))
+                }
             } else {
                 throw new Error()
             }
@@ -67,5 +72,6 @@ export function FETCH_NOTEBOOK(notebook) {
         dispatch(REQUEST_NOTEBOOK())
         GitHubApi.getGist(notebook.gistId)
                  .then(response => dispatch(RECEIVE_NOTEBOOK(response)))
+                 .catch(error => dispatch(RECEIVE_NOTEBOOK_ERROR(error)))
     }
 }

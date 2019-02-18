@@ -59,6 +59,7 @@
     "@blueprintjs/core": "3.13.0",
     "@blueprintjs/icons": "3.6.0",
     "cypress-get-react-component": "1.0.0-dev4",
+    "history": "^4.7.2",
     "left-pad": "1.3.0",
     "marked": "0.6.0",
     "moment": "2.24.0",
@@ -71,11 +72,12 @@
     "redux-logger": "3.0.6",
     "redux-starter-kit": "0.4.3",
     "redux-thunk": "2.3.0",
-    "sanitize-html": "1.20.0"
+    "sanitize-html": "1.20.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "cypress:start": "GITHUB_BASEURL=/__github/ GITHUB_API_BASEURL=/__githubApi/ yarn start",
+    "cypress:start": "GITHUB_BASEURL=/__github/ yarn start",
     "cypress:open": "./node_modules/.bin/cypress open",
     "cypress:run": "./node_modules/.bin/cypress run",
     "cypress:ci": "yarn cypress:start & wait-on http://localhost:3000 && yarn cypress:run -- --record",

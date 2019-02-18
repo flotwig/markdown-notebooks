@@ -4,7 +4,7 @@ import {
     TOGGLE_AUTH_PROMPT,
     SET_TOKEN, RECEIVE_USER
 } from './authActions';
-import { GitHubApi } from '../GitHubApi';
+import { GitHubApi } from '../lib/GitHubApi';
 
 /**
  * Reducer for GitHub authentication logic.

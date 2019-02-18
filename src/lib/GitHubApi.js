@@ -1,4 +1,5 @@
-import { AUTH_ENDPOINT, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_BASEURL, GITHUB_API_BASEURL } from './env';
+import { fetch } from 'whatwg-fetch'
+import { AUTH_ENDPOINT, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_BASEURL, GITHUB_API_BASEURL } from '../env';
 
 /**
  * Facilitates interaction with the GitHub API.
@@ -29,6 +30,10 @@ export class GitHubApi {
                 token: undefined
             }
         }
+    }
+
+    static clearStoredAuth() {
+        localStorage.removeItem('githubAuth')
     }
 
     /**
@@ -127,10 +132,15 @@ export class GitHubApi {
             body: JSON.stringify(body)
         }).then(response => {
             if (response.status > 299) {
-                throw Error(response)
-            } else {
-                return response.json()
+                if (response.status === 401) {
+                    GitHubApi.clearStoredAuth()
+                }
+                const err = new Error()
+                err.response = response
+                throw err
             }
+
+            return response.json()
         })
     }
 }

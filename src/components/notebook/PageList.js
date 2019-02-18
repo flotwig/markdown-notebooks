@@ -32,7 +32,7 @@ export default class PageList extends React.Component {
 
     _renderPage(page) {
         return (
-            <li key={page._id}>
+            <li key={page._id} className="li-page">
                 <button draggable
                     title={page.name}
                     style={this.state.draggingOver === page ? { borderTop: '2px dashed rgba(19, 124, 189, 0.5)' } : {}}

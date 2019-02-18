@@ -10,9 +10,10 @@ import {
     MOVE_PAGE_TO_INDEX,
     RESTORE_DRAFT,
     RECEIVE_UPLOAD_IMAGE, REQUEST_UPLOAD_IMAGE,
-    RECEIVE_SAVE, REQUEST_SAVE,
+    RECEIVE_SAVE, REQUEST_SAVE, RECEIVE_SAVE_ERROR,
     RECEIVE_NOTEBOOKS, REQUEST_NOTEBOOKS,
-    RECEIVE_NOTEBOOK, REQUEST_NOTEBOOK, RECEIVE_SAVE_ERROR, TOGGLE_OPEN_MENU
+    RECEIVE_NOTEBOOK, REQUEST_NOTEBOOK, RECEIVE_NOTEBOOK_ERROR,
+    TOGGLE_OPEN_MENU
 } from './notebookActions';
 import Notebook from '../models/Notebook';
 import NotebookPage from '../models/NotebookPage';
@@ -24,6 +25,7 @@ import moment from 'moment';
 const notebookReducer = createReducer({
     isSaving: false,
     saveError: false,
+    loadingNotebookError: false,
     isLoadingNotebookList: false,
     isLoadingNotebook: false,
     notebookList: [],
@@ -67,12 +69,17 @@ const notebookReducer = createReducer({
     },
     [REQUEST_NOTEBOOK]: (state) => {
         state.isLoadingNotebook = true;
+        state.loadingNotebookError = false
         state.notebook = undefined;
     },
     [RECEIVE_NOTEBOOK]: (state, { payload }) => {
         state.isLoadingNotebook = false;
         state.notebook = Notebook.fromGist(payload);
         state.activePageId = state.notebook.pages[0]._id
+    },
+    [RECEIVE_NOTEBOOK_ERROR]: (state, { payload: err }) => {
+        state.loadingNotebookError = err.response
+        state.isLoadingNotebook = false
     },
     [REQUEST_UPLOAD_IMAGE]: (state, { payload }) => {
         const { cursorLocation, imageId } = payload
@@ -113,6 +120,7 @@ const notebookReducer = createReducer({
     },
     [SET_ACTIVE_NOTEBOOK]: (state, { payload }) => {
         state.notebook = payload;
+        state.loadingNotebookError = false
         if (payload) state.activePageId = payload.pages[0]._id;
         else state.activePageId = undefined;
     },

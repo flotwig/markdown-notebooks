@@ -1,11 +1,12 @@
 import NotebookEditor from './NotebookEditor';
 import { connect } from 'react-redux';
-import { 
-    FETCH_SAVE, HANDLE_EDIT, ADD_PAGE, DELETE_PAGE, SET_ACTIVE_PAGE, 
+import {
+    FETCH_SAVE, HANDLE_EDIT, ADD_PAGE, DELETE_PAGE, SET_ACTIVE_PAGE,
     UPLOAD_IMAGE, RENAME_NOTEBOOK, RENAME_PAGE, MOVE_PAGE_TO_INDEX,
     RESTORE_DRAFT, FETCH_NOTEBOOK, SET_ACTIVE_NOTEBOOK
 } from '../../state/notebookActions'
 import { getActivePage } from '../../state/notebookSelectors';
+import { SET_PATHNAME } from '../../state/router';
 
 const ConnectedNotebookEditor = connect(
     (state) => {
@@ -26,7 +27,8 @@ const ConnectedNotebookEditor = connect(
             movePageToIndex: (page, index) => dispatch(MOVE_PAGE_TO_INDEX({ page, index })),
             restoreDraft: (draft) => dispatch(RESTORE_DRAFT(draft)),
             fetchNotebook: (notebook) => dispatch(FETCH_NOTEBOOK(notebook)),
-            setActiveNotebook: (notebook) => dispatch(SET_ACTIVE_NOTEBOOK(notebook))
+            setActiveNotebook: (notebook) => dispatch(SET_ACTIVE_NOTEBOOK(notebook)),
+            setPathname: (pathname) => dispatch(SET_PATHNAME(pathname))
         }
     }
 )(NotebookEditor)

@@ -1,7 +1,8 @@
-import { FETCH_NOTEBOOKS, FETCH_NOTEBOOK } from "../../state/notebookActions";
-import { HTMLTable, NonIdealState, Spinner } from '@blueprintjs/core';
-import React from 'react';
-import { connect } from 'react-redux';
+import { FETCH_NOTEBOOKS } from '../../state/notebookActions'
+import { HTMLTable, NonIdealState, Spinner } from '@blueprintjs/core'
+import React from 'react'
+import { connect } from 'react-redux'
+import { SET_PATHNAME } from '../../state/router';
 
 /**
  * Component for showing a user's existing Gists. Allows them to open any one
@@ -17,12 +18,11 @@ export class OpenMenu extends React.Component {
             return (
                 <NonIdealState className="bp3-dialog-body" icon={<Spinner/>} description="Loading notebooks..."/>
             )
-        } else {
-            return this.renderList()
         }
+        return this._renderList()
     }
 
-    renderList() {
+    _renderList() {
         return (
             <HTMLTable bordered interactive>
                 <thead>
@@ -58,7 +58,7 @@ export class OpenMenu extends React.Component {
     }
 
     onClickOpen(notebook) {
-        this.props.fetchNotebook(notebook)
+        this.props.setPathname(`/${notebook.gistOwnerLogin}/${notebook.gistId}`)
         this.props.closeMenu()
     }
 }
@@ -74,9 +74,9 @@ const ConnectedOpenMenu = connect(
     (dispatch) => {
         return {
             fetchNotebooks: () => dispatch(FETCH_NOTEBOOKS()),
-            fetchNotebook: (notebook) => dispatch(FETCH_NOTEBOOK(notebook))
+            setPathname: (pathname) => dispatch(SET_PATHNAME(pathname))
         }
     }
-)(OpenMenu);
+)(OpenMenu)
 
 export default ConnectedOpenMenu;
