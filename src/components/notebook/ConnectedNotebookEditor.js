@@ -12,6 +12,7 @@ const ConnectedNotebookEditor = connect(
     (state) => {
         return {
             ...state.notebook,
+            user: state.auth.user,
             activePage: getActivePage(state.notebook)
         }
     }, (dispatch) => {
