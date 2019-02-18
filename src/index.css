@@ -34,6 +34,10 @@ body.bp3-dark {
   white-space: pre;
 }
 
+.li-page {
+  margin-left: .5em;
+}
+
 .Resizer {
   background: #000;
   opacity: .2;
