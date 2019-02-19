@@ -17,15 +17,19 @@ export default class PageList extends React.Component {
     render() {
         return (
             <>
-                <Menu.Item onClick={()=> this.props.addPage()} icon="plus" text="New Page" className="btn-new-page"/>
-                <Menu.Item onClick={()=> this.props.deletePage()} icon="trash" text="Delete Page" className="btn-delete-page"/>
-                <li className="bp3-menu-header">
-                    <h6 className="bp3-heading">Pages</h6>
-                </li>
-                {this.props.pages.map(page => {
-                    return this._renderPage(page)
-                })
-                }
+                <Menu className="menu-page-list-controls">
+                    <Menu.Item onClick={()=> this.props.addPage()} icon="plus" text="New Page" className="btn-new-page"/>
+                    <Menu.Item onClick={()=> this.props.deletePage()} icon="trash" text="Delete Page" className="btn-delete-page"/>
+                    <li className="bp3-menu-header">
+                        <h6 className="bp3-heading">Pages</h6>
+                    </li>
+                </Menu>
+                <Menu className="menu-page-list">
+                    {this.props.pages.map(page => {
+                        return this._renderPage(page)
+                    })
+                    }
+                </Menu>
             </>
         )
     }

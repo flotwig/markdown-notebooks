@@ -71,7 +71,7 @@ export default class NotebookEditor extends React.Component {
                 <div style={{display: 'flex', flexDirection: 'column', height: '100%', width: '100%'}}>
                     {this._renderNavbar()}
                     <SplitPane split="vertical">
-                        <Pane initialSize="150px" minSize="50px">{this._renderSidebar()}</Pane>
+                        <Pane initialSize="150px" minSize="50px" className="pane-sidebar">{this._renderSidebar()}</Pane>
                         <Pane minSize="80px">{this._renderEditor()}</Pane>
                         <Pane minSize="50px">{this._renderMarkdown()}</Pane>
                     </SplitPane>
@@ -106,20 +106,21 @@ export default class NotebookEditor extends React.Component {
 
     _renderSidebar() {
         return (
-            <Menu className="menu-sidebar">
-                <MenuItem onClick={() => this._handleNew()} icon="plus" text="New Notebook" className="btn-new-notebook"/>
-                {this._renderSaveMenuItem()}
-                <MenuItem onClick={() => this._handleOpen()} icon="download" text="Open Notebook" className="btn-open-notebook"/>
-                <Menu.Divider/>
+            <>
+                <Menu className="menu-sidebar">
+                    <MenuItem onClick={() => this._handleNew()} icon="plus" text="New Notebook" className="btn-new-notebook"/>
+                    {this._renderSaveMenuItem()}
+                    <MenuItem onClick={() => this._handleOpen()} icon="download" text="Open Notebook" className="btn-open-notebook"/>
+                    <Menu.Divider/>
+                </Menu>
                 {this.props.notebook && <PageList pages={this.props.notebook.pages}
-                                                  movePageToIndex={this.props.movePageToIndex}
-                                                  activePage={this.props.activePage}
-                                                  onClickPage={this.props.setActivePage}
-                                                  addPage={this.props.addPage}
-                                                  deletePage={this.props.deletePage}
-                                                  />
-                }
-            </Menu>
+                                                    movePageToIndex={this.props.movePageToIndex}
+                                                    activePage={this.props.activePage}
+                                                    onClickPage={this.props.setActivePage}
+                                                    addPage={this.props.addPage}
+                                                    deletePage={this.props.deletePage}
+                                                    />}
+            </>
         )
     }
 

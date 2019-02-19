@@ -8,8 +8,27 @@ body.bp3-dark {
   background-color: #30404d;
 }
 
+.pane-sidebar .bp3-menu {
+  min-width: initial !important;
+}
+
 .bp3-menu.menu-sidebar {
-  min-width: initial;
+  padding-bottom: 0;
+}
+
+.bp3-menu.menu-page-list-controls {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.bp3-menu.menu-page-list {
+  padding-top: 0;
+  overflow-y: auto;
+}
+
+.pane-sidebar {
+  display: flex;
+  flex-direction: column;
 }
 
 .btn-page[data-selected="true"] {
