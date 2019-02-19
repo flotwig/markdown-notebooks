@@ -37,14 +37,14 @@ const notebookReducer = createReducer({
         state.isSaving = true
         state.saveError = false
     },
-    [RECEIVE_SAVE]: (state, { payload }) => {
+    [RECEIVE_SAVE]: (state, { payload: gist }) => {
         state.isSaving = false;
         state.saveError = false;
         let i = 0;
         const pages = state.notebook.pages.map(page => {
             if (page.content) {
                 // all pages with content now have a gist filename
-                return page.withChanges({ gistFilename: Object.values(payload.files)[i++].filename })
+                return page.withChanges({ gistFilename: Object.values(gist.files)[i++].filename })
             }
             return page
         });
@@ -52,7 +52,8 @@ const notebookReducer = createReducer({
             pages,
             deletedPages: [],
             saved_at: moment(),
-            gistId: payload.id,
+            gistId: gist.id,
+            gistOwnerLogin: gist.owner.login,
             modified: false
         })
     },

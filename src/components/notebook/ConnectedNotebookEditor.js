@@ -12,11 +12,12 @@ const ConnectedNotebookEditor = connect(
     (state) => {
         return {
             ...state.notebook,
+            user: state.auth.user,
             activePage: getActivePage(state.notebook)
         }
     }, (dispatch) => {
         return {
-            handleSave: notebook => dispatch(FETCH_SAVE(notebook)),
+            handleSave: (notebook, obj) => dispatch(FETCH_SAVE(notebook, obj)),
             handleEdit: (page) => dispatch(HANDLE_EDIT(page)),
             addPage: () => dispatch(ADD_PAGE()),
             deletePage: (page) => dispatch(DELETE_PAGE(page)),
