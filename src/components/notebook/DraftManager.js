@@ -1,6 +1,7 @@
-import React from 'react';
-import Draft from '../../models/Draft';
-import { Dialog, Button } from '@blueprintjs/core';
+import React from 'react'
+import urls from '../../lib/urls'
+import Draft from '../../models/Draft'
+import { Dialog, Button } from '@blueprintjs/core'
 
 const dateFormat = "LLLL";
 
@@ -18,14 +19,17 @@ export default class DraftManager extends React.Component {
     componentDidMount() {
         if (this.props.isLoadingNotebook) return;
         const lastGist = this.getLastGist()
-        if (!lastGist) return;
+        if (!lastGist) {
+            // no saved draft? never visited before? load intro notebook
+            return this.props.setPathname(urls.introNotebook)
+        };
         const { gistId, gistOwnerLogin } = lastGist;
         const lastOpenDraft = this.getDraft(gistId)
         if (lastOpenDraft) {
-            this.restoreDraft(lastOpenDraft)
+            return this.restoreDraft(lastOpenDraft)
         } else if (gistId) {
             // we can load it from github then
-            this.props.setPathname(`/${gistOwnerLogin}/${gistId}`)
+            return this.props.setPathname(`/${gistOwnerLogin}/${gistId}`)
         }
     }
 

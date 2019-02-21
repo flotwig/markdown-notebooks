@@ -126,13 +126,16 @@ export class GitHubApi {
      */
     static _fetch(endpoint, method='GET', body=undefined) {
         let { token } = GitHubApi.getStoredAuth()
+        const headers = {
+            'Accept': "application/json",
+            'Content-Type': 'application/json'
+        }
+        if (token) {
+            headers['Authorization'] = `token ${token}`
+        }
         return fetch(GITHUB_API_BASEURL + endpoint, {
             method,
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": "token " + token
-            },
+            headers,
             body: JSON.stringify(body)
         }).then(response => {
             if (response.status > 299) {
