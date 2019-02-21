@@ -49,9 +49,9 @@ To install dependencies, run `yarn`.
 
 Then, run `yarn start` to start the app on port 3000.
 
-To test GitHub login, you'll need to supply a client ID and secret from GitHub.com in the `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` environment variables:
+To test GitHub login, you'll need to supply a client ID and secret from GitHub.com in the `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` environment variables. On Mac and Linux:
 
-`GITHUB_CLIENT_ID=your-client-id GITHUB_CLIENT_SECRET=your-client-secret`
+`GITHUB_CLIENT_ID=your-client-id GITHUB_CLIENT_SECRET=your-client-secret yarn start`
 
 To run the Cypress integration tests, do `yarn run cypress:open`.
 
