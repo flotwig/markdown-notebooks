@@ -7,10 +7,11 @@ import DraftManager from './DraftManager';
 import SplitPane from 'react-split-pane/lib/SplitPane'
 import Pane from 'react-split-pane/lib/Pane'
 import {
-    Icon, Dialog, Tag, Menu,
-    NonIdealState, Spinner, H2, H4, EditableText, Card, Navbar, Alignment, MenuItem
+    Icon, Dialog, Tag, Menu, Button,
+    NonIdealState, Spinner, H2, H4, EditableText, Card, Navbar, Alignment, MenuItem, Popover
 } from '@blueprintjs/core';
 import Notebook from '../../models/Notebook';
+import * as urls from '../../lib/urls'
 
 /**
  * Editor pane for a notebook. Includes all the needed controls.
@@ -86,6 +87,17 @@ export default class NotebookEditor extends React.Component {
                 <Navbar.Group align={Alignment.LEFT}>
                     <Navbar.Heading><Icon icon="book"/> Markdown Notebooks</Navbar.Heading>
                     {this._renderStatusIndicator()}
+                </Navbar.Group>
+                <Navbar.Group align={Alignment.RIGHT}>
+                    <Popover content={
+                        <Menu>
+                            <Menu.Item onClick={()=>this.props.setPathname(urls.introNotebook)} text="Intro Notebook"/>
+                            <Menu.Item href={urls.markdownRef} target="_blank" text="Markdown Reference"/>
+                            <Menu.Item href={urls.repo} target="_blank" text="Report an Issue"/>
+                        </Menu>
+                    }>
+                        <Button icon="help" minimal>Help</Button>
+                    </Popover>
                 </Navbar.Group>
             </Navbar>
         )

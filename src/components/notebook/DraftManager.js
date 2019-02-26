@@ -1,5 +1,4 @@
 import React from 'react'
-import urls from '../../lib/urls'
 import Draft from '../../models/Draft'
 import { Dialog, Button } from '@blueprintjs/core'
 
