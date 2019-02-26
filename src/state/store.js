@@ -1,5 +1,6 @@
 import { configureStore } from 'redux-starter-kit'
 import { withRouter, routerReducer } from './router'
+import { NODE_ENV } from '../env'
 import authReducer from './authReducer'
 import notebookReducer from './notebookReducer'
 import logger from 'redux-logger'
@@ -11,10 +12,13 @@ const reducer = {
     location: routerReducer
 }
 
-const middleware = [
-    thunk,
-    logger
+let middleware = [
+    thunk
 ]
+
+if (NODE_ENV === 'development') {
+    middleware.push(logger)
+}
 
 export const store = withRouter(configureStore({
     reducer,

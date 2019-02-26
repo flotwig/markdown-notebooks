@@ -1,4 +1,4 @@
-'use strict';
+
 
 const fs = require('fs');
 const path = require('path');
@@ -61,12 +61,13 @@ process.env.NODE_PATH = (process.env.NODE_PATH || '')
 const REACT_APP = /^REACT_APP_/i;
 
 const ENV = [
-  'GITHUB_CLIENT_SECRET', 
+  'GITHUB_CLIENT_SECRET',
   'GITHUB_CLIENT_ID',
   'GITHUB_BASEURL',
-  'GITHUB_API_BASEURL', 
-  'AUTH_ENDPOINT', 
-  'IMGUR_CLIENT_ID'
+  'GITHUB_API_BASEURL',
+  'AUTH_ENDPOINT',
+  'IMGUR_CLIENT_ID',
+  'NODE_ENV'
 ]
 
 function getClientEnvironment(publicUrl) {
