@@ -1,5 +1,5 @@
 import { Promise } from "bluebird";
-import { getTextarea } from '../support/util'
+import { getTextarea, loadNotebook } from '../support/util'
 
 // thanks https://github.com/cypress-io/cypress/issues/299#issuecomment-380197761
 const pressTab = () =>
@@ -18,7 +18,7 @@ const loadBlankPng = () =>
 describe('Markdown Editor', () => {
     beforeEach(() => {
         cy.visit('/')
-        return cy.get('.btn-new-notebook').click()
+        loadNotebook('empty')
     })
 
     it('creates a new bullet when in a bulleted list', () => {
@@ -56,7 +56,7 @@ describe('Markdown Editor', () => {
         })
     })
 
-    context.only('checkboxes', () => {
+    context('checkboxes', () => {
         beforeEach(() => {
             getTextarea()
             .click()

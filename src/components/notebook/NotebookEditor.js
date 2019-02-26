@@ -108,7 +108,7 @@ export default class NotebookEditor extends React.Component {
         return (
             <>
                 <Menu className="menu-sidebar">
-                    <MenuItem onClick={() => this._handleNew()} icon="plus" text="New Notebook" className="btn-new-notebook"/>
+                    <MenuItem onClick={() => this._handleNew()} icon="plus" disabled={this.props.isSaving} text="New Notebook" className="btn-new-notebook"/>
                     {this._renderSaveMenuItem()}
                     <MenuItem onClick={() => this._handleOpen()} icon="download" text="Open Notebook" className="btn-open-notebook"/>
                     <Menu.Divider/>

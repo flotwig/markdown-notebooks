@@ -21,7 +21,8 @@ export default class DraftManager extends React.Component {
         const lastGist = this.getLastGist()
         if (!lastGist) {
             // no saved draft? never visited before? load intro notebook
-            return this.props.setPathname(urls.introNotebook)
+            // return this.props.setPathname(urls.introNotebook)
+            return
         };
         const { gistId, gistOwnerLogin } = lastGist;
         const lastOpenDraft = this.getDraft(gistId)
