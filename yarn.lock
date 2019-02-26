@@ -3180,7 +3180,7 @@ cypress-get-react-component@1.0.0-dev4:
   resolved "https://registry.yarnpkg.com/cypress-get-react-component/-/cypress-get-react-component-1.0.0-dev4.tgz#64cd6c0af1c880bebfce714479f064be8df54109"
   integrity sha512-+26irD2NTUbNNsLaCVehH7T9wkUDGI5yoAC1ZNuWvsJZn/odXW2BAJl7aXhAN0JawEbPCzEOaaUMjmFMJfZ6PQ==
 
-cypress-react-unit-test@^2.3.2:
+cypress-react-unit-test@2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/cypress-react-unit-test/-/cypress-react-unit-test-2.3.2.tgz#b5f565450582db12c4a5de9da815077537cde172"
   integrity sha512-74Mk9Kwa/u6c/HslegOceyVl+vUXaEaxn/2LWUZYomUJtgiZSljcnBHUQC6AxHyqz9mPo7EE8uiXBR4rZ5tlCg==
