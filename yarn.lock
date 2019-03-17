@@ -4860,10 +4860,10 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-history@4.9.0:
-  version "4.9.0"
-  resolved "https://registry.yarnpkg.com/history/-/history-4.9.0.tgz#84587c2068039ead8af769e9d6a6860a14fa1bca"
-  integrity sha512-H2DkjCjXf0Op9OAr6nJ56fcRkTSNrUiv41vNJ6IswJjif6wlpZK0BTfFbi7qK9dXLSYZxkq5lBsj3vUjlYBYZA==
+history@4.9.0-beta.2:
+  version "4.9.0-beta.2"
+  resolved "https://registry.yarnpkg.com/history/-/history-4.9.0-beta.2.tgz#8ec75f32b3ce0f14b33bc5a71fd3695ca668b905"
+  integrity sha512-9I/a0PWDc7Em6XvMXtGpvxz/ITPgwJLEwr2YtUhqW6/Yc0rMGF/VUzT5uI+oFPY76U2QqdXalQZw3kLUDqIxfQ==
   dependencies:
     "@babel/runtime" "^7.1.2"
     loose-envify "^1.2.0"
