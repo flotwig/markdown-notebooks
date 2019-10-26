@@ -1,23 +1,27 @@
-build-test-deploy:
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+  - node_modules/
+
+build:
   stage: build
   script:
   - yarn build
-  
+
+test:
   stage: test
   script:
   - yarn test
-  
-  stage: deploy
+
+deploy:
   script:
-  - mv build public
+  - mv ./build ./public
   artifacts:
     paths:
     - public
-    
   only:
   - master
-
-
-
-
-
