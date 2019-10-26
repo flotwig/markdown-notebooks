@@ -1,7 +1,5 @@
 # MDNB: Markdown Notebooks
 
-[![Build Status](https://travis-ci.org/flotwig/markdown-notebooks.svg?branch=master)](https://travis-ci.org/flotwig/markdown-notebooks)
-
 Live at https://mdnb.bloomqu.ist/
 
 ## Features
