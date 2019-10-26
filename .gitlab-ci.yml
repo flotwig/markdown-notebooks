@@ -2,7 +2,7 @@ stages:
   - install
   - build
   - test
-  - deploy
+  - pages
 
 cache:
   paths:
@@ -26,8 +26,8 @@ test:
   script:
   - yarn test
 
-deploy:
-  stage: deploy
+pages:
+  stage: pages
   script:
   - mv ./public ./public-old
   - mv ./build ./public
