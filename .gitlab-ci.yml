@@ -7,7 +7,6 @@ stages:
 cache:
   paths:
   - node_modules/
-  - build/
 
 install:
   stage: install
@@ -18,6 +17,9 @@ build:
   stage: build
   script:
   - yarn build
+  artifacts:
+    paths:
+    - build
 
 test:
   stage: test
