@@ -1,0 +1,23 @@
+build-test-deploy:
+  stage: build
+  script:
+  - yarn build
+  
+  stage: test
+  script:
+  - yarn test
+  
+  stage: deploy
+  script:
+  - mv build public
+  artifacts:
+    paths:
+    - public
+    
+  only:
+  - master
+
+
+
+
+
