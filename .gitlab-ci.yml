@@ -24,6 +24,7 @@ test:
   - yarn test
 
 deploy:
+  stage: deploy
   script:
   - mv ./build ./public
   artifacts:
