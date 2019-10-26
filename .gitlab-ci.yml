@@ -7,6 +7,7 @@ stages:
 cache:
   paths:
   - node_modules/
+  - build/
 
 install:
   stage: install
@@ -26,6 +27,7 @@ test:
 deploy:
   stage: deploy
   script:
+  - mv ./public ./public-old
   - mv ./build ./public
   artifacts:
     paths:
