@@ -69,7 +69,7 @@
     "react-dom": "16.8.5",
     "react-redux": "6.0.1",
     "react-split-pane": "2.0.2",
-    "redux": "4.0.1",
+    "redux": "4.0.4",
     "redux-logger": "3.0.6",
     "redux-starter-kit": "0.5.1",
     "redux-thunk": "2.3.0",
