@@ -71,7 +71,7 @@
     "react-split-pane": "2.0.2",
     "redux": "4.0.1",
     "redux-logger": "3.0.6",
-    "redux-starter-kit": "0.5.1",
+    "redux-starter-kit": "0.9.1",
     "redux-thunk": "2.3.0",
     "sanitize-html": "1.20.0",
     "whatwg-fetch": "3.0.0"
