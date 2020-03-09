@@ -95,7 +95,8 @@ export default class MarkdownRenderer extends React.Component {
                 'blockquote', 'big', 'small', 'div', 'br',
                 'hr', 'li', 'ol', 'ul', 'table', 'tbody',
                 'thead', 'td', 'th', 'tr', 'caption',
-                'span', 'code', 'del', 's', 'input'
+                'span', 'code', 'del', 's', 'input',
+                'details', 'summary'
             ],
             allowedAttributes: {
                 'a': ['href', 'target', 'rel'],
