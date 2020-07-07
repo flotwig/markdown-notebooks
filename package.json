@@ -17,7 +17,7 @@
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "chalk": "2.4.2",
     "css-loader": "2.1.1",
-    "cypress": "3.8.3",
+    "cypress": "4.10.0",
     "cypress-get-react-component": "1.0.0-dev4",
     "cypress-react-unit-test": "2.10.0",
     "dotenv": "6.2.0",
