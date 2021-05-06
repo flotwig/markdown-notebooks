@@ -73,7 +73,7 @@
     "redux-logger": "3.0.6",
     "redux-starter-kit": "0.9.1",
     "redux-thunk": "2.3.0",
-    "sanitize-html": "1.23.0",
+    "sanitize-html": "2.3.2",
     "whatwg-fetch": "3.0.0"
   },
   "scripts": {
